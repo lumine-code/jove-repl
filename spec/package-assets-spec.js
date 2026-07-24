@@ -35,9 +35,12 @@ describe("hydrogen-next package assets", () => {
 
     const css = fs.readFileSync(path.join(root, "styles/hydrogen-next.css"), "utf8");
     expect(css).toContain("var(--");
-    // No leftover Less imports or color functions.
     expect(css).not.toContain('@import "ui-variables"');
     expect(css).not.toContain('@import "syntax-variables"');
-    expect(css).not.toMatch(/\blighten\(|\bfadein\(|\bcontrast\(/);
+    // No leftover Less color functions (ignore prose in comments).
+    const cssWithoutComments = css.replace(/\/\*[\s\S]*?\*\//g, "");
+    expect(cssWithoutComments).not.toMatch(
+      /\blighten\(|\bfadein\(|\bcontrast\(|\baverage\(|\bfade\(/,
+    );
   });
 });
