@@ -1,7 +1,12 @@
 {
   "name": "hydrogen-next",
+  "author": "lumine-code",
   "description": "Run code interactively with Jupyter kernels",
   "repository": "https://github.com/lumine-code/hydrogen-next",
+  "bugs": {
+    "url": "https://github.com/lumine-code/hydrogen-next/issues"
+  },
+  "homepage": "https://github.com/lumine-code/hydrogen-next#readme",
   "keywords": [
     "execute",
     "run",
@@ -22,6 +27,11 @@
     "atom": ">=1.100.0 <2.0.0"
   },
   "main": "./lib/main",
+  "scripts": {
+    "test": "cd ../lumine && npm run test:only -- ../hydrogen-next/spec",
+    "lint": "eslint .",
+    "format:check": "prettier --check ."
+  },
   "activationHooks": [
     "hydrogen-adapter:item-used"
   ],
@@ -170,5 +180,9 @@
   },
   "overrides": {
     "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "prettier": "^3.9.5"
   }
 }
