@@ -1,30 +1,26 @@
-@accent-color: hsl(220, 100%, 60%);
-
-@import "ui-variables";
-@import "syntax-variables";
-
-// -------------- Colors ------------------
-
-@hydrogen-light-background: fadein(lighten(@syntax-background-color, 40%), 100%);
-@hydrogen-dark-background: fadein(lighten(@syntax-background-color, 10%), 100%);
-
-@hydrogen-inline-background: contrast(
-  @syntax-text-color,
-  @hydrogen-dark-background,
-  @hydrogen-light-background,
-  20%
-);
-@hydrogen-inline-color: lighten(@syntax-text-color, 10%);
-@hydrogen-error-color: average(@syntax-text-color, red);
-
 .hydrogen-next.marker {
   display: flex;
   position: relative;
-  background-color: @syntax-background-color;
+  background-color: var(--syntax-background-color);
 }
 
 .hydrogen-next {
-  // -------------- Globals -----------------
+  /* Derived colors. These used to be computed by Less color functions; they are
+     now expressed with CSS custom properties so they track the active theme's
+     syntax/ui variables at runtime. */
+  --hydrogen-accent-color: hsl(220, 100%, 60%);
+  /* A panel background subtly offset from the editor background. Mixing in a
+     little of the syntax text color darkens it on light themes and lightens it
+     on dark themes, matching the old `contrast(...)` selection. */
+  --hydrogen-inline-background: color-mix(
+    in srgb,
+    var(--syntax-background-color) 90%,
+    var(--syntax-text-color)
+  );
+  --hydrogen-inline-color: hsl(from var(--syntax-text-color) h s calc(l + 10));
+  --hydrogen-error-color: color-mix(in srgb, var(--syntax-text-color), red);
+
+  /* -------------- Globals ----------------- */
 
   code,
   pre {
@@ -48,7 +44,7 @@
     display: block;
   }
 
-  // LaTeX inline math should stay inline
+  /* LaTeX inline math should stay inline */
   .latex-math-inline {
     display: inline;
 
@@ -60,11 +56,11 @@
 
   .latex-text {
     display: inline;
-    padding: 0 0.3em; // Space around text between math expressions
+    padding: 0 0.3em; /* Space around text between math expressions */
   }
 
   table {
-    border: 1px double average(@syntax-text-color, @base-border-color);
+    border: 1px double color-mix(in srgb, var(--syntax-text-color), var(--base-border-color));
     border-collapse: collapse;
 
     thead,
@@ -81,11 +77,11 @@
   }
 
   :not(.select-list) > .markdown {
-    font-family: @font-family;
+    font-family: var(--font-family);
 
     code {
-      color: @hydrogen-inline-color;
-      background-color: @hydrogen-inline-background;
+      color: var(--hydrogen-inline-color);
+      background-color: var(--hydrogen-inline-background);
       font-family: var(--editor-font-family);
     }
   }
@@ -98,7 +94,7 @@
     .noError {
       padding: 0;
       border: none;
-      color: @hydrogen-error-color;
+      color: var(--hydrogen-error-color);
     }
 
     svg {
@@ -117,20 +113,20 @@
     }
   }
 
-  // Ensure Plotly container div is properly positioned
+  /* Ensure Plotly container div is properly positioned */
   .plotly-graph-div {
     position: relative;
     z-index: 1;
   }
 
-  // Plotly container needs explicit dimensions
+  /* Plotly container needs explicit dimensions */
   .plotly-container {
     position: relative;
     display: block;
     visibility: visible !important;
     opacity: 1 !important;
 
-    // WebGL canvas for 3D plots
+    /* WebGL canvas for 3D plots */
     canvas {
       visibility: visible !important;
       opacity: 1 !important;
@@ -138,34 +134,34 @@
       position: relative !important;
     }
 
-    // Plotly 3D scene container
+    /* Plotly 3D scene container */
     .gl-container {
       position: relative !important;
       z-index: 1 !important;
     }
   }
 
-  // Fix for 3D plots: make SVG background transparent so canvas is visible
+  /* Fix for 3D plots: make SVG background transparent so canvas is visible */
   .js-plotly-plot .plotly .svg-container {
     position: relative !important;
 
-    // The main-svg has background:white inline which covers the WebGL canvas
-    // We need to make it transparent for 3D plots
+    /* The main-svg has background:white inline which covers the WebGL canvas
+       We need to make it transparent for 3D plots */
     .main-svg {
       background: transparent !important;
     }
   }
 
   .nteract-display-area-stderr {
-    color: @hydrogen-error-color;
+    color: var(--hydrogen-error-color);
   }
 
-  // ----------- Inline Output --------------
+  /* ----------- Inline Output -------------- */
 
   .inline-container {
-    color: @hydrogen-inline-color;
-    background: @hydrogen-inline-background;
-    border-radius: @component-border-radius;
+    color: var(--hydrogen-inline-color);
+    background: var(--hydrogen-inline-background);
+    border-radius: var(--component-border-radius);
     box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
   }
 
@@ -183,11 +179,11 @@
     }
   }
 
-  // ---------- Multiline Output ------------
+  /* ---------- Multiline Output ------------ */
 
   .multiline-container {
     display: flex;
-    border: solid 1px @base-border-color;
+    border: solid 1px var(--base-border-color);
 
     &[hydrogen-wrapoutput="true"] {
       code,
@@ -199,10 +195,10 @@
   }
 
   .multiline-container .hydrogen_cell_display {
-    padding: @component-padding;
-    gap: @component-padding;
+    padding: var(--component-padding);
+    gap: var(--component-padding);
 
-    // LaTeX: center SVG outputs while keeping vertical stacking
+    /* LaTeX: center SVG outputs while keeping vertical stacking */
     &:has(.latex-display) {
       display: flex;
       flex-direction: column;
@@ -215,7 +211,7 @@
       }
     }
 
-    // Style fix for plotly toolbar
+    /* Style fix for plotly toolbar */
     .cell_display {
       overflow: visible;
       display: block;
@@ -228,13 +224,13 @@
   }
 
   .multiline-container .toolbar {
-    border-left: solid 1px @base-border-color;
+    border-left: solid 1px var(--base-border-color);
     display: flex;
     flex-direction: column;
   }
 
   .multiline-container .toolbar > :not(:first-child) {
-    border-top: solid 1px @base-border-color;
+    border-top: solid 1px var(--base-border-color);
   }
 
   .multiline-container .toolbar .icon::before {
@@ -247,22 +243,22 @@
   }
 
   .multiline-container .toolbar .icon:hover {
-    color: @hydrogen-inline-color;
+    color: var(--hydrogen-inline-color);
   }
 
-  // -------------- Spinner -----------------
+  /* -------------- Spinner ----------------- */
 
   .spinner {
     padding: 0 0.5em 0 0.5em;
-    // The bars below are sized with height:100%, so the spinner needs an
-    // explicit height. It no longer inherits one from the editor line-height
-    // now that the inline box uses a compact line-height and opts out of the
-    // flex stretch.
+    /* The bars below are sized with height:100%, so the spinner needs an
+       explicit height. It no longer inherits one from the editor line-height
+       now that the inline box uses a compact line-height and opts out of the
+       flex stretch. */
     height: 1.2em;
   }
 
   .spinner > div {
-    background-color: @hydrogen-inline-color;
+    background-color: var(--hydrogen-inline-color);
     height: 100%;
     width: 2px;
     display: inline-block;
@@ -290,19 +286,7 @@
     animation-delay: -0.8s;
   }
 
-  @keyframes stretchdelay {
-    0%,
-    40%,
-    100% {
-      transform: scaleY(0.32);
-    }
-
-    20% {
-      transform: scaleY(0.8);
-    }
-  }
-
-  // -------------- Sidebar -----------------
+  /* -------------- Sidebar ----------------- */
 
   .sidebar {
     padding: 10px;
@@ -310,9 +294,9 @@
     .multiline-container {
       width: 100%;
       overflow: auto;
-      padding: @component-padding;
+      padding: var(--component-padding);
 
-      // Style fix for plotly toolbar
+      /* Style fix for plotly toolbar */
       .modebar-group {
         display: flex;
       }
@@ -334,20 +318,20 @@
     }
   }
 
-  // ------------ History Component ---------
+  /* ------------ History Component --------- */
 
   .history {
     display: flex;
     flex-direction: column;
 
     .slider {
-      padding: (@component-padding / 2);
+      padding: calc(var(--component-padding) / 2);
 
-      // Prev / counter / next on one row: buttons at the edges, counter centered.
+      /* Prev / counter / next on one row: buttons at the edges, counter centered. */
       .current-output {
         display: flex;
         align-items: center;
-        gap: @component-padding;
+        gap: var(--component-padding);
 
         > span:not(.btn) {
           flex: 1;
@@ -361,26 +345,26 @@
 
         &::-webkit-slider-thumb {
           -webkit-appearance: none;
-          background: @background-color-selected;
+          background: var(--background-color-selected);
         }
 
         &:focus {
           &::-webkit-slider-thumb {
             -webkit-appearance: none;
-            background-color: @button-background-color-selected;
-            border: 1px solid @background-color-selected;
+            background-color: var(--button-background-color-selected);
+            border: 1px solid var(--background-color-selected);
           }
 
           &::-webkit-slider-runnable-track {
             -webkit-appearance: none;
-            background: @background-color-selected;
+            background: var(--background-color-selected);
           }
         }
       }
     }
   }
 
-  // ------------ Output Area ---------------
+  /* ------------ Output Area --------------- */
 
   .output-area {
     overflow: hidden;
@@ -397,7 +381,7 @@
     }
 
     .scroll-list {
-      // Fill the panel from the start; scroll when results overflow.
+      /* Fill the panel from the start; scroll when results overflow. */
       flex: 1;
       min-height: 0;
       overflow-y: auto;
@@ -406,9 +390,9 @@
       .scroll-list-item {
         padding: 10px 0;
 
-        // Horizontal divider between consecutive results.
+        /* Horizontal divider between consecutive results. */
         & + .scroll-list-item {
-          border-top: 1px solid @base-border-color;
+          border-top: 1px solid var(--base-border-color);
         }
       }
 
@@ -419,7 +403,7 @@
     }
   }
 
-  // ----------- Kernel Monitor -------------
+  /* ----------- Kernel Monitor ------------- */
 
   .kernel-monitor-wrapper {
     overflow-y: auto;
@@ -428,7 +412,7 @@
     outline: none;
 
     .kernel-monitor-row.selected > td {
-      background-color: fade(@text-color-info, 25%);
+      background-color: rgb(from var(--text-color-info) r g b / 0.25);
     }
 
     .kernel-monitor-table {
@@ -438,7 +422,7 @@
         position: sticky;
         top: 0;
         z-index: 3;
-        background-color: @background-color-highlight;
+        background-color: var(--background-color-highlight);
       }
 
       border: unset;
@@ -446,7 +430,7 @@
       th,
       td {
         padding: 0.3em 0.5em;
-        border: 1px solid @base-border-color;
+        border: 1px solid var(--base-border-color);
         border-top: 1px;
 
         p {
@@ -476,7 +460,7 @@
         }
 
         .icon:hover {
-          color: @text-color-error;
+          color: var(--text-color-error);
         }
       }
 
@@ -487,7 +471,7 @@
     }
   }
 
-  // -------------- Watches -----------------
+  /* -------------- Watches ----------------- */
 
   .watch-sidebar {
     overflow-y: auto;
@@ -495,45 +479,45 @@
 
     .watch-view {
       margin-top: 10px;
-      border: 1px solid @base-border-color;
+      border: 1px solid var(--base-border-color);
       border-radius: 3px;
       overflow: hidden;
 
       .watch-toolbar {
         display: flex;
-        background-color: @tool-panel-background-color;
+        background-color: var(--tool-panel-background-color);
         padding: 4px;
         gap: 4px;
 
-        // Standard styleguide buttons; let the theme own hover/active/disabled.
+        /* Standard styleguide buttons; let the theme own hover/active/disabled. */
         .btn {
           flex-shrink: 0;
         }
 
-        // Push the remove button to the trailing edge of the toolbar.
+        /* Push the remove button to the trailing edge of the toolbar. */
         .watch-remove-btn {
           margin-left: auto;
         }
       }
 
       .watch-editor-container {
-        padding: (@component-padding / 2);
+        padding: calc(var(--component-padding) / 2);
 
-        // Bordered, rounded input that accents on focus, matching the
-        // claude-chat commit/prompt editor.
+        /* Bordered, rounded input that accents on focus, matching the
+           claude-chat commit/prompt editor. */
         .watch-input {
-          padding: (@component-padding / 2);
-          font-size: @font-size;
+          padding: calc(var(--component-padding) / 2);
+          font-size: var(--font-size);
           min-height: 2.5em;
           max-height: 10em;
           overflow-y: auto;
-          border: 1px solid @base-border-color;
-          border-radius: @component-border-radius;
-          background-color: @syntax-background-color;
+          border: 1px solid var(--base-border-color);
+          border-radius: var(--component-border-radius);
+          background-color: var(--syntax-background-color);
           transition: border-color 0.15s ease;
 
           &.is-focused {
-            border-color: @accent-color;
+            border-color: var(--hydrogen-accent-color);
           }
 
           .cursor-line {
@@ -569,7 +553,7 @@
     }
   }
 
-  // -------------- Autocomplete-Plus inside Watches -----------------
+  /* -------------- Autocomplete-Plus inside Watches ----------------- */
 
   .autocomplete-plus {
     img {
@@ -578,25 +562,25 @@
     }
   }
 
-  // -------------- Input view -----------------
+  /* -------------- Input view ----------------- */
 
   &.input-view {
     .label {
-      padding-bottom: @component-padding;
+      padding-bottom: var(--component-padding);
     }
 
     &.password {
-      // Mask password input - target the actual text spans
+      /* Mask password input - target the actual text spans */
       .line span {
         -webkit-text-security: disc;
       }
     }
   }
 
-  // -------------- Inspector view -----------------
+  /* -------------- Inspector view ----------------- */
 
   &.inspector {
-    padding: @component-padding;
+    padding: var(--component-padding);
     overflow: hidden;
     outline: none;
     display: flex;
@@ -621,18 +605,18 @@
         min-width: 0;
 
         .inspector-expression {
-          padding: (@component-padding / 2);
-          font-size: @font-size;
+          padding: calc(var(--component-padding) / 2);
+          font-size: var(--font-size);
           min-height: 2.5em;
           max-height: 10em;
           overflow-y: auto;
-          border: 1px solid @base-border-color;
-          border-radius: @component-border-radius;
-          background-color: @syntax-background-color;
+          border: 1px solid var(--base-border-color);
+          border-radius: var(--component-border-radius);
+          background-color: var(--syntax-background-color);
           transition: border-color 0.15s ease;
 
           &.is-focused {
-            border-color: @accent-color;
+            border-color: var(--hydrogen-accent-color);
           }
 
           .cursor-line {
@@ -652,15 +636,11 @@
     .inspector-message {
       padding: 1em 0.5em;
       text-align: center;
-      color: @text-color-subtle;
+      color: var(--text-color-subtle);
     }
-
-    // span[style] {
-    //   color: @text-color-info !important;
-    // }
   }
 
-  // -------------- Variable Explorer -----------------
+  /* -------------- Variable Explorer ----------------- */
 
   .variable-explorer {
     height: 100%;
@@ -677,7 +657,7 @@
         }
 
         atom-text-editor {
-          font-size: @font-size;
+          font-size: var(--font-size);
         }
       }
 
@@ -703,7 +683,7 @@
       overflow-y: auto;
       overflow-x: hidden;
       cursor: default;
-      height: calc(100% - 80px); // Adjust for controls height
+      height: calc(100% - 80px); /* Adjust for controls height */
 
       .variable-table {
         width: 100%;
@@ -711,8 +691,8 @@
         > thead {
           position: sticky;
           top: 0;
-          z-index: 3t;
-          background-color: @background-color-highlight;
+          z-index: 3;
+          background-color: var(--background-color-highlight);
         }
 
         border: unset;
@@ -720,7 +700,7 @@
         th,
         td {
           padding: 0.3em 0.5em;
-          border: 1px solid @base-border-color;
+          border: 1px solid var(--base-border-color);
           border-top: 1px;
 
           p {
@@ -739,7 +719,7 @@
 
         .variable-type {
           font-style: italic;
-          color: @text-color-subtle;
+          color: var(--text-color-subtle);
         }
       }
     }
@@ -766,20 +746,20 @@
           flex: 1 1 auto;
           min-width: 0;
 
-          // Bordered, rounded input that accents on focus, matching the watch editor.
+          /* Bordered, rounded input that accents on focus, matching the watch editor. */
           .data-explorer-expression {
-            padding: (@component-padding / 2);
-            font-size: @font-size;
+            padding: calc(var(--component-padding) / 2);
+            font-size: var(--font-size);
             min-height: 2.5em;
             max-height: 10em;
             overflow-y: auto;
-            border: 1px solid @base-border-color;
-            border-radius: @component-border-radius;
-            background-color: @syntax-background-color;
+            border: 1px solid var(--base-border-color);
+            border-radius: var(--component-border-radius);
+            background-color: var(--syntax-background-color);
             transition: border-color 0.15s ease;
 
             &.is-focused {
-              border-color: @accent-color;
+              border-color: var(--hydrogen-accent-color);
             }
 
             .cursor-line {
@@ -793,8 +773,8 @@
         }
       }
 
-      // View toolbar, breadcrumb and axis controls share a row, wrapping onto
-      // further lines when there isn't enough width.
+      /* View toolbar, breadcrumb and axis controls share a row, wrapping onto
+         further lines when there isn't enough width. */
       .data-explorer-toolbar-row {
         display: flex;
         flex-wrap: wrap;
@@ -810,12 +790,12 @@
           min-width: 180px;
 
           .data-explorer-object-type {
-            color: @text-color-info;
+            color: var(--text-color-info);
             white-space: nowrap;
           }
 
           .data-explorer-object-repr {
-            color: @text-color-subtle;
+            color: var(--text-color-subtle);
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -828,8 +808,8 @@
         flex: 0 0 auto;
       }
 
-      // Drill-down trail shown when navigating into nested structures. Lives
-      // inline in the toolbar row.
+      /* Drill-down trail shown when navigating into nested structures. Lives
+         inline in the toolbar row. */
       .data-explorer-breadcrumb {
         display: flex;
         flex-wrap: wrap;
@@ -838,15 +818,15 @@
         font-size: 0.9em;
 
         .data-explorer-breadcrumb-sep {
-          color: @text-color-subtle;
+          color: var(--text-color-subtle);
         }
 
         .data-explorer-breadcrumb-item {
           border: none;
           background: transparent;
           padding: 1px 4px;
-          border-radius: @component-border-radius;
-          color: @accent-color;
+          border-radius: var(--component-border-radius);
+          color: var(--hydrogen-accent-color);
           cursor: pointer;
           font-family: inherit;
           max-width: 22em;
@@ -855,24 +835,24 @@
           white-space: nowrap;
 
           &:hover:not(:disabled) {
-            background-color: @background-color-highlight;
+            background-color: var(--background-color-highlight);
           }
 
           &:disabled {
-            color: @text-color;
+            color: var(--text-color);
             cursor: default;
           }
         }
       }
 
-      // Plot axis controls; wrap along with the rest of the toolbar.
+      /* Plot axis controls; wrap along with the rest of the toolbar. */
       .data-explorer-plot-controls {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         gap: 6px 10px;
 
-        // Each control is fully inline: label, −/+ buttons, then the dropdown.
+        /* Each control is fully inline: label, −/+ buttons, then the dropdown. */
         .data-explorer-control {
           display: flex;
           flex-direction: row;
@@ -881,12 +861,12 @@
           gap: 6px;
 
           > span {
-            color: @text-color-subtle;
+            color: var(--text-color-subtle);
             font-size: 0.9em;
           }
 
-          // −/+ buttons and the dropdown joined into one group with shared
-          // borders and only the outer corners rounded.
+          /* −/+ buttons and the dropdown joined into one group with shared
+             borders and only the outer corners rounded. */
           .data-explorer-axis-group {
             display: inline-flex;
             align-items: stretch;
@@ -901,16 +881,16 @@
             }
 
             > :first-child {
-              border-top-left-radius: @component-border-radius;
-              border-bottom-left-radius: @component-border-radius;
+              border-top-left-radius: var(--component-border-radius);
+              border-bottom-left-radius: var(--component-border-radius);
             }
 
             > :last-child {
-              border-top-right-radius: @component-border-radius;
-              border-bottom-right-radius: @component-border-radius;
+              border-top-right-radius: var(--component-border-radius);
+              border-bottom-right-radius: var(--component-border-radius);
             }
 
-            // Keep the focused/hovered element's border above its neighbours.
+            /* Keep the focused/hovered element's border above its neighbours. */
             .btn:hover,
             .btn:focus,
             .input-select:focus {
@@ -943,8 +923,8 @@
       outline: none;
     }
 
-    // Grid stays mounted so switching views doesn't rebuild it; hidden when
-    // another view is active.
+    /* Grid stays mounted so switching views doesn't rebuild it; hidden when
+       another view is active. */
     .data-explorer-grid-view {
       flex: 1 1 auto;
       display: flex;
@@ -960,19 +940,19 @@
       flex: 0 0 auto;
       padding: 1em 0.5em;
       text-align: center;
-      color: @text-color-subtle;
+      color: var(--text-color-subtle);
 
       > div {
         margin-bottom: 0.25em;
       }
     }
 
-    // Canvas-rendered grid. The whole grid is one <canvas> on its own
-    // compositing layer, so focusing/blurring the pane can't trigger the
-    // cell-by-cell re-raster a sticky HTML table suffers. Native scrolling is
-    // kept via an absolute sizer + a sticky canvas pinned over the viewport.
-    // The custom properties below are read by the canvas renderer so it matches
-    // the active theme.
+    /* Canvas-rendered grid. The whole grid is one <canvas> on its own
+       compositing layer, so focusing/blurring the pane can't trigger the
+       cell-by-cell re-raster a sticky HTML table suffers. Native scrolling is
+       kept via an absolute sizer + a sticky canvas pinned over the viewport.
+       The custom properties below are read by the canvas renderer so it matches
+       the active theme. */
     .data-explorer-canvas-wrap {
       flex: 1 1 auto;
       position: relative;
@@ -981,21 +961,21 @@
       outline: none;
       user-select: none;
       cursor: default;
-      // Read by the canvas renderer (getComputedStyle().fontFamily) so the grid
-      // matches the editor font.
+      /* Read by the canvas renderer (getComputedStyle().fontFamily) so the grid
+         matches the editor font. */
       font-family: var(--editor-font-family);
 
-      --de-grid-text: @text-color;
-      --de-grid-muted: @text-color-subtle;
-      --de-grid-border: fade(@base-border-color, 35%);
-      --de-grid-header-bg: @background-color-highlight;
-      --de-grid-selection: fade(@text-color-info, 25%);
-      --de-grid-flash: fade(@text-color-info, 35%);
-      --de-grid-header-selection: fade(@text-color-info, 10%);
-      // Match the text-editor find highlight colours (search-panel uses these
-      // same syntax variables for .find-result / .current-result).
-      --de-grid-search: fade(@syntax-result-marker-color, 30%);
-      --de-grid-search-current: fade(@syntax-result-marker-color-selected, 55%);
+      --de-grid-text: var(--text-color);
+      --de-grid-muted: var(--text-color-subtle);
+      --de-grid-border: rgb(from var(--base-border-color) r g b / 0.35);
+      --de-grid-header-bg: var(--background-color-highlight);
+      --de-grid-selection: rgb(from var(--text-color-info) r g b / 0.25);
+      --de-grid-flash: rgb(from var(--text-color-info) r g b / 0.35);
+      --de-grid-header-selection: rgb(from var(--text-color-info) r g b / 0.1);
+      /* Match the text-editor find highlight colours (search-panel uses these
+         same syntax variables for .find-result / .current-result). */
+      --de-grid-search: rgb(from var(--syntax-result-marker-color) r g b / 0.3);
+      --de-grid-search-current: rgb(from var(--syntax-result-marker-color-selected) r g b / 0.55);
     }
 
     .data-explorer-canvas-sizer {
@@ -1019,65 +999,65 @@
 
       .data-explorer-table {
         width: 100%;
-        // Separate borders with no spacing so each cell owns a single border.
+        /* Separate borders with no spacing so each cell owns a single border. */
         border-collapse: separate;
         border-spacing: 0;
 
-        @de-border: fade(@base-border-color, 35%);
+        --hydrogen-de-border: rgb(from var(--base-border-color) r g b / 0.35);
 
         th,
         td {
           padding: 0.3em 0.5em;
-          border-right: 1px solid @de-border;
-          border-bottom: 1px solid @de-border;
+          border-right: 1px solid var(--hydrogen-de-border);
+          border-bottom: 1px solid var(--hydrogen-de-border);
           white-space: nowrap;
         }
 
-        // Outer top / left edges (other edges come from each cell's own borders).
+        /* Outer top / left edges (other edges come from each cell's own borders). */
         th:first-child,
         td:first-child {
-          border-left: 1px solid @de-border;
+          border-left: 1px solid var(--hydrogen-de-border);
         }
 
-        // Sticky header. A border on a sticky cell stops repainting when
-        // scrolled, so separators are drawn with box-shadows, which stick
-        // reliably; the top/left edges stay as normal borders.
+        /* Sticky header. A border on a sticky cell stops repainting when
+           scrolled, so separators are drawn with box-shadows, which stick
+           reliably; the top/left edges stay as normal borders. */
         > thead th {
           position: sticky;
           top: 0;
           z-index: 3;
-          background-color: @background-color-highlight;
-          border-top: 1px solid @de-border;
+          background-color: var(--background-color-highlight);
+          border-top: 1px solid var(--hydrogen-de-border);
           border-bottom: 0;
-          box-shadow: inset 0 -1px 0 @de-border;
+          box-shadow: inset 0 -1px 0 var(--hydrogen-de-border);
         }
 
-        // Sticky first (index) column. Right separator via box-shadow.
+        /* Sticky first (index) column. Right separator via box-shadow. */
         .data-explorer-index-cell {
           position: sticky;
           left: 0;
           z-index: 2;
-          color: @text-color-subtle;
-          background-color: @background-color-highlight;
+          color: var(--text-color-subtle);
+          background-color: var(--background-color-highlight);
           border-right: 0;
-          box-shadow: inset -1px 0 0 @de-border;
+          box-shadow: inset -1px 0 0 var(--hydrogen-de-border);
         }
 
-        // Top-left corner: sticky in both axes, above everything, with both the
-        // bottom and right separators.
+        /* Top-left corner: sticky in both axes, above everything, with both the
+           bottom and right separators. */
         .data-explorer-index-head {
           left: 0;
           z-index: 4;
-          color: @text-color-subtle;
-          background-color: @background-color-highlight;
+          color: var(--text-color-subtle);
+          background-color: var(--background-color-highlight);
           border-right: 0;
-          box-shadow: inset -1px -1px 0 @de-border;
+          box-shadow: inset -1px -1px 0 var(--hydrogen-de-border);
         }
 
-        // Row highlighted from a plot-point click (override the sticky cell bg).
+        /* Row highlighted from a plot-point click (override the sticky cell bg). */
         tr.data-explorer-row-selected td,
         tr.data-explorer-row-selected .data-explorer-index-cell {
-          background-color: fade(@text-color-info, 25%);
+          background-color: rgb(from var(--text-color-info) r g b / 0.25);
         }
       }
     }
@@ -1124,7 +1104,7 @@
 
   .variable-name-link {
     cursor: pointer;
-    color: @text-color-info;
+    color: var(--text-color-info);
 
     &:hover {
       text-decoration: underline;
@@ -1135,10 +1115,10 @@
     display: none;
   }
 
-  // -------------- Output Truncation -----------------
+  /* -------------- Output Truncation ----------------- */
 
   .output-truncated {
-    color: @text-color-warning;
+    color: var(--text-color-warning);
     font-style: italic;
     padding: 0.5em 0;
     font-size: 0.9em;
@@ -1153,7 +1133,7 @@
 }
 
 .hydrogen-next.inspector span[style^="color"] {
-  color: @text-color-info !important;
+  color: var(--text-color-info) !important;
 }
 
 .line.hydrogen-next-breakpoint::before {
@@ -1162,15 +1142,27 @@
   width: 100%;
   height: 1px;
   left: 0;
-  background: @syntax-wrap-guide-color;
+  background: var(--syntax-wrap-guide-color);
   opacity: 0.95;
 }
 
-// -------------- Overwrite Autocomplete-Plus style -----------------
+/* -------------- Overwrite Autocomplete-Plus style ----------------- */
 
-// @NOTE: This would pollute global style and could cause some styling issues for users
+/* @NOTE: This would pollute global style and could cause some styling issues for users */
 .autocomplete-plus {
   autocomplete-suggestion-list.select-list.popover-list .suggestion-description {
     max-width: 500px;
+  }
+}
+
+@keyframes stretchdelay {
+  0%,
+  40%,
+  100% {
+    transform: scaleY(0.32);
+  }
+
+  20% {
+    transform: scaleY(0.8);
   }
 }
