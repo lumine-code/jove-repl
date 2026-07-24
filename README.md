@@ -1,94 +1,84 @@
-# hydrogen-next
+# hydrogen
 
 Run code interactively with Jupyter kernels. Supports Python, R, JavaScript, and other languages with rich output including plots, images, HTML, and LaTeX.
 
-![demo](https://github.com/lumine-code/hydrogen-next/blob/master/assets/demo.gif?raw=true)
-
 ## Features
 
-- **Interactive execution**: Run lines, selections, or code blocks with inline results.
-- **Rich media output**: Displays plots, images, video, HTML, LaTeX, and more. Ctrl+Click to open images in the image-editor package.
-- **Watch expressions**: Auto-run and track variables.
-- **Kernel completions**: Autocomplete powered by the running kernel.
-- **Code introspection**: Inline inspection of objects from the kernel.
-- **Shared namespace**: One kernel per language across files.
-- **Smart code detection**: Intelligently detects Python blocks, brackets, and folds.
-- **Variables**: Browse Python variables in a dedicated panel.
-- **Data explorer**: Inspect DataFrames, arrays, lists, dicts, and objects in a grid, with charts and summaries. Drill into rows holding a nested structure with <kbd>Enter</kbd> or a double-click, and climb back out with <kbd>Backspace</kbd> or the breadcrumb. Searchable with the search-panel package: matching cells are highlighted and Find Next/Previous navigates between them.
-- **Exec panel**: Command history with re-execution support.
-- **Multi-cursor support**: Run with multiple cursors and selections.
-- **Custom connections**: Connect to remote kernels (e.g., Docker).
-- **Navigation panel**: Cell markers via the navigation-panel package.
-- **Scrollmap**: Cell markers via the scrollmap package.
-- **Jupyter notebook support**: When the jupyter-next package is installed, the same run/interrupt/restart/shutdown commands also drive cells in `.ipynb` notebooks via the `hydrogen-adapter` service. Output, execution count, and timing are routed back to each notebook cell.
-- **AI integration**: Attach code input and output to the claude-chat package for AI-assisted analysis.
-- **Jupyter console launcher**: Open a Jupyter console attached to the active kernel in an embedded [terminal](https://github.com/lumine-code/terminal) pane or a system terminal via the terminal-spawn package.
+- **Interactive execution**: run lines, selections, or automatically detected code blocks with inline results, multiple cursors, and smart Python/bracket/fold detection.
+- **Rich media output**: renders plots, images, video, HTML, LaTeX, and interactive Plotly and Vega charts inline.
+- **Kernel intelligence**: autocomplete, object introspection, and a shared namespace with one kernel per language across files.
+- **Watches and variables**: auto-runs watch expressions and browses kernel variables in dedicated panels.
+- **Data explorer**: inspects dataframes, arrays, and nested objects in a searchable grid with charts, drill-down, and breadcrumb navigation.
+- **Kernel management**: starts local kernels, connects to remote gateways, and monitors or controls kernels from the kernel monitor.
+- **Notebook support**: imports and exports `.ipynb` notebooks and drives external notebook cells through the `hydrogen-adapter` service.
+- **Jupyter console**: attaches a console to the active kernel in an embedded terminal, a system terminal, or via a copied command.
+- **Extensible services**: provides and consumes services for autocomplete, data-explorer search, breakpoints, and third-party integrations.
 
 ## Installation
 
-To install `hydrogen-next`, clone this repository into your Lumine packages directory (`~/.lumine/packages/hydrogen-next`) and restart Lumine. If it is listed in your configured package sources, it can also be installed from the Install pane of the Lumine settings.
+To install `hydrogen`, clone this repository into your Lumine packages directory (`~/.lumine/packages/hydrogen`) and restart Lumine. If it is listed in your configured package sources, it can also be installed from the Install pane of the Lumine settings.
 
 ## Commands
 
 Commands available in `atom-text-editor:not([mini])`:
 
-- `hydrogen-next:run`: run code at cursor,
-- `hydrogen-next:run-and-move-down`: run and move to next block,
-- `hydrogen-next:run-cell`: run current cell,
-- `hydrogen-next:run-cell-and-move-down`: run cell and move to next,
-- `hydrogen-next:run-all`: run all code in editor,
-- `hydrogen-next:run-all-above`: run all code above cursor,
-- `hydrogen-next:run-all-inline`: run all code inline, one statement at a time,
-- `hydrogen-next:run-all-above-inline`: run all code above cursor inline,
-- `hydrogen-next:run-all-below-inline`: run all code below cursor inline,
-- `hydrogen-next:recalculate-all`: clear results, restart kernel, run all,
-- `hydrogen-next:recalculate-all-above`: clear results, restart kernel, run all above,
-- `hydrogen-next:recalculate-all-inline`: clear results, restart kernel, run all inline,
-- `hydrogen-next:recalculate-all-above-inline`: clear results, restart kernel, run all above inline,
-- `hydrogen-next:clear-results`: clear output results,
-- `hydrogen-next:clear-and-restart`: clear results and restart kernel,
-- `hydrogen-next:clear-and-center`: clear results and center cursor,
-- `hydrogen-next:toggle-output-area`: toggle output area mode,
-- `hydrogen-next:start-local-kernel`: start a local kernel,
-- `hydrogen-next:connect-to-remote-kernel`: connect to a remote kernel via gateway,
-- `hydrogen-next:connect-to-existing-kernel`: connect to an existing kernel,
-- `hydrogen-next:interrupt-kernel`: interrupt running execution,
-- `hydrogen-next:restart-kernel`: restart the kernel,
-- `hydrogen-next:shutdown-kernel`: shutdown the kernel,
-- `hydrogen-next:rename-remote-session`: rename remote session,
-- `hydrogen-next:disconnect-remote-session`: disconnect remote session,
-- `hydrogen-next:update-kernels`: refresh available kernels list,
-- `hydrogen-next:add-watch`: add watch expression,
-- `hydrogen-next:remove-watch`: remove focused watch expression when focus is in a watch editor,
-- `hydrogen-next:toggle-watches`: toggle watches panel,
-- `hydrogen-next:toggle-variable-explorer`: toggle variables panel,
-- `hydrogen-next:open-data-explorer`: load the selected expression (or word under cursor) into the data explorer,
-- `hydrogen-next:go-to-next-cell`: jump to next cell,
-- `hydrogen-next:go-to-previous-cell`: jump to previous cell,
-- `hydrogen-next:select-cell`: select current cell,
-- `hydrogen-next:select-previous-cell`: extend cell selection up,
-- `hydrogen-next:select-next-cell`: extend cell selection down,
-- `hydrogen-next:move-cell-up`: move cell up,
-- `hydrogen-next:move-cell-down`: move cell down,
-- `hydrogen-next:fold-current-cell`: fold current cell,
-- `hydrogen-next:fold-all-but-current-cell`: fold all cells except current,
-- `hydrogen-next:export-notebook`: export editor content to `.ipynb`.
+- `hydrogen:run`: run code at cursor,
+- `hydrogen:run-and-move-down`: run and move to next block,
+- `hydrogen:run-cell`: run current cell,
+- `hydrogen:run-cell-and-move-down`: run cell and move to next,
+- `hydrogen:run-all`: run all code in editor,
+- `hydrogen:run-all-above`: run all code above cursor,
+- `hydrogen:run-all-inline`: run all code inline, one statement at a time,
+- `hydrogen:run-all-above-inline`: run all code above cursor inline,
+- `hydrogen:run-all-below-inline`: run all code below cursor inline,
+- `hydrogen:recalculate-all`: clear results, restart kernel, run all,
+- `hydrogen:recalculate-all-above`: clear results, restart kernel, run all above,
+- `hydrogen:recalculate-all-inline`: clear results, restart kernel, run all inline,
+- `hydrogen:recalculate-all-above-inline`: clear results, restart kernel, run all above inline,
+- `hydrogen:clear-results`: clear output results,
+- `hydrogen:clear-and-restart`: clear results and restart kernel,
+- `hydrogen:clear-and-center`: clear results and center cursor,
+- `hydrogen:toggle-output-area`: toggle output area mode,
+- `hydrogen:start-local-kernel`: start a local kernel,
+- `hydrogen:connect-to-remote-kernel`: connect to a remote kernel via gateway,
+- `hydrogen:connect-to-existing-kernel`: connect to an existing kernel,
+- `hydrogen:interrupt-kernel`: interrupt running execution,
+- `hydrogen:restart-kernel`: restart the kernel,
+- `hydrogen:shutdown-kernel`: shutdown the kernel,
+- `hydrogen:rename-remote-session`: rename remote session,
+- `hydrogen:disconnect-remote-session`: disconnect remote session,
+- `hydrogen:update-kernels`: refresh available kernels list,
+- `hydrogen:add-watch`: add watch expression,
+- `hydrogen:remove-watch`: remove focused watch expression when focus is in a watch editor,
+- `hydrogen:toggle-watches`: toggle watches panel,
+- `hydrogen:toggle-variable-explorer`: toggle variables panel,
+- `hydrogen:open-data-explorer`: load the selected expression (or word under cursor) into the data explorer,
+- `hydrogen:go-to-next-cell`: jump to next cell,
+- `hydrogen:go-to-previous-cell`: jump to previous cell,
+- `hydrogen:select-cell`: select current cell,
+- `hydrogen:select-previous-cell`: extend cell selection up,
+- `hydrogen:select-next-cell`: extend cell selection down,
+- `hydrogen:move-cell-up`: move cell up,
+- `hydrogen:move-cell-down`: move cell down,
+- `hydrogen:fold-current-cell`: fold current cell,
+- `hydrogen:fold-all-but-current-cell`: fold all cells except current,
+- `hydrogen:export-notebook`: export editor content to `.ipynb`.
 
 Commands available in `atom-workspace`:
 
-- `hydrogen-next:import-notebook`: import a `.ipynb` notebook,
-- `hydrogen-next:open-examples`: open example files,
-- `hydrogen-next:open-gateways`: open `gateways.cson`,
-- `hydrogen-next:shutdown-all-kernels`: shutdown all running kernels,
-- `hydrogen-next:toggle-kernel-monitor-focus`: toggle focus to the kernel monitor panel (returns focus to the editor when already focused). The highlighted row follows the kernel of the active editor; navigate with <kbd>up</kbd> / <kbd>down</kbd>, open the selected kernel's files with <kbd>Enter</kbd>, and act on it with <kbd>i</kbd> (interrupt), <kbd>r</kbd> (restart), <kbd>s</kbd> (shutdown),
-- `hydrogen-next:toggle-exec-panel`: toggle exec panel,
-- `hydrogen-next:toggle-inspector-focus`: show inspector pane,
-- `hydrogen-next:inspect-under-cursor`: inspect the expression under the cursor without moving focus from the editor,
-- `hydrogen-next:attach-to-claude`: attach code and output to claude-chat,
-- `hydrogen-next:debug-toggle`: toggle debug logging,
-- `hydrogen-next:open-jupyter-console`: open Jupyter console attached to active kernel in an embedded terminal pane,
-- `hydrogen-next:spawn-jupyter-console`: spawn Jupyter console attached to active kernel in a system terminal,
-- `hydrogen-next:copy-jupyter-console-command`: copy the Jupyter console command to clipboard.
+- `hydrogen:import-notebook`: import a `.ipynb` notebook,
+- `hydrogen:open-examples`: open example files,
+- `hydrogen:open-gateways`: open `gateways.json`,
+- `hydrogen:shutdown-all-kernels`: shutdown all running kernels,
+- `hydrogen:toggle-kernel-monitor-focus`: toggle focus to the kernel monitor panel (returns focus to the editor when already focused). The highlighted row follows the kernel of the active editor; navigate with <kbd>up</kbd> / <kbd>down</kbd>, open the selected kernel's files with <kbd>Enter</kbd>, and act on it with <kbd>i</kbd> (interrupt), <kbd>r</kbd> (restart), <kbd>s</kbd> (shutdown),
+- `hydrogen:toggle-exec-panel`: toggle exec panel,
+- `hydrogen:toggle-inspector-focus`: show inspector pane,
+- `hydrogen:inspect-under-cursor`: inspect the expression under the cursor without moving focus from the editor,
+- `hydrogen:attach-to-claude`: attach code and output to claude-chat,
+- `hydrogen:debug-toggle`: toggle debug logging,
+- `hydrogen:open-jupyter-console`: open Jupyter console attached to active kernel in an embedded terminal pane,
+- `hydrogen:spawn-jupyter-console`: spawn Jupyter console attached to active kernel in a system terminal,
+- `hydrogen:copy-jupyter-console-command`: copy the Jupyter console command to clipboard.
 
 ## Provided Service `search-adapter`
 
@@ -104,14 +94,14 @@ This service is provided as `search-adapter@1.0.0` through `provideSearchAdapter
 
 ## Editor kernel class
 
-While a file has a running kernel, hydrogen-next adds the `hydrogen-kernel` class to its `atom-text-editor` element. The class is added when the kernel starts, removed when it shuts down, and follows the file when it is saved or reopened. This lets you scope keymaps and styles to editors that actually have a live kernel.
+While a file has a running kernel, hydrogen adds the `hydrogen-kernel` class to its `atom-text-editor` element. The class is added when the kernel starts, removed when it shuts down, and follows the file when it is saved or reopened. This lets you scope keymaps and styles to editors that actually have a live kernel.
 
 For example, bind <kbd>Ctrl+Enter</kbd> to run code only when a kernel is running, in your `keymap.json`:
 
 ```json
 {
   "atom-text-editor.hydrogen-kernel:not([mini])": {
-    "ctrl-enter": "hydrogen-next:run"
+    "ctrl-enter": "hydrogen:run"
   }
 }
 ```
@@ -126,7 +116,7 @@ atom-text-editor.hydrogen-kernel {
 
 ## Kernel installation
 
-hydrogen-next requires Jupyter kernels to be installed on your system. A kernel is a language-specific backend that executes your code. You can install kernels for many languages. See the [full list of available kernels](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels) on the Jupyter wiki.
+hydrogen requires Jupyter kernels to be installed on your system. A kernel is a language-specific backend that executes your code. You can install kernels for many languages. See the [full list of available kernels](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels) on the Jupyter wiki.
 
 ### Python (IPython)
 
@@ -225,10 +215,10 @@ In the kernel picker, press **Ctrl+Enter** to insert the selected kernel as a ma
 
 ## Kernel gateways
 
-Connect to remote or local Jupyter servers by configuring kernel gateways in `<config-dir>/gateways.cson`.
-Use the `Hydrogen Next: Open Gateways Config` command (`hydrogen-next:open-gateways`) to open this file in Lumine.
+Connect to remote or local Jupyter servers by configuring kernel gateways in `<config-dir>/gateways.json`.
+Use the `Hydrogen: Open Gateways Config` command (`hydrogen:open-gateways`) to open this file in Lumine.
 
-If `gateways.cson` does not exist yet, hydrogen-next creates it automatically. Existing gateway JSON from the old `hydrogen-next.gateways` setting is copied into the file the first time it is opened or used.
+If `gateways.json` does not exist yet, hydrogen creates it automatically the first time it is opened or used.
 
 Example of local jupyter server:
 
@@ -242,22 +232,23 @@ pip install jupyter-server
 jupyter server --IdentityProvider.token='test123'
 ```
 
-In `gateways.cson`, add gateway entries as an array:
+In `gateways.json`, add gateway entries as an array:
 
-```cson
+```json
 [
   {
-    name: "Local Jupyter"
-    options:
-      baseUrl: "http://localhost:8888"
-      token: "test123"
+    "name": "Local Jupyter",
+    "options": {
+      "baseUrl": "http://localhost:8888",
+      "token": "test123"
+    }
   }
 ]
 ```
 
-Use the `Hydrogen Next: Connect to Remote Kernel` command (`hydrogen-next:connect-to-remote-kernel`) to select a gateway and kernel.
+Use the `Hydrogen: Connect to Remote Kernel` command (`hydrogen:connect-to-remote-kernel`) to select a gateway and kernel.
 
-If `token` is configured, hydrogen-next uses it automatically and does not prompt for authentication. Without a configured token, after selecting a gateway you'll be prompted to choose an authentication method:
+If `token` is configured, hydrogen uses it automatically and does not prompt for authentication. Without a configured token, after selecting a gateway you'll be prompted to choose an authentication method:
 
 - **No credentials**: for servers without authentication
 - **Authenticate with a token**: prompts for the server token
@@ -265,19 +256,20 @@ If `token` is configured, hydrogen-next uses it automatically and does not promp
 
 If your server was started without a token, omit `token` and choose **No credentials** when prompted:
 
-```cson
+```json
 [
   {
-    name: "Local Jupyter"
-    options:
-      baseUrl: "http://localhost:8888"
+    "name": "Local Jupyter",
+    "options": {
+      "baseUrl": "http://localhost:8888"
+    }
   }
 ]
 ```
 
 ## Code block detection
 
-When you run code without a selection, hydrogen-next intelligently detects what to execute based on cursor position.
+When you run code without a selection, hydrogen intelligently detects what to execute based on cursor position.
 
 ### Priority order
 
@@ -356,9 +348,9 @@ Attach a standalone Jupyter console to the active kernel via its connection file
 
 Three commands are available:
 
-- `hydrogen-next:open-jupyter-console`: runs the console in an embedded [terminal](https://github.com/lumine-code/terminal) pane inside Lumine (requires the `terminal` package),
-- `hydrogen-next:spawn-jupyter-console`: opens the system terminal and runs the console there (requires the terminal-spawn package),
-- `hydrogen-next:copy-jupyter-console-command`: copies the resolved command to the clipboard so you can paste it anywhere (e.g. an SSH session).
+- `hydrogen:open-jupyter-console`: runs the console in an embedded [terminal](https://github.com/lumine-code/terminal) pane inside Lumine (requires the `terminal` package),
+- `hydrogen:spawn-jupyter-console`: opens the system terminal and runs the console there (requires the terminal-spawn package),
+- `hydrogen:copy-jupyter-console-command`: copies the resolved command to the clipboard so you can paste it anywhere (e.g. an SSH session).
 
 Only local kernels are supported (remote kernels have no connection file).
 
@@ -371,7 +363,7 @@ The command template is configurable via the `Jupyter console command` setting. 
 
 ## Consumed Service `hydrogen-adapter`
 
-Allows non-TextEditor pane items, such as notebooks from the jupyter-next package, to be executed through hydrogen-next commands. The adapter owns target enumeration, source retrieval, output persistence, and focus/navigation inside the external pane item.
+Allows non-TextEditor pane items, such as notebooks from the jupyter-next package, to be executed through hydrogen commands. The adapter owns target enumeration, source retrieval, output persistence, and focus/navigation inside the external pane item.
 
 External packages provide this service in `package.json`:
 
