@@ -16,7 +16,7 @@ describe("watchFile (kernel-file watcher migration)", () => {
   let dir, file, handle;
 
   beforeEach(() => {
-    dir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "hydrogen-next-watch-")));
+    dir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "hydrogen-watch-")));
     file = path.join(dir, "notebook.py");
     fs.writeFileSync(file, "print('hi')\n");
   });

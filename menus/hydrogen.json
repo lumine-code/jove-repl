@@ -1,0 +1,179 @@
+{
+  "menu": [
+    {
+      "label": "Packages",
+      "submenu": [
+        {
+          "label": "Hydrogen",
+          "submenu": [
+            {
+              "label": "Start Local Kernel",
+              "command": "hydrogen:start-local-kernel"
+            },
+            {
+              "label": "Connect to Remote Kernel",
+              "command": "hydrogen:connect-to-remote-kernel"
+            },
+            {
+              "label": "Open Gateways Config",
+              "command": "hydrogen:open-gateways"
+            },
+            {
+              "label": "Connect to Existing Kernel",
+              "command": "hydrogen:connect-to-existing-kernel"
+            },
+            {
+              "label": "Interrupt Kernel",
+              "command": "hydrogen:interrupt-kernel"
+            },
+            {
+              "label": "Restart Kernel",
+              "command": "hydrogen:restart-kernel"
+            },
+            {
+              "label": "Shutdown Kernel",
+              "command": "hydrogen:shutdown-kernel"
+            },
+            {
+              "label": "Shutdown All Kernels",
+              "command": "hydrogen:shutdown-all-kernels"
+            },
+            {
+              "label": "Open Jupyter Console",
+              "command": "hydrogen:open-jupyter-console"
+            },
+            {
+              "label": "Spawn Jupyter Console",
+              "command": "hydrogen:spawn-jupyter-console"
+            },
+            {
+              "label": "Copy Jupyter Console Command",
+              "command": "hydrogen:copy-jupyter-console-command"
+            },
+            {
+              "label": "Toggle Kernel Monitor",
+              "command": "hydrogen:toggle-kernel-monitor-focus"
+            },
+            {
+              "label": "Update Kernels",
+              "command": "hydrogen:update-kernels"
+            },
+            { "type": "separator" },
+            {
+              "label": "Run",
+              "command": "hydrogen:run"
+            },
+            {
+              "label": "Run and Move Down",
+              "command": "hydrogen:run-and-move-down"
+            },
+            {
+              "label": "Run Cell",
+              "command": "hydrogen:run-cell"
+            },
+            {
+              "label": "Run Cell and Move Down",
+              "command": "hydrogen:run-cell-and-move-down"
+            },
+            {
+              "label": "Run All",
+              "command": "hydrogen:run-all"
+            },
+            {
+              "label": "Run All Above",
+              "command": "hydrogen:run-all-above"
+            },
+            {
+              "label": "Recalculate All",
+              "command": "hydrogen:recalculate-all"
+            },
+            {
+              "label": "Recalculate All Above",
+              "command": "hydrogen:recalculate-all-above"
+            },
+            {
+              "label": "Recalculate All Inline",
+              "command": "hydrogen:recalculate-all-inline"
+            },
+            {
+              "label": "Recalculate All Above Inline",
+              "command": "hydrogen:recalculate-all-above-inline"
+            },
+            {
+              "label": "Run All Inline",
+              "command": "hydrogen:run-all-inline"
+            },
+            {
+              "label": "Run All Above Inline",
+              "command": "hydrogen:run-all-above-inline"
+            },
+            {
+              "label": "Run All Below Inline",
+              "command": "hydrogen:run-all-below-inline"
+            },
+            { "type": "separator" },
+            {
+              "label": "Clear Results",
+              "command": "hydrogen:clear-results"
+            },
+            {
+              "label": "Clear and Restart",
+              "command": "hydrogen:clear-and-restart"
+            },
+            {
+              "label": "Clear and Center",
+              "command": "hydrogen:clear-and-center"
+            },
+            { "type": "separator" },
+            {
+              "label": "Show Inspector",
+              "command": "hydrogen:toggle-inspector-focus"
+            },
+            {
+              "label": "Inspect Under Cursor",
+              "command": "hydrogen:inspect-under-cursor"
+            },
+            {
+              "label": "Toggle Output Area",
+              "command": "hydrogen:toggle-output-area"
+            },
+            {
+              "label": "Toggle Watches",
+              "command": "hydrogen:toggle-watches"
+            },
+            {
+              "label": "Toggle Variables",
+              "command": "hydrogen:toggle-variable-explorer"
+            },
+            {
+              "label": "Data Explorer",
+              "command": "hydrogen:open-data-explorer"
+            },
+            { "type": "separator" },
+            {
+              "label": "Import Notebook",
+              "command": "hydrogen:import-notebook"
+            },
+            {
+              "label": "Export Notebook",
+              "command": "hydrogen:export-notebook"
+            },
+            {
+              "label": "Open Examples",
+              "command": "hydrogen:open-examples"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "context-menu": {
+    ".tree-view .file .name[data-name$=\\.ipynb]": [
+      {
+        "label": "Import Notebook",
+        "command": "hydrogen:import-notebook"
+      }
+    ]
+  }
+}
