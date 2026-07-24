@@ -9,14 +9,11 @@
      now expressed with CSS custom properties so they track the active theme's
      syntax/ui variables at runtime. */
   --jove-repl-accent-color: hsl(220, 100%, 60%);
-  /* A panel background subtly offset from the editor background. Mixing in a
-     little of the syntax text color darkens it on light themes and lightens it
-     on dark themes, matching the old `contrast(...)` selection. */
-  --jove-repl-inline-background: color-mix(
-    in srgb,
-    var(--syntax-background-color) 90%,
-    var(--syntax-text-color)
-  );
+  /* A panel background a step lighter than the editor background. The old Less
+     `contrast(...)` selected a lightened syntax background (near-white on light
+     themes, slightly lifted on dark themes); lighten the background directly so
+     the output box stays light instead of being tinted toward the text color. */
+  --jove-repl-inline-background: hsl(from var(--syntax-background-color) h s calc(l + 10));
   --jove-repl-inline-color: hsl(from var(--syntax-text-color) h s calc(l + 10));
   --jove-repl-error-color: color-mix(in srgb, var(--syntax-text-color), red);
 
