@@ -1,6 +1,6 @@
 # on Windows: open the shell as admin then: `pip install plotly nbformat`
 # on Unix: `sudo pip install plotly nbformat`
-# You might need to reload Pulsar after installation of dependencies if they are not found
+# You might need to reload Lumine after installation of dependencies if they are not found
 
 # 3D Surface plot example using plotly.graph_objects
 import plotly.graph_objects as go

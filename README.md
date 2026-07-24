@@ -2,31 +2,31 @@
 
 Run code interactively with Jupyter kernels. Supports Python, R, JavaScript, and other languages with rich output including plots, images, HTML, and LaTeX.
 
-![demo](https://github.com/asiloisad/pulsar-hydrogen-next/blob/master/assets/demo.gif?raw=true)
+![demo](https://github.com/lumine-code/hydrogen-next/blob/master/assets/demo.gif?raw=true)
 
 ## Features
 
 - **Interactive execution**: Run lines, selections, or code blocks with inline results.
-- **Rich media output**: Displays plots, images, video, HTML, LaTeX, and more. Ctrl+Click to open images in [image-editor](https://github.com/asiloisad/pulsar-image-editor).
+- **Rich media output**: Displays plots, images, video, HTML, LaTeX, and more. Ctrl+Click to open images in the image-editor package.
 - **Watch expressions**: Auto-run and track variables.
 - **Kernel completions**: Autocomplete powered by the running kernel.
 - **Code introspection**: Inline inspection of objects from the kernel.
 - **Shared namespace**: One kernel per language across files.
 - **Smart code detection**: Intelligently detects Python blocks, brackets, and folds.
 - **Variables**: Browse Python variables in a dedicated panel.
-- **Data explorer**: Inspect DataFrames, arrays, lists, dicts, and objects in a grid, with charts and summaries. Drill into rows holding a nested structure with <kbd>Enter</kbd> or a double-click, and climb back out with <kbd>Backspace</kbd> or the breadcrumb. Searchable with [search-panel](https://github.com/asiloisad/pulsar-search-panel): matching cells are highlighted and Find Next/Previous navigates between them.
+- **Data explorer**: Inspect DataFrames, arrays, lists, dicts, and objects in a grid, with charts and summaries. Drill into rows holding a nested structure with <kbd>Enter</kbd> or a double-click, and climb back out with <kbd>Backspace</kbd> or the breadcrumb. Searchable with the search-panel package: matching cells are highlighted and Find Next/Previous navigates between them.
 - **Exec panel**: Command history with re-execution support.
 - **Multi-cursor support**: Run with multiple cursors and selections.
 - **Custom connections**: Connect to remote kernels (e.g., Docker).
-- **Navigation panel**: Cell markers via [navigation-panel](https://github.com/asiloisad/pulsar-navigation-panel).
-- **Scrollmap**: Cell markers via [scrollmap](https://github.com/asiloisad/pulsar-scrollmap).
-- **Jupyter notebook support**: When [jupyter-next](https://github.com/asiloisad/pulsar-jupyter-next) is installed, the same run/interrupt/restart/shutdown commands also drive cells in `.ipynb` notebooks via the `hydrogen-adapter` service. Output, execution count, and timing are routed back to each notebook cell.
-- **AI integration**: Attach code input and output to [claude-chat](https://github.com/asiloisad/pulsar-claude-chat) for AI-assisted analysis.
-- **Jupyter console launcher**: Open a Jupyter console attached to the active kernel in an embedded [terminal](https://github.com/pulsar-edit/terminal) pane or a system terminal via [terminal-spawn](https://github.com/asiloisad/pulsar-terminal-spawn).
+- **Navigation panel**: Cell markers via the navigation-panel package.
+- **Scrollmap**: Cell markers via the scrollmap package.
+- **Jupyter notebook support**: When the jupyter-next package is installed, the same run/interrupt/restart/shutdown commands also drive cells in `.ipynb` notebooks via the `hydrogen-adapter` service. Output, execution count, and timing are routed back to each notebook cell.
+- **AI integration**: Attach code input and output to the claude-chat package for AI-assisted analysis.
+- **Jupyter console launcher**: Open a Jupyter console attached to the active kernel in an embedded [terminal](https://github.com/lumine-code/terminal) pane or a system terminal via the terminal-spawn package.
 
 ## Installation
 
-To install `hydrogen-next` search for [hydrogen-next](https://web.pulsar-edit.dev/packages/hydrogen-next) in the Install pane of the Pulsar settings or run `ppm install hydrogen-next`. Alternatively, you can run `ppm install asiloisad/pulsar-hydrogen-next` to install a package directly from the GitHub repository.
+To install `hydrogen-next`, clone this repository into your Lumine packages directory (`~/.lumine/packages/hydrogen-next`) and restart Lumine. If it is listed in your configured package sources, it can also be installed from the Install pane of the Lumine settings.
 
 ## Commands
 
@@ -92,7 +92,7 @@ Commands available in `atom-workspace`:
 
 ## Provided Service `search-adapter`
 
-Allows [search-panel](https://github.com/asiloisad/pulsar-search-panel) to search the active Data Explorer pane through the normal buffer find workflow:
+Allows the search-panel package to search the active Data Explorer pane through the normal buffer find workflow:
 
 - `search-panel:show`, `search-panel:find-next`, and `search-panel:find-previous` search the visible Data Explorer grid instead of the active text editor while the Data Explorer pane is active.
 - Matching cells are highlighted in the canvas grid. The current match uses a stronger highlight and is scrolled into view.
@@ -226,7 +226,7 @@ In the kernel picker, press **Ctrl+Enter** to insert the selected kernel as a ma
 ## Kernel gateways
 
 Connect to remote or local Jupyter servers by configuring kernel gateways in `<config-dir>/gateways.cson`.
-Use the `Hydrogen Next: Open Gateways Config` command (`hydrogen-next:open-gateways`) to open this file in Pulsar.
+Use the `Hydrogen Next: Open Gateways Config` command (`hydrogen-next:open-gateways`) to open this file in Lumine.
 
 If `gateways.cson` does not exist yet, hydrogen-next creates it automatically. Existing gateway JSON from the old `hydrogen-next.gateways` setting is copied into the file the first time it is opened or used.
 
@@ -348,7 +348,7 @@ Click on output results to interact with them:
 | **Click**                           | Copy to clipboard (image or text)            |
 | **Ctrl+Click** (Cmd+Click on macOS) | Open in editor (images open in image-editor) |
 
-Images opened via Ctrl+Click are displayed in the [image-editor](https://github.com/asiloisad/pulsar-image-editor) package with full editing capabilities (zoom, pan, filters, save-as).
+Images opened via Ctrl+Click are displayed in the image-editor package with full editing capabilities (zoom, pan, filters, save-as).
 
 ## Jupyter console launcher
 
@@ -356,8 +356,8 @@ Attach a standalone Jupyter console to the active kernel via its connection file
 
 Three commands are available:
 
-- `hydrogen-next:open-jupyter-console`: runs the console in an embedded [terminal](https://github.com/pulsar-edit/terminal) pane inside Pulsar (requires the `terminal` package),
-- `hydrogen-next:spawn-jupyter-console`: opens the system terminal and runs the console there (requires the [terminal-spawn](https://github.com/asiloisad/pulsar-terminal-spawn) package),
+- `hydrogen-next:open-jupyter-console`: runs the console in an embedded [terminal](https://github.com/lumine-code/terminal) pane inside Lumine (requires the `terminal` package),
+- `hydrogen-next:spawn-jupyter-console`: opens the system terminal and runs the console there (requires the terminal-spawn package),
 - `hydrogen-next:copy-jupyter-console-command`: copies the resolved command to the clipboard so you can paste it anywhere (e.g. an SSH session).
 
 Only local kernels are supported (remote kernels have no connection file).
@@ -371,7 +371,7 @@ The command template is configurable via the `Jupyter console command` setting. 
 
 ## Consumed Service `hydrogen-adapter`
 
-Allows non-TextEditor pane items, such as notebooks from [jupyter-next](https://github.com/asiloisad/pulsar-jupyter-next), to be executed through hydrogen-next commands. The adapter owns target enumeration, source retrieval, output persistence, and focus/navigation inside the external pane item.
+Allows non-TextEditor pane items, such as notebooks from the jupyter-next package, to be executed through hydrogen-next commands. The adapter owns target enumeration, source retrieval, output persistence, and focus/navigation inside the external pane item.
 
 External packages provide this service in `package.json`:
 
@@ -535,7 +535,7 @@ async function runCode(hydrogen) {
 
 ## Provided Service `autocomplete.provider`
 
-Provides kernel-backed completions to Pulsar autocomplete consumers while a Hydrogen kernel is active for the editor. This service is provided as `autocomplete.provider@4.0.0` through `provideAutocompleteResults`.
+Provides kernel-backed completions to Lumine autocomplete consumers while a Hydrogen kernel is active for the editor. This service is provided as `autocomplete.provider@4.0.0` through `provideAutocompleteResults`.
 
 ## Provided Service `hydrogen.breakpoints`
 
