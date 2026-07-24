@@ -10,7 +10,7 @@ Run code interactively with Jupyter kernels. Supports Python, R, JavaScript, and
 - **Watches and variables**: auto-runs watch expressions and browses kernel variables in dedicated panels.
 - **Data explorer**: inspects dataframes, arrays, and nested objects in a searchable grid with charts, drill-down, and breadcrumb navigation.
 - **Kernel management**: starts local kernels, connects to remote gateways, and monitors or controls kernels from the kernel monitor.
-- **Notebook support**: imports and exports `.ipynb` notebooks and drives external notebook cells through the `hydrogen-adapter` service.
+- **Notebook support**: imports and exports `.ipynb` notebooks and drives external notebook cells through the `hydrogen.adapter` service.
 - **Jupyter console**: attaches a console to the active kernel in an embedded terminal, a system terminal, or via a copied command.
 - **Extensible services**: provides and consumes services for autocomplete, data-explorer search, breakpoints, and third-party integrations.
 
@@ -361,7 +361,7 @@ The command template is configurable via the `Jupyter console command` setting. 
 - `jupyter console --existing {connection-file}` (uses `jupyter` from the terminal's PATH),
 - `ssh remote 'jupyter console --existing {connection-file}'`.
 
-## Consumed Service `hydrogen-adapter`
+## Consumed Service `hydrogen.adapter`
 
 Allows non-TextEditor pane items, such as notebooks from the jupyter-next package, to be executed through hydrogen commands. The adapter owns target enumeration, source retrieval, output persistence, and focus/navigation inside the external pane item.
 
@@ -370,7 +370,7 @@ External packages provide this service in `package.json`:
 ```json
 {
   "providedServices": {
-    "hydrogen-adapter": {
+    "hydrogen.adapter": {
       "versions": {
         "1.0.0": "provideHydrogenAdapter"
       }

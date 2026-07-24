@@ -33,7 +33,7 @@
     "format:check": "prettier --check ."
   },
   "activationHooks": [
-    "hydrogen-adapter:item-used"
+    "hydrogen.adapter:item-used"
   ],
   "activationCommands": {
     "atom-text-editor:not([mini])": [
@@ -104,7 +104,7 @@
         "^1.0.0": "consumeStatusBar"
       }
     },
-    "hydrogen-adapter": {
+    "hydrogen.adapter": {
       "versions": {
         "1.0.0": "consumeHydrogenAdapter"
       }
