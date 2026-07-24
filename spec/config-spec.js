@@ -10,11 +10,11 @@ import Config from "../lib/config";
 // The old code required `season` from the editor resourcePath (now scoped to
 // @lumine-code/season, so the bare path no longer resolves) purely to read and
 // write a CSON gateways file. Gateways are now stored as plain JSON.
-describe("hydrogen gateways config", () => {
+describe("jove-repl gateways config", () => {
   let configDir;
 
   beforeEach(() => {
-    configDir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "hydrogen-config-")));
+    configDir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "jove-repl-config-")));
     spyOn(atom, "getConfigDirPath").andReturn(configDir);
   });
 
@@ -47,14 +47,14 @@ describe("hydrogen gateways config", () => {
   it("migrates the legacy gateways string setting into gateways.json", () => {
     const legacy = [{ name: "Legacy", baseUrl: "http://example.com" }];
     spyOn(atom.config, "get").andCallFake((key) =>
-      key === "hydrogen.gateways" ? JSON.stringify(legacy) : undefined,
+      key === "jove-repl.gateways" ? JSON.stringify(legacy) : undefined,
     );
     spyOn(atom.config, "unset");
 
     Config.ensureGatewaysFile(Config.getGatewaysPath());
 
     expect(JSON.parse(fs.readFileSync(Config.getGatewaysPath(), "utf8"))).toEqual(legacy);
-    expect(atom.config.unset).toHaveBeenCalledWith("hydrogen.gateways");
+    expect(atom.config.unset).toHaveBeenCalledWith("jove-repl.gateways");
   });
 
   it("reports an error and returns the default when gateways.json is broken", () => {

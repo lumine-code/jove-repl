@@ -4,163 +4,163 @@
       "label": "Packages",
       "submenu": [
         {
-          "label": "Hydrogen",
+          "label": "Jove",
           "submenu": [
             {
               "label": "Start Local Kernel",
-              "command": "hydrogen:start-local-kernel"
+              "command": "jove-repl:start-local-kernel"
             },
             {
               "label": "Connect to Remote Kernel",
-              "command": "hydrogen:connect-to-remote-kernel"
+              "command": "jove-repl:connect-to-remote-kernel"
             },
             {
               "label": "Open Gateways Config",
-              "command": "hydrogen:open-gateways"
+              "command": "jove-repl:open-gateways"
             },
             {
               "label": "Connect to Existing Kernel",
-              "command": "hydrogen:connect-to-existing-kernel"
+              "command": "jove-repl:connect-to-existing-kernel"
             },
             {
               "label": "Interrupt Kernel",
-              "command": "hydrogen:interrupt-kernel"
+              "command": "jove-repl:interrupt-kernel"
             },
             {
               "label": "Restart Kernel",
-              "command": "hydrogen:restart-kernel"
+              "command": "jove-repl:restart-kernel"
             },
             {
               "label": "Shutdown Kernel",
-              "command": "hydrogen:shutdown-kernel"
+              "command": "jove-repl:shutdown-kernel"
             },
             {
               "label": "Shutdown All Kernels",
-              "command": "hydrogen:shutdown-all-kernels"
+              "command": "jove-repl:shutdown-all-kernels"
             },
             {
               "label": "Open Jupyter Console",
-              "command": "hydrogen:open-jupyter-console"
+              "command": "jove-repl:open-jupyter-console"
             },
             {
               "label": "Spawn Jupyter Console",
-              "command": "hydrogen:spawn-jupyter-console"
+              "command": "jove-repl:spawn-jupyter-console"
             },
             {
               "label": "Copy Jupyter Console Command",
-              "command": "hydrogen:copy-jupyter-console-command"
+              "command": "jove-repl:copy-jupyter-console-command"
             },
             {
               "label": "Toggle Kernel Monitor",
-              "command": "hydrogen:toggle-kernel-monitor-focus"
+              "command": "jove-repl:toggle-kernel-monitor-focus"
             },
             {
               "label": "Update Kernels",
-              "command": "hydrogen:update-kernels"
+              "command": "jove-repl:update-kernels"
             },
             { "type": "separator" },
             {
               "label": "Run",
-              "command": "hydrogen:run"
+              "command": "jove-repl:run"
             },
             {
               "label": "Run and Move Down",
-              "command": "hydrogen:run-and-move-down"
+              "command": "jove-repl:run-and-move-down"
             },
             {
               "label": "Run Cell",
-              "command": "hydrogen:run-cell"
+              "command": "jove-repl:run-cell"
             },
             {
               "label": "Run Cell and Move Down",
-              "command": "hydrogen:run-cell-and-move-down"
+              "command": "jove-repl:run-cell-and-move-down"
             },
             {
               "label": "Run All",
-              "command": "hydrogen:run-all"
+              "command": "jove-repl:run-all"
             },
             {
               "label": "Run All Above",
-              "command": "hydrogen:run-all-above"
+              "command": "jove-repl:run-all-above"
             },
             {
               "label": "Recalculate All",
-              "command": "hydrogen:recalculate-all"
+              "command": "jove-repl:recalculate-all"
             },
             {
               "label": "Recalculate All Above",
-              "command": "hydrogen:recalculate-all-above"
+              "command": "jove-repl:recalculate-all-above"
             },
             {
               "label": "Recalculate All Inline",
-              "command": "hydrogen:recalculate-all-inline"
+              "command": "jove-repl:recalculate-all-inline"
             },
             {
               "label": "Recalculate All Above Inline",
-              "command": "hydrogen:recalculate-all-above-inline"
+              "command": "jove-repl:recalculate-all-above-inline"
             },
             {
               "label": "Run All Inline",
-              "command": "hydrogen:run-all-inline"
+              "command": "jove-repl:run-all-inline"
             },
             {
               "label": "Run All Above Inline",
-              "command": "hydrogen:run-all-above-inline"
+              "command": "jove-repl:run-all-above-inline"
             },
             {
               "label": "Run All Below Inline",
-              "command": "hydrogen:run-all-below-inline"
+              "command": "jove-repl:run-all-below-inline"
             },
             { "type": "separator" },
             {
               "label": "Clear Results",
-              "command": "hydrogen:clear-results"
+              "command": "jove-repl:clear-results"
             },
             {
               "label": "Clear and Restart",
-              "command": "hydrogen:clear-and-restart"
+              "command": "jove-repl:clear-and-restart"
             },
             {
               "label": "Clear and Center",
-              "command": "hydrogen:clear-and-center"
+              "command": "jove-repl:clear-and-center"
             },
             { "type": "separator" },
             {
               "label": "Show Inspector",
-              "command": "hydrogen:toggle-inspector-focus"
+              "command": "jove-repl:toggle-inspector-focus"
             },
             {
               "label": "Inspect Under Cursor",
-              "command": "hydrogen:inspect-under-cursor"
+              "command": "jove-repl:inspect-under-cursor"
             },
             {
               "label": "Toggle Output Area",
-              "command": "hydrogen:toggle-output-area"
+              "command": "jove-repl:toggle-output-area"
             },
             {
               "label": "Toggle Watches",
-              "command": "hydrogen:toggle-watches"
+              "command": "jove-repl:toggle-watches"
             },
             {
               "label": "Toggle Variables",
-              "command": "hydrogen:toggle-variable-explorer"
+              "command": "jove-repl:toggle-variable-explorer"
             },
             {
               "label": "Data Explorer",
-              "command": "hydrogen:open-data-explorer"
+              "command": "jove-repl:open-data-explorer"
             },
             { "type": "separator" },
             {
               "label": "Import Notebook",
-              "command": "hydrogen:import-notebook"
+              "command": "jove-repl:import-notebook"
             },
             {
               "label": "Export Notebook",
-              "command": "hydrogen:export-notebook"
+              "command": "jove-repl:export-notebook"
             },
             {
               "label": "Open Examples",
-              "command": "hydrogen:open-examples"
+              "command": "jove-repl:open-examples"
             }
           ]
         }
@@ -172,7 +172,7 @@
     ".tree-view .file .name[data-name$=\\.ipynb]": [
       {
         "label": "Import Notebook",
-        "command": "hydrogen:import-notebook"
+        "command": "jove-repl:import-notebook"
       }
     ]
   }

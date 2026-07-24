@@ -1,0 +1,103 @@
+{
+  "atom-workspace": {
+    "alt-h i": "jove-repl:toggle-inspector-focus",
+    "alt-h d": "jove-repl:open-data-explorer",
+    "alt-h k": "jove-repl:toggle-kernel-monitor-focus",
+    "alt-h v": "jove-repl:toggle-variable-explorer",
+    "alt-h o": "jove-repl:toggle-output-area",
+    "alt-h w": "jove-repl:toggle-watches",
+    "alt-h e": "jove-repl:toggle-exec-panel"
+  },
+
+  "atom-workspace atom-text-editor:not([mini]):not(atom-dock atom-text-editor)": {
+    "cmdorctrl-enter": "jove-repl:run",
+    "shift-enter": "jove-repl:run-and-move-down",
+    "alt-enter": "jove-repl:run-cell",
+    "shift-alt-enter": "jove-repl:run-cell-and-move-down",
+    "cmdorctrl-shift-enter": "jove-repl:run-all",
+    "ctrl-shift-backspace": "jove-repl:clear-results",
+    "cmdorctrl-alt-backspace": "jove-repl:clear-results"
+  },
+
+  "atom-workspace .jove-repl.kernel-picker atom-text-editor[mini]": {
+    "ctrl-enter": "select-list:kernel",
+    "f5": "jove-repl:update-kernels"
+  },
+
+  "atom-workspace atom-text-editor.data-explorer-expression:not([mini])": {
+    "enter": "core:confirm",
+    "shift-enter": "editor:newline",
+    "escape": "core:cancel",
+    "tab": "jove-repl:data-explorer-focus-toolbar",
+    "shift-tab": "jove-repl:data-explorer-focus-body"
+  },
+
+  "atom-workspace .data-explorer-toolbar-row": {
+    "left": "jove-repl:data-explorer-toolbar-left",
+    "right": "jove-repl:data-explorer-toolbar-right",
+    "enter": "jove-repl:data-explorer-toolbar-confirm",
+    "tab": "jove-repl:data-explorer-focus-body",
+    "shift-tab": "jove-repl:data-explorer-focus-expression"
+  },
+
+  "atom-workspace atom-text-editor.inspector-expression:not([mini])": {
+    "enter": "core:confirm",
+    "shift-enter": "editor:newline",
+    "escape": "core:cancel",
+    "tab": "jove-repl:inspector-focus-body",
+    "shift-tab": "jove-repl:inspector-focus-body"
+  },
+
+  "atom-workspace .data-explorer-body": {
+    "tab": "jove-repl:data-explorer-focus-expression",
+    "shift-tab": "jove-repl:data-explorer-focus-toolbar"
+  },
+
+  "atom-workspace .data-explorer-canvas-wrap": {
+    "enter": "core:confirm",
+    "backspace": "jove-repl:data-explorer-drill-up",
+    "up": "core:move-up",
+    "down": "core:move-down",
+    "left": "core:move-left",
+    "right": "core:move-right",
+    "shift-up": "core:select-up",
+    "shift-down": "core:select-down",
+    "shift-left": "core:select-left",
+    "shift-right": "core:select-right",
+    "pageup": "jove-repl:data-grid-page-up",
+    "pagedown": "jove-repl:data-grid-page-down",
+    "shift-pageup": "jove-repl:data-grid-select-page-up",
+    "shift-pagedown": "jove-repl:data-grid-select-page-down",
+    "home": "jove-repl:data-grid-move-to-row-start",
+    "end": "jove-repl:data-grid-move-to-row-end",
+    "shift-home": "jove-repl:data-grid-select-to-row-start",
+    "shift-end": "jove-repl:data-grid-select-to-row-end",
+    "cmdorctrl-home": "core:move-to-top",
+    "cmdorctrl-end": "core:move-to-bottom",
+    "cmdorctrl-shift-home": "core:select-to-top",
+    "cmdorctrl-shift-end": "core:select-to-bottom",
+    "shift-space": "jove-repl:data-grid-select-row",
+    "ctrl-space": "jove-repl:data-grid-select-column"
+  },
+
+  "atom-workspace .jove-repl.inspector .inspector-body": {
+    "up": "jove-repl:inspector-scroll-up",
+    "down": "jove-repl:inspector-scroll-down",
+    "tab": "jove-repl:inspector-focus-expression",
+    "shift-tab": "jove-repl:inspector-focus-expression"
+  },
+
+  "atom-workspace atom-text-editor.watch-input:not([mini])": {
+    "enter": "core:confirm",
+    "shift-enter": "editor:newline"
+  },
+
+  "atom-workspace .kernel-monitor-wrapper": {
+    "up": "jove-repl:kernel-monitor-up",
+    "down": "jove-repl:kernel-monitor-down",
+    "enter": "jove-repl:kernel-monitor-open",
+    "i": "jove-repl:kernel-monitor-interrupt",
+    "r": "jove-repl:kernel-monitor-restart",
+    "s": "jove-repl:kernel-monitor-shutdown"
+  }
+}

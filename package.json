@@ -1,12 +1,12 @@
 {
-  "name": "hydrogen",
+  "name": "jove-repl",
   "author": "lumine-code",
   "description": "Run code interactively with Jupyter kernels",
-  "repository": "https://github.com/lumine-code/hydrogen",
+  "repository": "https://github.com/lumine-code/jove-repl",
   "bugs": {
-    "url": "https://github.com/lumine-code/hydrogen/issues"
+    "url": "https://github.com/lumine-code/jove-repl/issues"
   },
-  "homepage": "https://github.com/lumine-code/hydrogen#readme",
+  "homepage": "https://github.com/lumine-code/jove-repl#readme",
   "keywords": [
     "execute",
     "run",
@@ -21,76 +21,76 @@
     "plot",
     "image"
   ],
-  "version": "5.0.0",
+  "version": "6.0.0",
   "license": "MIT",
   "engines": {
     "atom": ">=1.100.0 <2.0.0"
   },
   "main": "./lib/main",
   "scripts": {
-    "test": "cd ../lumine && npm run test:only -- ../hydrogen/spec",
+    "test": "cd ../lumine && npm run test:only -- ../jove-repl/spec",
     "lint": "eslint .",
     "format:check": "prettier --check ."
   },
   "activationHooks": [
-    "hydrogen.adapter:item-used"
+    "jove.adapter:item-used"
   ],
   "activationCommands": {
     "atom-text-editor:not([mini])": [
-      "hydrogen:run",
-      "hydrogen:run-all",
-      "hydrogen:run-all-above",
-      "hydrogen:run-and-move-down",
-      "hydrogen:run-cell",
-      "hydrogen:run-cell-and-move-down",
-      "hydrogen:toggle-watches",
-      "hydrogen:toggle-output-area",
-      "hydrogen:start-local-kernel",
-      "hydrogen:connect-to-remote-kernel",
-      "hydrogen:connect-to-existing-kernel",
-      "hydrogen:add-watch",
-      "hydrogen:remove-watch",
-      "hydrogen:update-kernels",
-      "hydrogen:interrupt-kernel",
-      "hydrogen:restart-kernel",
-      "hydrogen:shutdown-kernel",
-      "hydrogen:export-notebook",
-      "hydrogen:fold-current-cell",
-      "hydrogen:fold-all-but-current-cell",
-      "hydrogen:clear-results",
-      "hydrogen:clear-and-restart",
-      "hydrogen:clear-and-center",
-      "hydrogen:recalculate-all",
-      "hydrogen:recalculate-all-above",
-      "hydrogen:run-all-inline",
-      "hydrogen:recalculate-all-inline",
-      "hydrogen:run-all-above-inline",
-      "hydrogen:run-all-below-inline",
-      "hydrogen:recalculate-all-above-inline",
-      "hydrogen:go-to-next-cell",
-      "hydrogen:go-to-previous-cell",
-      "hydrogen:select-cell",
-      "hydrogen:select-previous-cell",
-      "hydrogen:select-next-cell",
-      "hydrogen:move-cell-up",
-      "hydrogen:move-cell-down",
-      "hydrogen:open-jupyter-console",
-      "hydrogen:spawn-jupyter-console",
-      "hydrogen:copy-jupyter-console-command"
+      "jove-repl:run",
+      "jove-repl:run-all",
+      "jove-repl:run-all-above",
+      "jove-repl:run-and-move-down",
+      "jove-repl:run-cell",
+      "jove-repl:run-cell-and-move-down",
+      "jove-repl:toggle-watches",
+      "jove-repl:toggle-output-area",
+      "jove-repl:start-local-kernel",
+      "jove-repl:connect-to-remote-kernel",
+      "jove-repl:connect-to-existing-kernel",
+      "jove-repl:add-watch",
+      "jove-repl:remove-watch",
+      "jove-repl:update-kernels",
+      "jove-repl:interrupt-kernel",
+      "jove-repl:restart-kernel",
+      "jove-repl:shutdown-kernel",
+      "jove-repl:export-notebook",
+      "jove-repl:fold-current-cell",
+      "jove-repl:fold-all-but-current-cell",
+      "jove-repl:clear-results",
+      "jove-repl:clear-and-restart",
+      "jove-repl:clear-and-center",
+      "jove-repl:recalculate-all",
+      "jove-repl:recalculate-all-above",
+      "jove-repl:run-all-inline",
+      "jove-repl:recalculate-all-inline",
+      "jove-repl:run-all-above-inline",
+      "jove-repl:run-all-below-inline",
+      "jove-repl:recalculate-all-above-inline",
+      "jove-repl:go-to-next-cell",
+      "jove-repl:go-to-previous-cell",
+      "jove-repl:select-cell",
+      "jove-repl:select-previous-cell",
+      "jove-repl:select-next-cell",
+      "jove-repl:move-cell-up",
+      "jove-repl:move-cell-down",
+      "jove-repl:open-jupyter-console",
+      "jove-repl:spawn-jupyter-console",
+      "jove-repl:copy-jupyter-console-command"
     ],
     "atom-workspace": [
-      "hydrogen:import-notebook",
-      "hydrogen:open-data-explorer",
-      "hydrogen:debug-toggle",
-      "hydrogen:toggle-kernel-monitor-focus",
-      "hydrogen:toggle-exec-panel",
-      "hydrogen:toggle-variable-explorer",
-      "hydrogen:hot-reload-package",
-      "hydrogen:open-examples",
-      "hydrogen:open-gateways",
-      "hydrogen:shutdown-all-kernels",
-      "hydrogen:toggle-inspector-focus",
-      "hydrogen:inspect-under-cursor"
+      "jove-repl:import-notebook",
+      "jove-repl:open-data-explorer",
+      "jove-repl:debug-toggle",
+      "jove-repl:toggle-kernel-monitor-focus",
+      "jove-repl:toggle-exec-panel",
+      "jove-repl:toggle-variable-explorer",
+      "jove-repl:hot-reload-package",
+      "jove-repl:open-examples",
+      "jove-repl:open-gateways",
+      "jove-repl:shutdown-all-kernels",
+      "jove-repl:toggle-inspector-focus",
+      "jove-repl:inspect-under-cursor"
     ]
   },
   "consumedServices": {
@@ -104,9 +104,9 @@
         "^1.0.0": "consumeStatusBar"
       }
     },
-    "hydrogen.adapter": {
+    "jove.adapter": {
       "versions": {
-        "1.0.0": "consumeHydrogenAdapter"
+        "1.0.0": "consumeJoveAdapter"
       }
     },
     "claude-chat": {
@@ -141,12 +141,12 @@
         "4.0.0": "provideAutocompleteResults"
       }
     },
-    "hydrogen.provider": {
+    "jove.provider": {
       "versions": {
-        "1.3.0": "provideHydrogen"
+        "1.3.0": "provideJove"
       }
     },
-    "hydrogen.breakpoints": {
+    "jove.breakpoints": {
       "versions": {
         "0.0.1": "provideBreakpoints"
       }

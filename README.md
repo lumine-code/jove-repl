@@ -1,4 +1,4 @@
-# hydrogen
+# jove-repl
 
 Run code interactively with Jupyter kernels. Supports Python, R, JavaScript, and other languages with rich output including plots, images, HTML, and LaTeX.
 
@@ -10,75 +10,75 @@ Run code interactively with Jupyter kernels. Supports Python, R, JavaScript, and
 - **Watches and variables**: auto-runs watch expressions and browses kernel variables in dedicated panels.
 - **Data explorer**: inspects dataframes, arrays, and nested objects in a searchable grid with charts, drill-down, and breadcrumb navigation.
 - **Kernel management**: starts local kernels, connects to remote gateways, and monitors or controls kernels from the kernel monitor.
-- **Notebook support**: imports and exports `.ipynb` notebooks and drives external notebook cells through the `hydrogen.adapter` service.
+- **Notebook support**: imports and exports `.ipynb` notebooks and drives external notebook cells through the `jove.adapter` service.
 - **Jupyter console**: attaches a console to the active kernel in an embedded terminal, a system terminal, or via a copied command.
 - **Extensible services**: provides and consumes services for autocomplete, data-explorer search, breakpoints, and third-party integrations.
 
 ## Installation
 
-To install `hydrogen`, clone this repository into your Lumine packages directory (`~/.lumine/packages/hydrogen`) and restart Lumine. If it is listed in your configured package sources, it can also be installed from the Install pane of the Lumine settings.
+To install `jove-repl`, clone this repository into your Lumine packages directory (`~/.lumine/packages/jove-repl`) and restart Lumine. If it is listed in your configured package sources, it can also be installed from the Install pane of the Lumine settings.
 
 ## Commands
 
 Commands available in `atom-text-editor:not([mini])`:
 
-- `hydrogen:run`: run code at cursor,
-- `hydrogen:run-and-move-down`: run and move to next block,
-- `hydrogen:run-cell`: run current cell,
-- `hydrogen:run-cell-and-move-down`: run cell and move to next,
-- `hydrogen:run-all`: run all code in editor,
-- `hydrogen:run-all-above`: run all code above cursor,
-- `hydrogen:run-all-inline`: run all code inline, one statement at a time,
-- `hydrogen:run-all-above-inline`: run all code above cursor inline,
-- `hydrogen:run-all-below-inline`: run all code below cursor inline,
-- `hydrogen:recalculate-all`: clear results, restart kernel, run all,
-- `hydrogen:recalculate-all-above`: clear results, restart kernel, run all above,
-- `hydrogen:recalculate-all-inline`: clear results, restart kernel, run all inline,
-- `hydrogen:recalculate-all-above-inline`: clear results, restart kernel, run all above inline,
-- `hydrogen:clear-results`: clear output results,
-- `hydrogen:clear-and-restart`: clear results and restart kernel,
-- `hydrogen:clear-and-center`: clear results and center cursor,
-- `hydrogen:toggle-output-area`: toggle output area mode,
-- `hydrogen:start-local-kernel`: start a local kernel,
-- `hydrogen:connect-to-remote-kernel`: connect to a remote kernel via gateway,
-- `hydrogen:connect-to-existing-kernel`: connect to an existing kernel,
-- `hydrogen:interrupt-kernel`: interrupt running execution,
-- `hydrogen:restart-kernel`: restart the kernel,
-- `hydrogen:shutdown-kernel`: shutdown the kernel,
-- `hydrogen:rename-remote-session`: rename remote session,
-- `hydrogen:disconnect-remote-session`: disconnect remote session,
-- `hydrogen:update-kernels`: refresh available kernels list,
-- `hydrogen:add-watch`: add watch expression,
-- `hydrogen:remove-watch`: remove focused watch expression when focus is in a watch editor,
-- `hydrogen:toggle-watches`: toggle watches panel,
-- `hydrogen:toggle-variable-explorer`: toggle variables panel,
-- `hydrogen:open-data-explorer`: load the selected expression (or word under cursor) into the data explorer,
-- `hydrogen:go-to-next-cell`: jump to next cell,
-- `hydrogen:go-to-previous-cell`: jump to previous cell,
-- `hydrogen:select-cell`: select current cell,
-- `hydrogen:select-previous-cell`: extend cell selection up,
-- `hydrogen:select-next-cell`: extend cell selection down,
-- `hydrogen:move-cell-up`: move cell up,
-- `hydrogen:move-cell-down`: move cell down,
-- `hydrogen:fold-current-cell`: fold current cell,
-- `hydrogen:fold-all-but-current-cell`: fold all cells except current,
-- `hydrogen:export-notebook`: export editor content to `.ipynb`.
+- `jove-repl:run`: run code at cursor,
+- `jove-repl:run-and-move-down`: run and move to next block,
+- `jove-repl:run-cell`: run current cell,
+- `jove-repl:run-cell-and-move-down`: run cell and move to next,
+- `jove-repl:run-all`: run all code in editor,
+- `jove-repl:run-all-above`: run all code above cursor,
+- `jove-repl:run-all-inline`: run all code inline, one statement at a time,
+- `jove-repl:run-all-above-inline`: run all code above cursor inline,
+- `jove-repl:run-all-below-inline`: run all code below cursor inline,
+- `jove-repl:recalculate-all`: clear results, restart kernel, run all,
+- `jove-repl:recalculate-all-above`: clear results, restart kernel, run all above,
+- `jove-repl:recalculate-all-inline`: clear results, restart kernel, run all inline,
+- `jove-repl:recalculate-all-above-inline`: clear results, restart kernel, run all above inline,
+- `jove-repl:clear-results`: clear output results,
+- `jove-repl:clear-and-restart`: clear results and restart kernel,
+- `jove-repl:clear-and-center`: clear results and center cursor,
+- `jove-repl:toggle-output-area`: toggle output area mode,
+- `jove-repl:start-local-kernel`: start a local kernel,
+- `jove-repl:connect-to-remote-kernel`: connect to a remote kernel via gateway,
+- `jove-repl:connect-to-existing-kernel`: connect to an existing kernel,
+- `jove-repl:interrupt-kernel`: interrupt running execution,
+- `jove-repl:restart-kernel`: restart the kernel,
+- `jove-repl:shutdown-kernel`: shutdown the kernel,
+- `jove-repl:rename-remote-session`: rename remote session,
+- `jove-repl:disconnect-remote-session`: disconnect remote session,
+- `jove-repl:update-kernels`: refresh available kernels list,
+- `jove-repl:add-watch`: add watch expression,
+- `jove-repl:remove-watch`: remove focused watch expression when focus is in a watch editor,
+- `jove-repl:toggle-watches`: toggle watches panel,
+- `jove-repl:toggle-variable-explorer`: toggle variables panel,
+- `jove-repl:open-data-explorer`: load the selected expression (or word under cursor) into the data explorer,
+- `jove-repl:go-to-next-cell`: jump to next cell,
+- `jove-repl:go-to-previous-cell`: jump to previous cell,
+- `jove-repl:select-cell`: select current cell,
+- `jove-repl:select-previous-cell`: extend cell selection up,
+- `jove-repl:select-next-cell`: extend cell selection down,
+- `jove-repl:move-cell-up`: move cell up,
+- `jove-repl:move-cell-down`: move cell down,
+- `jove-repl:fold-current-cell`: fold current cell,
+- `jove-repl:fold-all-but-current-cell`: fold all cells except current,
+- `jove-repl:export-notebook`: export editor content to `.ipynb`.
 
 Commands available in `atom-workspace`:
 
-- `hydrogen:import-notebook`: import a `.ipynb` notebook,
-- `hydrogen:open-examples`: open example files,
-- `hydrogen:open-gateways`: open `gateways.json`,
-- `hydrogen:shutdown-all-kernels`: shutdown all running kernels,
-- `hydrogen:toggle-kernel-monitor-focus`: toggle focus to the kernel monitor panel (returns focus to the editor when already focused). The highlighted row follows the kernel of the active editor; navigate with <kbd>up</kbd> / <kbd>down</kbd>, open the selected kernel's files with <kbd>Enter</kbd>, and act on it with <kbd>i</kbd> (interrupt), <kbd>r</kbd> (restart), <kbd>s</kbd> (shutdown),
-- `hydrogen:toggle-exec-panel`: toggle exec panel,
-- `hydrogen:toggle-inspector-focus`: show inspector pane,
-- `hydrogen:inspect-under-cursor`: inspect the expression under the cursor without moving focus from the editor,
-- `hydrogen:attach-to-claude`: attach code and output to claude-chat,
-- `hydrogen:debug-toggle`: toggle debug logging,
-- `hydrogen:open-jupyter-console`: open Jupyter console attached to active kernel in an embedded terminal pane,
-- `hydrogen:spawn-jupyter-console`: spawn Jupyter console attached to active kernel in a system terminal,
-- `hydrogen:copy-jupyter-console-command`: copy the Jupyter console command to clipboard.
+- `jove-repl:import-notebook`: import a `.ipynb` notebook,
+- `jove-repl:open-examples`: open example files,
+- `jove-repl:open-gateways`: open `gateways.json`,
+- `jove-repl:shutdown-all-kernels`: shutdown all running kernels,
+- `jove-repl:toggle-kernel-monitor-focus`: toggle focus to the kernel monitor panel (returns focus to the editor when already focused). The highlighted row follows the kernel of the active editor; navigate with <kbd>up</kbd> / <kbd>down</kbd>, open the selected kernel's files with <kbd>Enter</kbd>, and act on it with <kbd>i</kbd> (interrupt), <kbd>r</kbd> (restart), <kbd>s</kbd> (shutdown),
+- `jove-repl:toggle-exec-panel`: toggle exec panel,
+- `jove-repl:toggle-inspector-focus`: show inspector pane,
+- `jove-repl:inspect-under-cursor`: inspect the expression under the cursor without moving focus from the editor,
+- `jove-repl:attach-to-claude`: attach code and output to claude-chat,
+- `jove-repl:debug-toggle`: toggle debug logging,
+- `jove-repl:open-jupyter-console`: open Jupyter console attached to active kernel in an embedded terminal pane,
+- `jove-repl:spawn-jupyter-console`: spawn Jupyter console attached to active kernel in a system terminal,
+- `jove-repl:copy-jupyter-console-command`: copy the Jupyter console command to clipboard.
 
 ## Provided Service `search-adapter`
 
@@ -94,14 +94,14 @@ This service is provided as `search-adapter@1.0.0` through `provideSearchAdapter
 
 ## Editor kernel class
 
-While a file has a running kernel, hydrogen adds the `hydrogen-kernel` class to its `atom-text-editor` element. The class is added when the kernel starts, removed when it shuts down, and follows the file when it is saved or reopened. This lets you scope keymaps and styles to editors that actually have a live kernel.
+While a file has a running kernel, jove-repl adds the `jove-kernel` class to its `atom-text-editor` element. The class is added when the kernel starts, removed when it shuts down, and follows the file when it is saved or reopened. This lets you scope keymaps and styles to editors that actually have a live kernel.
 
 For example, bind <kbd>Ctrl+Enter</kbd> to run code only when a kernel is running, in your `keymap.json`:
 
 ```json
 {
-  "atom-text-editor.hydrogen-kernel:not([mini])": {
-    "ctrl-enter": "hydrogen:run"
+  "atom-text-editor.jove-kernel:not([mini])": {
+    "ctrl-enter": "jove-repl:run"
   }
 }
 ```
@@ -109,14 +109,14 @@ For example, bind <kbd>Ctrl+Enter</kbd> to run code only when a kernel is runnin
 Or highlight such editors in your `styles.css`:
 
 ```css
-atom-text-editor.hydrogen-kernel {
+atom-text-editor.jove-kernel {
   border-left: 2px solid limegreen;
 }
 ```
 
 ## Kernel installation
 
-hydrogen requires Jupyter kernels to be installed on your system. A kernel is a language-specific backend that executes your code. You can install kernels for many languages. See the [full list of available kernels](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels) on the Jupyter wiki.
+jove-repl requires Jupyter kernels to be installed on your system. A kernel is a language-specific backend that executes your code. You can install kernels for many languages. See the [full list of available kernels](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels) on the Jupyter wiki.
 
 ### Python (IPython)
 
@@ -216,9 +216,9 @@ In the kernel picker, press **Ctrl+Enter** to insert the selected kernel as a ma
 ## Kernel gateways
 
 Connect to remote or local Jupyter servers by configuring kernel gateways in `<config-dir>/gateways.json`.
-Use the `Hydrogen: Open Gateways Config` command (`hydrogen:open-gateways`) to open this file in Lumine.
+Use the `Jove: Open Gateways Config` command (`jove-repl:open-gateways`) to open this file in Lumine.
 
-If `gateways.json` does not exist yet, hydrogen creates it automatically the first time it is opened or used.
+If `gateways.json` does not exist yet, jove-repl creates it automatically the first time it is opened or used.
 
 Example of local jupyter server:
 
@@ -246,9 +246,9 @@ In `gateways.json`, add gateway entries as an array:
 ]
 ```
 
-Use the `Hydrogen: Connect to Remote Kernel` command (`hydrogen:connect-to-remote-kernel`) to select a gateway and kernel.
+Use the `Jove: Connect to Remote Kernel` command (`jove-repl:connect-to-remote-kernel`) to select a gateway and kernel.
 
-If `token` is configured, hydrogen uses it automatically and does not prompt for authentication. Without a configured token, after selecting a gateway you'll be prompted to choose an authentication method:
+If `token` is configured, jove-repl uses it automatically and does not prompt for authentication. Without a configured token, after selecting a gateway you'll be prompted to choose an authentication method:
 
 - **No credentials**: for servers without authentication
 - **Authenticate with a token**: prompts for the server token
@@ -269,7 +269,7 @@ If your server was started without a token, omit `token` and choose **No credent
 
 ## Code block detection
 
-When you run code without a selection, hydrogen intelligently detects what to execute based on cursor position.
+When you run code without a selection, jove-repl intelligently detects what to execute based on cursor position.
 
 ### Priority order
 
@@ -348,9 +348,9 @@ Attach a standalone Jupyter console to the active kernel via its connection file
 
 Three commands are available:
 
-- `hydrogen:open-jupyter-console`: runs the console in an embedded [terminal](https://github.com/lumine-code/terminal) pane inside Lumine (requires the `terminal` package),
-- `hydrogen:spawn-jupyter-console`: opens the system terminal and runs the console there (requires the terminal-spawn package),
-- `hydrogen:copy-jupyter-console-command`: copies the resolved command to the clipboard so you can paste it anywhere (e.g. an SSH session).
+- `jove-repl:open-jupyter-console`: runs the console in an embedded [terminal](https://github.com/lumine-code/terminal) pane inside Lumine (requires the `terminal` package),
+- `jove-repl:spawn-jupyter-console`: opens the system terminal and runs the console there (requires the terminal-spawn package),
+- `jove-repl:copy-jupyter-console-command`: copies the resolved command to the clipboard so you can paste it anywhere (e.g. an SSH session).
 
 Only local kernels are supported (remote kernels have no connection file).
 
@@ -361,18 +361,18 @@ The command template is configurable via the `Jupyter console command` setting. 
 - `jupyter console --existing {connection-file}` (uses `jupyter` from the terminal's PATH),
 - `ssh remote 'jupyter console --existing {connection-file}'`.
 
-## Consumed Service `hydrogen.adapter`
+## Consumed Service `jove.adapter`
 
-Allows non-TextEditor pane items, such as notebooks from the jupyter-next package, to be executed through hydrogen commands. The adapter owns target enumeration, source retrieval, output persistence, and focus/navigation inside the external pane item.
+Allows non-TextEditor pane items, such as notebooks from the jove-view package, to be executed through jove-repl commands. The adapter owns target enumeration, source retrieval, output persistence, and focus/navigation inside the external pane item.
 
 External packages provide this service in `package.json`:
 
 ```json
 {
   "providedServices": {
-    "hydrogen.adapter": {
+    "jove.adapter": {
       "versions": {
-        "1.0.0": "provideHydrogenAdapter"
+        "1.0.0": "provideJoveAdapter"
       }
     }
   }
@@ -383,14 +383,14 @@ In the provider package's main module:
 
 ```javascript
 module.exports = {
-  provideHydrogenAdapter() {
+  provideJoveAdapter() {
     return {
       getActiveAdapter() {
         return this.getAdapterForItem(atom.workspace.getActivePaneItem());
       },
 
       getAdapterForItem(item) {
-        return item && item.getHydrogenAdapter ? item.getHydrogenAdapter() : null;
+        return item && item.getJoveAdapter ? item.getJoveAdapter() : null;
       },
     };
   },
@@ -410,7 +410,7 @@ The service object must expose `getActiveAdapter()` or `handlesItem(item)` plus 
 
 `finishTargetExecution` receives `{ kernel, success, status, lastExecutionTime }`, where `status` is one of `"ok"`, `"error"`, `"failed"`, `"cancelled"`, or `"skipped"`.
 
-## Provided Service `hydrogen.provider`
+## Provided Service `jove.provider`
 
 Allows other packages to interact with Jupyter kernels: execute code, get completions, inspect objects, and monitor kernel state.
 
@@ -419,9 +419,9 @@ In your `package.json`:
 ```json
 {
   "consumedServices": {
-    "hydrogen.provider": {
+    "jove.provider": {
       "versions": {
-        "^1.3.0": "consumeHydrogen"
+        "^1.3.0": "consumeJove"
       }
     }
   }
@@ -432,19 +432,19 @@ In your main module:
 
 ```javascript
 module.exports = {
-  consumeHydrogen(hydrogen) {
-    this.hydrogen = hydrogen;
+  consumeJove(jove-repl) {
+    this.jove-repl = jove-repl;
   },
 
   async example() {
-    const kernel = this.hydrogen.getActiveKernel();
+    const kernel = this.jove-repl.getActiveKernel();
     const result = await kernel.execute("print('Hello')");
     console.log(result.status); // 'ok' or 'error'
   },
 };
 ```
 
-### HydrogenProvider methods
+### JoveProvider methods
 
 | Method                        | Description                          |
 | ----------------------------- | ------------------------------------ |
@@ -452,7 +452,7 @@ module.exports = {
 | `onDidChangeKernel(callback)` | Subscribe to kernel changes          |
 | `getCellRange(editor)`        | Get the current cell range           |
 
-### HydrogenKernel API
+### JoveKernel API
 
 #### Execution
 
@@ -499,8 +499,8 @@ module.exports = {
 ### Example: Execute and Handle Results
 
 ```javascript
-async function runCode(hydrogen) {
-  const kernel = hydrogen.getActiveKernel();
+async function runCode(jove-repl) {
+  const kernel = jove-repl.getActiveKernel();
 
   // Simple execution
   const result = await kernel.execute("x = 42\nprint(x)");
@@ -527,11 +527,11 @@ async function runCode(hydrogen) {
 
 ## Provided Service `autocomplete.provider`
 
-Provides kernel-backed completions to Lumine autocomplete consumers while a Hydrogen kernel is active for the editor. This service is provided as `autocomplete.provider@4.0.0` through `provideAutocompleteResults`.
+Provides kernel-backed completions to Lumine autocomplete consumers while a Jove kernel is active for the editor. This service is provided as `autocomplete.provider@4.0.0` through `provideAutocompleteResults`.
 
-## Provided Service `hydrogen.breakpoints`
+## Provided Service `jove.breakpoints`
 
-Provides breakpoint state for integrations that need to inspect or render Hydrogen breakpoints. This service is provided as `hydrogen.breakpoints@0.0.1` through `provideBreakpoints`.
+Provides breakpoint state for integrations that need to inspect or render Jove breakpoints. This service is provided as `jove.breakpoints@0.0.1` through `provideBreakpoints`.
 
 ## Contributing
 
