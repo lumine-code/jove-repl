@@ -293,11 +293,15 @@ When you run code without a selection, jove-repl intelligently detects what to e
 
 ### Bracket expressions
 
-| Cursor Position                     | What Gets Executed   |
-| ----------------------------------- | -------------------- |
-| On line ending with `[`, `(`, `{`   | Entire bracket block |
-| On line starting with `]`, `)`, `}` | Entire bracket block |
-| **Inside bracket block**            | **Single line only** |
+| Cursor Position                      | What Gets Executed   |
+| ------------------------------------ | -------------------- |
+| On line ending with `[`, `(`, `{`    | Entire bracket block |
+| On line starting with `]`, `)`, `}`  | Entire bracket block |
+| On line opening a `'''`/`"""` string | Entire statement     |
+| On line closing a `'''`/`"""` string | Entire statement     |
+| **Inside bracket block or string**   | **Single line only** |
+
+Multiline triple-quoted strings are handled together with brackets, so a call such as `doc.x('''` … `''')` executes as one statement from either its first or last line — including bare string assignments and docstrings.
 
 ### Examples
 
