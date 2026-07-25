@@ -1,5 +1,4 @@
 /** @babel */
-/* global describe, it, expect */
 
 import { renderLatexToSvg } from "../lib/components/result-view/latex";
 

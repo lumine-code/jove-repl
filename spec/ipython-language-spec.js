@@ -1,5 +1,4 @@
 /** @babel */
-/* global describe, it, expect, beforeEach */
 
 import { grammarToLanguage, kernelSpecProvidesGrammar } from "../lib/utils";
 

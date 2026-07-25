@@ -1,5 +1,4 @@
 /** @babel */
-/* global describe, it, expect, beforeEach */
 
 import { findCodeBlockAtRow } from "../lib/code-manager";
 

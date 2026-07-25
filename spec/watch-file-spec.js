@@ -1,5 +1,4 @@
 /** @babel */
-/* global describe, it, expect, beforeEach, afterEach */
 
 import { watchFile } from "atom";
 import fs from "fs";

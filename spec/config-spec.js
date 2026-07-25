@@ -1,5 +1,4 @@
 /** @babel */
-/* global describe, it, expect, beforeEach, afterEach, spyOn */
 
 import fs from "fs";
 import os from "os";
