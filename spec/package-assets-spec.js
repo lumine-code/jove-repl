@@ -40,4 +40,31 @@ describe("jove-repl package assets", () => {
       /\blighten\(|\bfadein\(|\bcontrast\(|\baverage\(|\bfade\(/,
     );
   });
+
+  it("takes the select list from the Lumine fork", () => {
+    const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
+    expect(pkg.dependencies["@lumine-code/select-list"]).toBeDefined();
+    expect(pkg.dependencies["@asiloisad/select-list"]).toBeUndefined();
+
+    const sources = [];
+    const collect = (dir) => {
+      for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+          collect(full);
+        } else if (entry.name.endsWith(".js")) {
+          sources.push(full);
+        }
+      }
+    };
+    collect(path.join(root, "lib"));
+
+    for (const file of sources) {
+      const source = fs.readFileSync(file, "utf8");
+      expect(source.includes("@asiloisad")).toBe(
+        false,
+        `${path.relative(root, file)} still points at the personal fork`,
+      );
+    }
+  });
 });
