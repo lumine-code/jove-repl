@@ -60,7 +60,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          path: jove-repl
+          path: jupyter-repl
       - uses: actions/checkout@v6
         with:
           repository: lumine-code/lumine
@@ -77,7 +77,7 @@ jobs:
       # The specs only touch pure library modules and the editor runtime, so the
       # native `zeromq` binding is never loaded; skip install scripts.
       - name: Install package dependencies
-        working-directory: jove-repl
+        working-directory: jupyter-repl
         run: npm ci --ignore-scripts
       # Mirrors the editor's own CI: install without scripts (patch-package and
       # some native install scripts misbehave; native modules are rebuilt for
@@ -104,4 +104,4 @@ jobs:
       - name: Run the Jasmine spec suite
         working-directory: lumine
         timeout-minutes: 20
-        run: xvfb-run --auto-servernum npm start -- --test ../jove-repl/spec
+        run: xvfb-run --auto-servernum npm start -- --test ../jupyter-repl/spec

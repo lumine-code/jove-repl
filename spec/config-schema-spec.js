@@ -8,7 +8,7 @@ import path from "path";
 // settings without activating the package. These specs guard that move: the
 // schema has to stay well-formed, and it has to keep covering every setting the
 // source actually reads.
-describe("jove-repl configSchema", () => {
+describe("jupyter-repl configSchema", () => {
   const packageRoot = path.resolve(__dirname, "..");
   let configSchema;
 
@@ -89,7 +89,7 @@ describe("jove-repl configSchema", () => {
         } else if (entry.name.endsWith(".js")) {
           const source = fs.readFileSync(full, "utf8");
           const pattern =
-            /atom\.config\.(?:get|set|observe|onDidChange|unset)\(\s*["'`]jove-repl\.([\w]+)/g;
+            /atom\.config\.(?:get|set|observe|onDidChange|unset)\(\s*["'`]jupyter-repl\.([\w]+)/g;
           for (const match of source.matchAll(pattern)) {
             read.add(match[1]);
           }

@@ -1,14 +1,13 @@
 {
-  "name": "jove-repl",
+  "name": "jupyter-repl",
   "author": "lumine-code",
   "description": "Run code interactively with Jupyter kernels.",
-  "repository": "https://github.com/lumine-code/jove-repl",
+  "repository": "https://github.com/lumine-code/jupyter-repl",
   "bugs": {
-    "url": "https://github.com/lumine-code/jove-repl/issues"
+    "url": "https://github.com/lumine-code/jupyter-repl/issues"
   },
-  "homepage": "https://github.com/lumine-code/jove-repl#readme",
+  "homepage": "https://github.com/lumine-code/jupyter-repl#readme",
   "keywords": [
-    "jupyter",
     "kernel",
     "ipython",
     "python",
@@ -23,70 +22,70 @@
   },
   "main": "./lib/main",
   "scripts": {
-    "test": "cd ../lumine && npm run test:only -- ../jove-repl/spec",
+    "test": "cd ../lumine && npm run test:only -- ../jupyter-repl/spec",
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "activationHooks": [
-    "jove.adapter:item-used"
+    "jupyter.adapter:item-used"
   ],
   "activationCommands": {
     "atom-text-editor:not([mini])": [
-      "jove-repl:run",
-      "jove-repl:run-all",
-      "jove-repl:run-all-above",
-      "jove-repl:run-and-move-down",
-      "jove-repl:run-cell",
-      "jove-repl:run-cell-and-move-down",
-      "jove-repl:toggle-watches",
-      "jove-repl:toggle-output-area",
-      "jove-repl:start-local-kernel",
-      "jove-repl:connect-to-remote-kernel",
-      "jove-repl:connect-to-existing-kernel",
-      "jove-repl:add-watch",
-      "jove-repl:remove-watch",
-      "jove-repl:update-kernels",
-      "jove-repl:interrupt-kernel",
-      "jove-repl:restart-kernel",
-      "jove-repl:shutdown-kernel",
-      "jove-repl:export-notebook",
-      "jove-repl:fold-current-cell",
-      "jove-repl:fold-all-but-current-cell",
-      "jove-repl:clear-results",
-      "jove-repl:clear-and-restart",
-      "jove-repl:clear-and-center",
-      "jove-repl:recalculate-all",
-      "jove-repl:recalculate-all-above",
-      "jove-repl:run-all-inline",
-      "jove-repl:recalculate-all-inline",
-      "jove-repl:run-all-above-inline",
-      "jove-repl:run-all-below-inline",
-      "jove-repl:recalculate-all-above-inline",
-      "jove-repl:go-to-next-cell",
-      "jove-repl:go-to-previous-cell",
-      "jove-repl:select-cell",
-      "jove-repl:select-previous-cell",
-      "jove-repl:select-next-cell",
-      "jove-repl:move-cell-up",
-      "jove-repl:move-cell-down",
-      "jove-repl:open-jupyter-console",
-      "jove-repl:spawn-jupyter-console",
-      "jove-repl:copy-jupyter-console-command"
+      "jupyter-repl:run",
+      "jupyter-repl:run-all",
+      "jupyter-repl:run-all-above",
+      "jupyter-repl:run-and-move-down",
+      "jupyter-repl:run-cell",
+      "jupyter-repl:run-cell-and-move-down",
+      "jupyter-repl:toggle-watches",
+      "jupyter-repl:toggle-output-area",
+      "jupyter-repl:start-local-kernel",
+      "jupyter-repl:connect-to-remote-kernel",
+      "jupyter-repl:connect-to-existing-kernel",
+      "jupyter-repl:add-watch",
+      "jupyter-repl:remove-watch",
+      "jupyter-repl:update-kernels",
+      "jupyter-repl:interrupt-kernel",
+      "jupyter-repl:restart-kernel",
+      "jupyter-repl:shutdown-kernel",
+      "jupyter-repl:export-notebook",
+      "jupyter-repl:fold-current-cell",
+      "jupyter-repl:fold-all-but-current-cell",
+      "jupyter-repl:clear-results",
+      "jupyter-repl:clear-and-restart",
+      "jupyter-repl:clear-and-center",
+      "jupyter-repl:recalculate-all",
+      "jupyter-repl:recalculate-all-above",
+      "jupyter-repl:run-all-inline",
+      "jupyter-repl:recalculate-all-inline",
+      "jupyter-repl:run-all-above-inline",
+      "jupyter-repl:run-all-below-inline",
+      "jupyter-repl:recalculate-all-above-inline",
+      "jupyter-repl:go-to-next-cell",
+      "jupyter-repl:go-to-previous-cell",
+      "jupyter-repl:select-cell",
+      "jupyter-repl:select-previous-cell",
+      "jupyter-repl:select-next-cell",
+      "jupyter-repl:move-cell-up",
+      "jupyter-repl:move-cell-down",
+      "jupyter-repl:open-jupyter-console",
+      "jupyter-repl:spawn-jupyter-console",
+      "jupyter-repl:copy-jupyter-console-command"
     ],
     "atom-workspace": [
-      "jove-repl:import-notebook",
-      "jove-repl:open-data-explorer",
-      "jove-repl:debug-toggle",
-      "jove-repl:toggle-kernel-monitor-focus",
-      "jove-repl:toggle-exec-panel",
-      "jove-repl:toggle-variable-explorer",
-      "jove-repl:hot-reload-package",
-      "jove-repl:open-examples",
-      "jove-repl:open-gateways",
-      "jove-repl:shutdown-all-kernels",
-      "jove-repl:toggle-inspector-focus",
-      "jove-repl:inspect-under-cursor"
+      "jupyter-repl:import-notebook",
+      "jupyter-repl:open-data-explorer",
+      "jupyter-repl:debug-toggle",
+      "jupyter-repl:toggle-kernel-monitor-focus",
+      "jupyter-repl:toggle-exec-panel",
+      "jupyter-repl:toggle-variable-explorer",
+      "jupyter-repl:hot-reload-package",
+      "jupyter-repl:open-examples",
+      "jupyter-repl:open-gateways",
+      "jupyter-repl:shutdown-all-kernels",
+      "jupyter-repl:toggle-inspector-focus",
+      "jupyter-repl:inspect-under-cursor"
     ]
   },
   "consumedServices": {
@@ -100,9 +99,9 @@
         "^1.0.0": "consumeStatusBar"
       }
     },
-    "jove.adapter": {
+    "jupyter.adapter": {
       "versions": {
-        "^1.0.0": "consumeJoveAdapter"
+        "^1.0.0": "consumeJupyterAdapter"
       }
     },
     "claude-chat": {
@@ -137,12 +136,12 @@
         "1.0.0": "provideAutocompleteResults"
       }
     },
-    "jove.provider": {
+    "jupyter.provider": {
       "versions": {
-        "1.0.0": "provideJove"
+        "1.0.0": "provideJupyter"
       }
     },
-    "jove.breakpoints": {
+    "jupyter.breakpoints": {
       "versions": {
         "1.0.0": "provideBreakpoints"
       }
@@ -162,7 +161,7 @@
     },
     "showInspectorResultsInAutocomplete": {
       "title": "Enable autocomplete description",
-      "description": "If enabled, jove-repl will try to show the results from kernel inspection in each autocomplete suggestion's description. May slow down the autocompletion performance. **Note**: Even if you disable this, you would still get autocomplete suggestions.",
+      "description": "If enabled, jupyter-repl will try to show the results from kernel inspection in each autocomplete suggestion's description. May slow down the autocompletion performance. **Note**: Even if you disable this, you would still get autocomplete suggestions.",
       "type": "boolean",
       "default": false
     },
@@ -174,7 +173,7 @@
     },
     "importNotebookURI": {
       "title": "Enable notebook auto-import",
-      "description": "If enabled, opening a file with extension `.ipynb` will import the notebook file's source into a new tab. If disabled, or if the jove-repl package is not activated, the raw file will open in Lumine as normal.",
+      "description": "If enabled, opening a file with extension `.ipynb` will import the notebook file's source into a new tab. If disabled, or if the jupyter-repl package is not activated, the raw file will open in Lumine as normal.",
       "type": "boolean",
       "default": true
     },
@@ -185,14 +184,14 @@
       "default": true
     },
     "statusBarDisable": {
-      "title": "Disable the jove-repl status bar",
+      "title": "Disable the jupyter-repl status bar",
       "description": "If enabled, no kernel information will be provided in Lumine's status bar.",
       "type": "boolean",
       "default": false
     },
     "statusBarKernelInfo": {
-      "title": "Detailed kernel information in the jove-repl status bar",
-      "description": "If enabled, more detailed kernel information (execution count, execution time if available) will be shown in the jove-repl status bar. This requires the above **Disable the jove-repl status bar** setting to be `false` to work.",
+      "title": "Detailed kernel information in the jupyter-repl status bar",
+      "description": "If enabled, more detailed kernel information (execution count, execution time if available) will be shown in the jupyter-repl status bar. This requires the above **Disable the jupyter-repl status bar** setting to be `false` to work.",
       "type": "boolean",
       "default": true
     },
@@ -242,7 +241,7 @@
     },
     "autoScroll": {
       "title": "Enable autoscroll",
-      "description": "If enabled, jove-repl will automatically scroll to the bottom of the result view.",
+      "description": "If enabled, jupyter-repl will automatically scroll to the bottom of the result view.",
       "type": "boolean",
       "default": true
     },
@@ -268,7 +267,7 @@
     },
     "wrapOutput": {
       "title": "Enable soft wrap for output",
-      "description": "If enabled, your output code from jove-repl will break long text and items.",
+      "description": "If enabled, your output code from jupyter-repl will break long text and items.",
       "type": "boolean",
       "default": true
     },
@@ -300,7 +299,7 @@
     },
     "languageMappings": {
       "title": "Language mappings",
-      "description": "Custom Lumine grammars and some kernels use non-standard language names. That leaves jove-repl unable to figure out what kernel to start for your code. This field should be a valid JSON mapping from a kernel language name to Lumine's grammar name ``` { \"kernel name\": \"grammar name\" } ```. For example ``` { \"scala211\": \"scala\", \"javascript\": \"babel es6 javascript\", \"python\": \"magicpython\" } ```.",
+      "description": "Custom Lumine grammars and some kernels use non-standard language names. That leaves jupyter-repl unable to figure out what kernel to start for your code. This field should be a valid JSON mapping from a kernel language name to Lumine's grammar name ``` { \"kernel name\": \"grammar name\" } ```. For example ``` { \"scala211\": \"scala\", \"javascript\": \"babel es6 javascript\", \"python\": \"magicpython\" } ```.",
       "type": "string",
       "default": "{ \"python\": \"magicpython\" }"
     },

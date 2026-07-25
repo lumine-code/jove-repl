@@ -28,7 +28,7 @@ describe("kernel discovery", () => {
   }
 
   beforeEach(() => {
-    root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "jove-repl-kernels-")));
+    root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "jupyter-repl-kernels-")));
     for (const key of ENV_KEYS) {
       savedEnv[key] = process.env[key];
       delete process.env[key];
@@ -87,8 +87,8 @@ describe("kernel discovery", () => {
   // install would claim, and the assertions look for those names rather than
   // for an exact set.
   describe("findAll", () => {
-    const ALPHA = "jove-spec-alpha";
-    const BETA = "jove-spec-beta";
+    const ALPHA = "jupyter-spec-alpha";
+    const BETA = "jupyter-spec-beta";
 
     it("reads every kernel.json below a data directory", async () => {
       writeKernel(root, ALPHA, JSON.stringify({ display_name: "Alpha", argv: ["alpha"] }));

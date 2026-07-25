@@ -24,7 +24,7 @@ camera = dict(
 )
 fig.update_layout(scene_camera=camera)
 
-# For Jove compatibility, display the figure using IPython display
+# For Jupyter compatibility, display the figure using IPython display
 # which outputs the native application/vnd.plotly.v1+json MIME type
 from IPython.display import display
 display(fig)

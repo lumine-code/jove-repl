@@ -1,0 +1,103 @@
+{
+  "atom-workspace": {
+    "alt-h i": "jupyter-repl:toggle-inspector-focus",
+    "alt-h d": "jupyter-repl:open-data-explorer",
+    "alt-h k": "jupyter-repl:toggle-kernel-monitor-focus",
+    "alt-h v": "jupyter-repl:toggle-variable-explorer",
+    "alt-h o": "jupyter-repl:toggle-output-area",
+    "alt-h w": "jupyter-repl:toggle-watches",
+    "alt-h e": "jupyter-repl:toggle-exec-panel"
+  },
+
+  "atom-workspace atom-text-editor:not([mini]):not(atom-dock atom-text-editor)": {
+    "cmdorctrl-enter": "jupyter-repl:run",
+    "shift-enter": "jupyter-repl:run-and-move-down",
+    "alt-enter": "jupyter-repl:run-cell",
+    "shift-alt-enter": "jupyter-repl:run-cell-and-move-down",
+    "cmdorctrl-shift-enter": "jupyter-repl:run-all",
+    "ctrl-shift-backspace": "jupyter-repl:clear-results",
+    "cmdorctrl-alt-backspace": "jupyter-repl:clear-results"
+  },
+
+  "atom-workspace .jupyter-repl.kernel-picker atom-text-editor[mini]": {
+    "ctrl-enter": "select-list:kernel",
+    "f5": "jupyter-repl:update-kernels"
+  },
+
+  "atom-workspace atom-text-editor.data-explorer-expression:not([mini])": {
+    "enter": "core:confirm",
+    "shift-enter": "editor:newline",
+    "escape": "core:cancel",
+    "tab": "jupyter-repl:data-explorer-focus-toolbar",
+    "shift-tab": "jupyter-repl:data-explorer-focus-body"
+  },
+
+  "atom-workspace .data-explorer-toolbar-row": {
+    "left": "jupyter-repl:data-explorer-toolbar-left",
+    "right": "jupyter-repl:data-explorer-toolbar-right",
+    "enter": "jupyter-repl:data-explorer-toolbar-confirm",
+    "tab": "jupyter-repl:data-explorer-focus-body",
+    "shift-tab": "jupyter-repl:data-explorer-focus-expression"
+  },
+
+  "atom-workspace atom-text-editor.inspector-expression:not([mini])": {
+    "enter": "core:confirm",
+    "shift-enter": "editor:newline",
+    "escape": "core:cancel",
+    "tab": "jupyter-repl:inspector-focus-body",
+    "shift-tab": "jupyter-repl:inspector-focus-body"
+  },
+
+  "atom-workspace .data-explorer-body": {
+    "tab": "jupyter-repl:data-explorer-focus-expression",
+    "shift-tab": "jupyter-repl:data-explorer-focus-toolbar"
+  },
+
+  "atom-workspace .data-explorer-canvas-wrap": {
+    "enter": "core:confirm",
+    "backspace": "jupyter-repl:data-explorer-drill-up",
+    "up": "core:move-up",
+    "down": "core:move-down",
+    "left": "core:move-left",
+    "right": "core:move-right",
+    "shift-up": "core:select-up",
+    "shift-down": "core:select-down",
+    "shift-left": "core:select-left",
+    "shift-right": "core:select-right",
+    "pageup": "jupyter-repl:data-grid-page-up",
+    "pagedown": "jupyter-repl:data-grid-page-down",
+    "shift-pageup": "jupyter-repl:data-grid-select-page-up",
+    "shift-pagedown": "jupyter-repl:data-grid-select-page-down",
+    "home": "jupyter-repl:data-grid-move-to-row-start",
+    "end": "jupyter-repl:data-grid-move-to-row-end",
+    "shift-home": "jupyter-repl:data-grid-select-to-row-start",
+    "shift-end": "jupyter-repl:data-grid-select-to-row-end",
+    "cmdorctrl-home": "core:move-to-top",
+    "cmdorctrl-end": "core:move-to-bottom",
+    "cmdorctrl-shift-home": "core:select-to-top",
+    "cmdorctrl-shift-end": "core:select-to-bottom",
+    "shift-space": "jupyter-repl:data-grid-select-row",
+    "ctrl-space": "jupyter-repl:data-grid-select-column"
+  },
+
+  "atom-workspace .jupyter-repl.inspector .inspector-body": {
+    "up": "jupyter-repl:inspector-scroll-up",
+    "down": "jupyter-repl:inspector-scroll-down",
+    "tab": "jupyter-repl:inspector-focus-expression",
+    "shift-tab": "jupyter-repl:inspector-focus-expression"
+  },
+
+  "atom-workspace atom-text-editor.watch-input:not([mini])": {
+    "enter": "core:confirm",
+    "shift-enter": "editor:newline"
+  },
+
+  "atom-workspace .kernel-monitor-wrapper": {
+    "up": "jupyter-repl:kernel-monitor-up",
+    "down": "jupyter-repl:kernel-monitor-down",
+    "enter": "jupyter-repl:kernel-monitor-open",
+    "i": "jupyter-repl:kernel-monitor-interrupt",
+    "r": "jupyter-repl:kernel-monitor-restart",
+    "s": "jupyter-repl:kernel-monitor-shutdown"
+  }
+}

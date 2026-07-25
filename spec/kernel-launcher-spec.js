@@ -35,7 +35,7 @@ describe("kernel launcher", () => {
   }
 
   beforeEach(() => {
-    root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "jove-repl-launch-")));
+    root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "jupyter-repl-launch-")));
     savedRuntimeDir = process.env.JUPYTER_RUNTIME_DIR;
     // Point the runtime directory at a path that does not exist yet, so the
     // specs also cover creating it.
@@ -169,12 +169,12 @@ describe("kernel launcher", () => {
       fs.writeFileSync(connectionFile, "{}");
 
       const spec = nodeSpec(
-        "require('fs').writeFileSync(process.argv[1], process.env.JOVE_SPEC_VAR || '')",
+        "require('fs').writeFileSync(process.argv[1], process.env.JUPYTER_SPEC_VAR || '')",
         report,
       );
       const { spawn } = launchSpecFromConnectionInfo(spec, {}, connectionFile, {
         cleanupConnectionFile: false,
-        env: { ...process.env, JOVE_SPEC_VAR: "from-caller" },
+        env: { ...process.env, JUPYTER_SPEC_VAR: "from-caller" },
       });
       await waitForExit(spawn);
 
@@ -187,10 +187,10 @@ describe("kernel launcher", () => {
       fs.writeFileSync(connectionFile, "{}");
 
       const spec = nodeSpec(
-        "require('fs').writeFileSync(process.argv[1], process.env.JOVE_SPEC_FROM_KERNEL || '')",
+        "require('fs').writeFileSync(process.argv[1], process.env.JUPYTER_SPEC_FROM_KERNEL || '')",
         report,
       );
-      spec.env = { JOVE_SPEC_FROM_KERNEL: "from-kernelspec" };
+      spec.env = { JUPYTER_SPEC_FROM_KERNEL: "from-kernelspec" };
       const { spawn } = launchSpecFromConnectionInfo(spec, {}, connectionFile, {
         cleanupConnectionFile: false,
       });
@@ -225,49 +225,49 @@ describe("kernel launcher", () => {
     }
 
     it("lets the kernelspec override a variable the caller set", async () => {
-      const { spec, read } = report("JOVE_SPEC_CONTESTED");
-      spec.env = { JOVE_SPEC_CONTESTED: "from-kernelspec" };
+      const { spec, read } = report("JUPYTER_SPEC_CONTESTED");
+      spec.env = { JUPYTER_SPEC_CONTESTED: "from-kernelspec" };
 
-      await launch(spec, { JOVE_SPEC_CONTESTED: "from-caller" });
+      await launch(spec, { JUPYTER_SPEC_CONTESTED: "from-caller" });
 
       expect(read()).toBe("from-kernelspec");
     });
 
     it("expands ${VAR} in kernelspec values, so a spec can extend rather than clobber", async () => {
-      const { spec, read } = report("JOVE_SPEC_EXTENDED");
-      spec.env = { JOVE_SPEC_EXTENDED: "prefix:${JOVE_SPEC_EXTENDED}:suffix" };
+      const { spec, read } = report("JUPYTER_SPEC_EXTENDED");
+      spec.env = { JUPYTER_SPEC_EXTENDED: "prefix:${JUPYTER_SPEC_EXTENDED}:suffix" };
 
-      await launch(spec, { JOVE_SPEC_EXTENDED: "from-caller" });
+      await launch(spec, { JUPYTER_SPEC_EXTENDED: "from-caller" });
 
       expect(read()).toBe("prefix:from-caller:suffix");
     });
 
     it("expands the bare $VAR form too", async () => {
-      const { spec, read } = report("JOVE_SPEC_BARE");
-      spec.env = { JOVE_SPEC_BARE: "$JOVE_SPEC_SOURCE/lib" };
+      const { spec, read } = report("JUPYTER_SPEC_BARE");
+      spec.env = { JUPYTER_SPEC_BARE: "$JUPYTER_SPEC_SOURCE/lib" };
 
-      await launch(spec, { JOVE_SPEC_SOURCE: "/opt/env" });
+      await launch(spec, { JUPYTER_SPEC_SOURCE: "/opt/env" });
 
       expect(read()).toBe("/opt/env/lib");
     });
 
     it("leaves unknown names and escaped dollars as written", async () => {
-      const { spec, read } = report("JOVE_SPEC_LITERAL");
-      spec.env = { JOVE_SPEC_LITERAL: "$$5 ${JOVE_SPEC_NOT_SET} 100$" };
+      const { spec, read } = report("JUPYTER_SPEC_LITERAL");
+      spec.env = { JUPYTER_SPEC_LITERAL: "$$5 ${JUPYTER_SPEC_NOT_SET} 100$" };
 
       await launch(spec, {});
 
-      expect(read()).toBe("$5 ${JOVE_SPEC_NOT_SET} 100$");
+      expect(read()).toBe("$5 ${JUPYTER_SPEC_NOT_SET} 100$");
     });
 
     if (process.platform === "win32") {
       it("treats differently-cased names as the same variable", async () => {
-        const { spec, read } = report("JOVE_SPEC_CASED");
+        const { spec, read } = report("JUPYTER_SPEC_CASED");
         // Windows resolves env names case-insensitively, so this must replace
         // the caller's entry rather than sit beside it.
-        spec.env = { jove_spec_cased: "from-kernelspec" };
+        spec.env = { jupyter_spec_cased: "from-kernelspec" };
 
-        await launch(spec, { JOVE_SPEC_CASED: "from-caller" });
+        await launch(spec, { JUPYTER_SPEC_CASED: "from-caller" });
 
         expect(read()).toBe("from-kernelspec");
       });

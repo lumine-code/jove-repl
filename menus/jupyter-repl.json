@@ -4,163 +4,163 @@
       "label": "Packages",
       "submenu": [
         {
-          "label": "Jove",
+          "label": "Jupyter",
           "submenu": [
             {
               "label": "Start Local Kernel",
-              "command": "jove-repl:start-local-kernel"
+              "command": "jupyter-repl:start-local-kernel"
             },
             {
               "label": "Connect to Remote Kernel",
-              "command": "jove-repl:connect-to-remote-kernel"
+              "command": "jupyter-repl:connect-to-remote-kernel"
             },
             {
               "label": "Open Gateways Config",
-              "command": "jove-repl:open-gateways"
+              "command": "jupyter-repl:open-gateways"
             },
             {
               "label": "Connect to Existing Kernel",
-              "command": "jove-repl:connect-to-existing-kernel"
+              "command": "jupyter-repl:connect-to-existing-kernel"
             },
             {
               "label": "Interrupt Kernel",
-              "command": "jove-repl:interrupt-kernel"
+              "command": "jupyter-repl:interrupt-kernel"
             },
             {
               "label": "Restart Kernel",
-              "command": "jove-repl:restart-kernel"
+              "command": "jupyter-repl:restart-kernel"
             },
             {
               "label": "Shutdown Kernel",
-              "command": "jove-repl:shutdown-kernel"
+              "command": "jupyter-repl:shutdown-kernel"
             },
             {
               "label": "Shutdown All Kernels",
-              "command": "jove-repl:shutdown-all-kernels"
+              "command": "jupyter-repl:shutdown-all-kernels"
             },
             {
               "label": "Open Jupyter Console",
-              "command": "jove-repl:open-jupyter-console"
+              "command": "jupyter-repl:open-jupyter-console"
             },
             {
               "label": "Spawn Jupyter Console",
-              "command": "jove-repl:spawn-jupyter-console"
+              "command": "jupyter-repl:spawn-jupyter-console"
             },
             {
               "label": "Copy Jupyter Console Command",
-              "command": "jove-repl:copy-jupyter-console-command"
+              "command": "jupyter-repl:copy-jupyter-console-command"
             },
             {
               "label": "Toggle Kernel Monitor",
-              "command": "jove-repl:toggle-kernel-monitor-focus"
+              "command": "jupyter-repl:toggle-kernel-monitor-focus"
             },
             {
               "label": "Update Kernels",
-              "command": "jove-repl:update-kernels"
+              "command": "jupyter-repl:update-kernels"
             },
             { "type": "separator" },
             {
               "label": "Run",
-              "command": "jove-repl:run"
+              "command": "jupyter-repl:run"
             },
             {
               "label": "Run and Move Down",
-              "command": "jove-repl:run-and-move-down"
+              "command": "jupyter-repl:run-and-move-down"
             },
             {
               "label": "Run Cell",
-              "command": "jove-repl:run-cell"
+              "command": "jupyter-repl:run-cell"
             },
             {
               "label": "Run Cell and Move Down",
-              "command": "jove-repl:run-cell-and-move-down"
+              "command": "jupyter-repl:run-cell-and-move-down"
             },
             {
               "label": "Run All",
-              "command": "jove-repl:run-all"
+              "command": "jupyter-repl:run-all"
             },
             {
               "label": "Run All Above",
-              "command": "jove-repl:run-all-above"
+              "command": "jupyter-repl:run-all-above"
             },
             {
               "label": "Recalculate All",
-              "command": "jove-repl:recalculate-all"
+              "command": "jupyter-repl:recalculate-all"
             },
             {
               "label": "Recalculate All Above",
-              "command": "jove-repl:recalculate-all-above"
+              "command": "jupyter-repl:recalculate-all-above"
             },
             {
               "label": "Recalculate All Inline",
-              "command": "jove-repl:recalculate-all-inline"
+              "command": "jupyter-repl:recalculate-all-inline"
             },
             {
               "label": "Recalculate All Above Inline",
-              "command": "jove-repl:recalculate-all-above-inline"
+              "command": "jupyter-repl:recalculate-all-above-inline"
             },
             {
               "label": "Run All Inline",
-              "command": "jove-repl:run-all-inline"
+              "command": "jupyter-repl:run-all-inline"
             },
             {
               "label": "Run All Above Inline",
-              "command": "jove-repl:run-all-above-inline"
+              "command": "jupyter-repl:run-all-above-inline"
             },
             {
               "label": "Run All Below Inline",
-              "command": "jove-repl:run-all-below-inline"
+              "command": "jupyter-repl:run-all-below-inline"
             },
             { "type": "separator" },
             {
               "label": "Clear Results",
-              "command": "jove-repl:clear-results"
+              "command": "jupyter-repl:clear-results"
             },
             {
               "label": "Clear and Restart",
-              "command": "jove-repl:clear-and-restart"
+              "command": "jupyter-repl:clear-and-restart"
             },
             {
               "label": "Clear and Center",
-              "command": "jove-repl:clear-and-center"
+              "command": "jupyter-repl:clear-and-center"
             },
             { "type": "separator" },
             {
               "label": "Show Inspector",
-              "command": "jove-repl:toggle-inspector-focus"
+              "command": "jupyter-repl:toggle-inspector-focus"
             },
             {
               "label": "Inspect Under Cursor",
-              "command": "jove-repl:inspect-under-cursor"
+              "command": "jupyter-repl:inspect-under-cursor"
             },
             {
               "label": "Toggle Output Area",
-              "command": "jove-repl:toggle-output-area"
+              "command": "jupyter-repl:toggle-output-area"
             },
             {
               "label": "Toggle Watches",
-              "command": "jove-repl:toggle-watches"
+              "command": "jupyter-repl:toggle-watches"
             },
             {
               "label": "Toggle Variables",
-              "command": "jove-repl:toggle-variable-explorer"
+              "command": "jupyter-repl:toggle-variable-explorer"
             },
             {
               "label": "Data Explorer",
-              "command": "jove-repl:open-data-explorer"
+              "command": "jupyter-repl:open-data-explorer"
             },
             { "type": "separator" },
             {
               "label": "Import Notebook",
-              "command": "jove-repl:import-notebook"
+              "command": "jupyter-repl:import-notebook"
             },
             {
               "label": "Export Notebook",
-              "command": "jove-repl:export-notebook"
+              "command": "jupyter-repl:export-notebook"
             },
             {
               "label": "Open Examples",
-              "command": "jove-repl:open-examples"
+              "command": "jupyter-repl:open-examples"
             }
           ]
         }
@@ -172,7 +172,7 @@
     ".tree-view .file .name[data-name$=\\.ipynb]": [
       {
         "label": "Import Notebook",
-        "command": "jove-repl:import-notebook"
+        "command": "jupyter-repl:import-notebook"
       }
     ]
   }
