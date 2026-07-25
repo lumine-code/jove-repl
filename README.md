@@ -413,7 +413,7 @@ In your `package.json`:
   "consumedServices": {
     "jove.provider": {
       "versions": {
-        "^1.3.0": "consumeJove"
+        "^1.0.0": "consumeJove"
       }
     }
   }
@@ -519,16 +519,16 @@ async function runCode(jove) {
 
 ## Services
 
-- **jove.provider** (`1.3.0`): provided to let other packages execute code, request completions and introspection, and follow kernel state.
-- **autocomplete.provider** (`4.0.0`): provided to feed kernel-backed completions to autocomplete consumers while a kernel is active for the editor.
-- **jove.breakpoints** (`0.0.1`): provided to expose breakpoint state to integrations that inspect or render breakpoints.
+- **jove.provider** (`1.0.0`): provided to let other packages execute code, request completions and introspection, and follow kernel state.
+- **autocomplete.provider** (`1.0.0`): provided to feed kernel-backed completions to autocomplete consumers while a kernel is active for the editor.
+- **jove.breakpoints** (`1.0.0`): provided to expose breakpoint state to integrations that inspect or render breakpoints.
 - **search-adapter** (`1.0.0`): provided to let the search-panel package search the active Data Explorer grid.
-- **jove.adapter** (`1.0.0`): consumed to run cells of external pane items, such as jove-view notebooks, through the normal run commands.
+- **jove.adapter** (`^1.0.0`): consumed to run cells of external pane items, such as jove-view notebooks, through the normal run commands.
 - **autocomplete.watchEditor** (`^1.0.0`): consumed to keep autocomplete active in the watch and inspector editors.
 - **status-bar** (`^1.0.0`): consumed to display the kernel of the active editor and its execution state.
-- **terminal** (`2.0.0`): consumed to run the Jupyter console in an embedded terminal pane.
+- **terminal** (`^1.0.0`): consumed to run the Jupyter console in an embedded terminal pane.
 - **terminal-spawn** (`^1.0.0`): consumed to run the Jupyter console in a system terminal.
-- **image-editor** (`1.0.0`): consumed to open image outputs in a full image editor.
+- **image-editor** (`^1.0.0`): consumed to open image outputs in a full image editor.
 - **claude-chat** (`^1.0.0`): consumed to attach code and its output to a chat conversation.
 - **scroll-keeper** (`^1.0.0`): consumed to keep the viewport stable while inline results resize the editor.
 

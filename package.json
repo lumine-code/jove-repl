@@ -21,7 +21,7 @@
     "plot",
     "image"
   ],
-  "version": "6.0.0",
+  "version": "1.0.0",
   "license": "MIT",
   "engines": {
     "atom": ">=1.100.0 <2.0.0"
@@ -107,7 +107,7 @@
     },
     "jove.adapter": {
       "versions": {
-        "1.0.0": "consumeJoveAdapter"
+        "^1.0.0": "consumeJoveAdapter"
       }
     },
     "claude-chat": {
@@ -117,12 +117,12 @@
     },
     "image-editor": {
       "versions": {
-        "1.0.0": "consumeImageEditor"
+        "^1.0.0": "consumeImageEditor"
       }
     },
     "terminal": {
       "versions": {
-        "2.0.0": "consumeTerminal"
+        "^1.0.0": "consumeTerminal"
       }
     },
     "terminal-spawn": {
@@ -139,17 +139,17 @@
   "providedServices": {
     "autocomplete.provider": {
       "versions": {
-        "4.0.0": "provideAutocompleteResults"
+        "1.0.0": "provideAutocompleteResults"
       }
     },
     "jove.provider": {
       "versions": {
-        "1.3.0": "provideJove"
+        "1.0.0": "provideJove"
       }
     },
     "jove.breakpoints": {
       "versions": {
-        "0.0.1": "provideBreakpoints"
+        "1.0.0": "provideBreakpoints"
       }
     },
     "search-adapter": {
