@@ -1,7 +1,7 @@
 {
   "name": "jove-repl",
   "author": "lumine-code",
-  "description": "Run code interactively with Jupyter kernels",
+  "description": "Run code interactively with Jupyter kernels.",
   "repository": "https://github.com/lumine-code/jove-repl",
   "bugs": {
     "url": "https://github.com/lumine-code/jove-repl/issues"

@@ -1,6 +1,8 @@
 # jove-repl
 
-Run code interactively with Jupyter kernels. Supports Python, R, JavaScript, and other languages with rich output including plots, images, HTML, and LaTeX.
+Run code interactively with Jupyter kernels.
+
+Supports Python, R, JavaScript, and other languages with rich output including plots, images, HTML, and LaTeX.
 
 ## Features
 
