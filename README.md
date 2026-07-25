@@ -16,7 +16,7 @@ Run code interactively with Jupyter kernels. Supports Python, R, JavaScript, and
 
 ## Installation
 
-To install `jove-repl`, clone this repository into your Lumine packages directory (`~/.lumine/packages/jove-repl`) and restart Lumine. If it is listed in your configured package sources, it can also be installed from the Install pane of the Lumine settings.
+To install `jove-repl` search for *jove-repl* in the Install pane of the Lumine settings or run `lumine --install lumine-code/jove-repl`.
 
 ## Commands
 
@@ -70,7 +70,7 @@ Commands available in `atom-workspace`:
 - `jove-repl:open-examples`: open example files,
 - `jove-repl:open-gateways`: open `gateways.json`,
 - `jove-repl:shutdown-all-kernels`: shutdown all running kernels,
-- `jove-repl:toggle-kernel-monitor-focus`: toggle focus to the kernel monitor panel (returns focus to the editor when already focused). The highlighted row follows the kernel of the active editor; navigate with <kbd>up</kbd> / <kbd>down</kbd>, open the selected kernel's files with <kbd>Enter</kbd>, and act on it with <kbd>i</kbd> (interrupt), <kbd>r</kbd> (restart), <kbd>s</kbd> (shutdown),
+- `jove-repl:toggle-kernel-monitor-focus`: toggle focus to the kernel monitor panel, whose highlighted row follows the kernel of the active editor and which can open, interrupt, restart, or shut down the selected kernel,
 - `jove-repl:toggle-exec-panel`: toggle exec panel,
 - `jove-repl:toggle-inspector-focus`: show inspector pane,
 - `jove-repl:inspect-under-cursor`: inspect the expression under the cursor without moving focus from the editor,
@@ -80,9 +80,9 @@ Commands available in `atom-workspace`:
 - `jove-repl:spawn-jupyter-console`: spawn Jupyter console attached to active kernel in a system terminal,
 - `jove-repl:copy-jupyter-console-command`: copy the Jupyter console command to clipboard.
 
-## Provided Service `search-adapter`
+## Data explorer search
 
-Allows the search-panel package to search the active Data Explorer pane through the normal buffer find workflow:
+Through the `search-adapter` service, the search-panel package can search the active Data Explorer pane with the normal buffer find workflow:
 
 - `search-panel:show`, `search-panel:find-next`, and `search-panel:find-previous` search the visible Data Explorer grid instead of the active text editor while the Data Explorer pane is active.
 - Matching cells are highlighted in the canvas grid. The current match uses a stronger highlight and is scrolled into view.
@@ -90,23 +90,11 @@ Allows the search-panel package to search the active Data Explorer pane through 
 - Data Explorer is read-only, so replace commands are disabled for this pane.
 - Drill-down, breadcrumb navigation, refresh, errors, and reset refresh the search result list so stale cell matches are cleared.
 
-This service is provided as `search-adapter@1.0.0` through `provideSearchAdapter`.
-
 ## Editor kernel class
 
-While a file has a running kernel, jove-repl adds the `jove-kernel` class to its `atom-text-editor` element. The class is added when the kernel starts, removed when it shuts down, and follows the file when it is saved or reopened. This lets you scope keymaps and styles to editors that actually have a live kernel.
+While a file has a running kernel, jove-repl adds the `jove-kernel` class to its `atom-text-editor` element. The class is added when the kernel starts, removed when it shuts down, and follows the file when it is saved or reopened. This lets you scope styles to editors that actually have a live kernel.
 
-For example, bind <kbd>Ctrl+Enter</kbd> to run code only when a kernel is running, in your `keymap.json`:
-
-```json
-{
-  "atom-text-editor.jove-kernel:not([mini])": {
-    "ctrl-enter": "jove-repl:run"
-  }
-}
-```
-
-Or highlight such editors in your `styles.css`:
+For example, highlight such editors in your `styles.css`:
 
 ```css
 atom-text-editor.jove-kernel {
@@ -211,7 +199,7 @@ Matching rules:
 
 If no match is found, falls back to normal behavior (picker or auto-select).
 
-In the kernel picker, press **Ctrl+Enter** to insert the selected kernel as a magic comment instead of starting it.
+The kernel picker can also write the magic comment for you: it offers to insert the selected kernel as a magic comment instead of starting it.
 
 ## Kernel gateways
 
@@ -365,9 +353,9 @@ The command template is configurable via the `Jupyter console command` setting. 
 - `jupyter console --existing {connection-file}` (uses `jupyter` from the terminal's PATH),
 - `ssh remote 'jupyter console --existing {connection-file}'`.
 
-## Consumed Service `jove.adapter`
+## Notebook adapter API
 
-Allows non-TextEditor pane items, such as notebooks from the jove-view package, to be executed through jove-repl commands. The adapter owns target enumeration, source retrieval, output persistence, and focus/navigation inside the external pane item.
+The `jove.adapter` service allows non-TextEditor pane items, such as notebooks from the jove-view package, to be executed through jove-repl commands. The adapter owns target enumeration, source retrieval, output persistence, and focus/navigation inside the external pane item.
 
 External packages provide this service in `package.json`:
 
@@ -414,9 +402,9 @@ The service object must expose `getActiveAdapter()` or `handlesItem(item)` plus 
 
 `finishTargetExecution` receives `{ kernel, success, status, lastExecutionTime }`, where `status` is one of `"ok"`, `"error"`, `"failed"`, `"cancelled"`, or `"skipped"`.
 
-## Provided Service `jove.provider`
+## Kernel API
 
-Allows other packages to interact with Jupyter kernels: execute code, get completions, inspect objects, and monitor kernel state.
+The `jove.provider` service allows other packages to interact with Jupyter kernels: execute code, get completions, inspect objects, and monitor kernel state.
 
 In your `package.json`:
 
@@ -436,12 +424,12 @@ In your main module:
 
 ```javascript
 module.exports = {
-  consumeJove(jove-repl) {
-    this.jove-repl = jove-repl;
+  consumeJove(jove) {
+    this.jove = jove;
   },
 
   async example() {
-    const kernel = this.jove-repl.getActiveKernel();
+    const kernel = this.jove.getActiveKernel();
     const result = await kernel.execute("print('Hello')");
     console.log(result.status); // 'ok' or 'error'
   },
@@ -503,8 +491,8 @@ module.exports = {
 ### Example: Execute and Handle Results
 
 ```javascript
-async function runCode(jove-repl) {
-  const kernel = jove-repl.getActiveKernel();
+async function runCode(jove) {
+  const kernel = jove.getActiveKernel();
 
   // Simple execution
   const result = await kernel.execute("x = 42\nprint(x)");
@@ -529,13 +517,20 @@ async function runCode(jove-repl) {
 }
 ```
 
-## Provided Service `autocomplete.provider`
+## Services
 
-Provides kernel-backed completions to Lumine autocomplete consumers while a Jove kernel is active for the editor. This service is provided as `autocomplete.provider@4.0.0` through `provideAutocompleteResults`.
-
-## Provided Service `jove.breakpoints`
-
-Provides breakpoint state for integrations that need to inspect or render Jove breakpoints. This service is provided as `jove.breakpoints@0.0.1` through `provideBreakpoints`.
+- **jove.provider** (`1.3.0`): provided to let other packages execute code, request completions and introspection, and follow kernel state.
+- **autocomplete.provider** (`4.0.0`): provided to feed kernel-backed completions to autocomplete consumers while a kernel is active for the editor.
+- **jove.breakpoints** (`0.0.1`): provided to expose breakpoint state to integrations that inspect or render breakpoints.
+- **search-adapter** (`1.0.0`): provided to let the search-panel package search the active Data Explorer grid.
+- **jove.adapter** (`1.0.0`): consumed to run cells of external pane items, such as jove-view notebooks, through the normal run commands.
+- **autocomplete.watchEditor** (`^1.0.0`): consumed to keep autocomplete active in the watch and inspector editors.
+- **status-bar** (`^1.0.0`): consumed to display the kernel of the active editor and its execution state.
+- **terminal** (`2.0.0`): consumed to run the Jupyter console in an embedded terminal pane.
+- **terminal-spawn** (`^1.0.0`): consumed to run the Jupyter console in a system terminal.
+- **image-editor** (`1.0.0`): consumed to open image outputs in a full image editor.
+- **claude-chat** (`^1.0.0`): consumed to attach code and its output to a chat conversation.
+- **scroll-keeper** (`^1.0.0`): consumed to keep the viewport stable while inline results resize the editor.
 
 ## Contributing
 
