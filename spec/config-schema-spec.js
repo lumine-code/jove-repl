@@ -67,10 +67,12 @@ describe("jove-repl configSchema", () => {
     }
   });
 
-  it("orders the settings without duplicate order values", () => {
-    const orders = Object.values(configSchema).map((entry) => entry.order);
-    expect(orders.every((order) => Number.isInteger(order))).toBe(true);
-    expect(new Set(orders).size).toBe(orders.length);
+  it("leaves the settings unordered", () => {
+    // Lumine lays the settings out on its own; an `order` key here would only
+    // go stale as entries come and go.
+    for (const [key, entry] of Object.entries(configSchema)) {
+      expect(entry.order).toBeUndefined(`${key} still declares an order`);
+    }
   });
 
   it("declares every setting the source reads", () => {

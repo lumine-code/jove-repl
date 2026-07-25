@@ -162,70 +162,60 @@
       "title": "Enable autocomplete",
       "description": "If enabled, use autocomplete options provided by the current kernel. This applies to both the main editor and watch pane editors.",
       "type": "boolean",
-      "order": 1,
       "default": true
     },
     "showInspectorResultsInAutocomplete": {
       "title": "Enable autocomplete description",
       "description": "If enabled, jove-repl will try to show the results from kernel inspection in each autocomplete suggestion's description. May slow down the autocompletion performance. **Note**: Even if you disable this, you would still get autocomplete suggestions.",
       "type": "boolean",
-      "order": 2,
       "default": false
     },
     "autocompleteSuggestionPriority": {
       "title": "Autocomplete suggestion priority",
       "description": "Autocomplete suggestion priority. Lower value means higher priority relative to other providers. The built-in snippets provider has priority 2.",
       "type": "integer",
-      "order": 3,
       "default": 4
     },
     "importNotebookURI": {
       "title": "Enable notebook auto-import",
       "description": "If enabled, opening a file with extension `.ipynb` will import the notebook file's source into a new tab. If disabled, or if the jove-repl package is not activated, the raw file will open in Lumine as normal.",
       "type": "boolean",
-      "order": 4,
       "default": true
     },
     "importNotebookResults": {
       "title": "Enable import of notebook results",
       "description": "If enabled, anytime you import a notebook, the saved results are also rendered inline. If disabled, you can still import notebooks as normal.",
       "type": "boolean",
-      "order": 5,
       "default": true
     },
     "statusBarDisable": {
       "title": "Disable the jove-repl status bar",
       "description": "If enabled, no kernel information will be provided in Lumine's status bar.",
       "type": "boolean",
-      "order": 6,
       "default": false
     },
     "statusBarKernelInfo": {
       "title": "Detailed kernel information in the jove-repl status bar",
       "description": "If enabled, more detailed kernel information (execution count, execution time if available) will be shown in the jove-repl status bar. This requires the above **Disable the jove-repl status bar** setting to be `false` to work.",
       "type": "boolean",
-      "order": 7,
       "default": true
     },
     "autoKernelPicker": {
       "title": "Auto kernel picker",
       "description": "Automatically select kernel if only one available.",
       "type": "boolean",
-      "order": 8,
       "default": false
     },
     "globalMode": {
       "title": "Enable global kernel",
       "description": "If enabled, all files of the same grammar will share a single global kernel (requires Lumine restart).",
       "type": "boolean",
-      "order": 9,
       "default": false
     },
     "startDir": {
       "title": "Directory to start kernel in",
       "description": "Restart the kernel for changes to take effect.",
       "type": "string",
-      "order": 10,
       "enum": [
         {
           "value": "firstProjectDir",
@@ -246,28 +236,24 @@
       "title": "Enable kernel notifications",
       "description": "Notify if kernels writes to stdout. By default, kernel notifications are only displayed in the developer console.",
       "type": "boolean",
-      "order": 11,
       "default": false
     },
     "cellMarkers": {
       "title": "Create cell markers",
       "description": "The cell marker decoration can be customised in your `styles.css`. Requires reopening the editor after config change.",
       "type": "boolean",
-      "order": 12,
       "default": false
     },
     "autoScroll": {
       "title": "Enable autoscroll",
       "description": "If enabled, jove-repl will automatically scroll to the bottom of the result view.",
       "type": "boolean",
-      "order": 13,
       "default": true
     },
     "scrollOnMoveDown": {
       "title": "Scroll behavior on move down",
       "description": "Controls scrolling behavior when running code and moving to the next line.",
       "type": "string",
-      "order": 14,
       "enum": [
         {
           "value": "none",
@@ -288,28 +274,24 @@
       "title": "Enable soft wrap for output",
       "description": "If enabled, your output code from jove-repl will break long text and items.",
       "type": "boolean",
-      "order": 15,
       "default": true
     },
     "outputAreaDefault": {
       "title": "View output in the dock by default",
       "description": "If enabled, output will be displayed in the dock by default rather than inline.",
       "type": "boolean",
-      "order": 16,
       "default": false
     },
     "outputAreaDock": {
       "title": "Leave output dock open",
       "description": "Do not close dock when switching to an editor without a running kernel.",
       "type": "boolean",
-      "order": 17,
       "default": true
     },
     "outputAreaFontSize": {
       "title": "Output area fontsize",
       "description": "Change the fontsize of the Output area.",
       "type": "integer",
-      "order": 18,
       "minimum": 0,
       "default": 0
     },
@@ -317,7 +299,6 @@
       "title": "Maximum output length",
       "description": "Maximum number of characters to display in output before truncating. Set to 0 for no limit. Large outputs may cause performance issues.",
       "type": "integer",
-      "order": 19,
       "minimum": 0,
       "default": 100000
     },
@@ -325,28 +306,24 @@
       "title": "Language mappings",
       "description": "Custom Lumine grammars and some kernels use non-standard language names. That leaves jove-repl unable to figure out what kernel to start for your code. This field should be a valid JSON mapping from a kernel language name to Lumine's grammar name ``` { \"kernel name\": \"grammar name\" } ```. For example ``` { \"scala211\": \"scala\", \"javascript\": \"babel es6 javascript\", \"python\": \"magicpython\" } ```.",
       "type": "string",
-      "order": 20,
       "default": "{ \"python\": \"magicpython\" }"
     },
     "startupCodePerLanguage": {
       "title": "Startup code per language",
       "description": "Code executed on kernel startup, matched by language name. Runs before kernel-specific code. Format: `{\"language\": \"your code \\nmore code\"}`. Example: `{\"python\": \"%matplotlib inline\", \"javascript\": \"console.log('ready')\"}`.",
       "type": "string",
-      "order": 21,
       "default": "{}"
     },
     "startupCodePerKernel": {
       "title": "Startup code per kernel",
       "description": "Code executed on kernel startup, matched by kernel display name. Format: `{\"kernel\": \"your code \\nmore code\"}`. Example: `{\"Python 3\": \"%matplotlib inline\"}`.",
       "type": "string",
-      "order": 22,
       "default": "{}"
     },
     "pythonAutoreload": {
       "title": "Python autoreload",
       "description": "Automatically reload modified Python modules before executing code. Useful during development to avoid kernel restarts.",
       "type": "string",
-      "order": 24,
       "enum": [
         {
           "value": "off",
@@ -367,21 +344,18 @@
       "title": "Python autoreload logging",
       "description": "Show messages when modules are reloaded by the autoreload extension.",
       "type": "boolean",
-      "order": 25,
       "default": false
     },
     "debug": {
       "title": "Enable debug messages",
       "description": "If enabled, log debug messages onto the dev console.",
       "type": "boolean",
-      "order": 26,
       "default": false
     },
     "jupyterCommand": {
       "title": "Jupyter console command",
       "description": "Command used by `Launch Jupyter Console` and `Copy Jupyter Console Command`. Use `{python}` for the active kernel's Python interpreter (so the console connects without activating the environment) and `{connection-file}` for the kernel's connection file path (it will be quoted automatically).",
       "type": "string",
-      "order": 27,
       "default": "\"{python}\" -m jupyter_console --existing {connection-file}"
     }
   },
