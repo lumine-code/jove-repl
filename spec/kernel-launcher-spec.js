@@ -200,6 +200,80 @@ describe("kernel launcher", () => {
     });
   });
 
+  // The kernelspec's `env` beating the caller's is what Jupyter's own client
+  // does, and is the opposite of what spawnteract did.
+  describe("environment precedence", () => {
+    // Reports one variable as the kernel sees it.
+    function report(name) {
+      const file = path.join(root, `${name}.txt`);
+      const spec = nodeSpec(
+        "require('fs').writeFileSync(process.argv[1], process.env[process.argv[2]] || '')",
+        file,
+        name,
+      );
+      return { spec, read: () => fs.readFileSync(file, "utf8") };
+    }
+
+    async function launch(spec, callerEnv) {
+      const connectionFile = path.join(root, "env-precedence.json");
+      fs.writeFileSync(connectionFile, "{}");
+      const { spawn } = launchSpecFromConnectionInfo(spec, {}, connectionFile, {
+        cleanupConnectionFile: false,
+        env: { ...process.env, ...callerEnv },
+      });
+      await waitForExit(spawn);
+    }
+
+    it("lets the kernelspec override a variable the caller set", async () => {
+      const { spec, read } = report("JOVE_SPEC_CONTESTED");
+      spec.env = { JOVE_SPEC_CONTESTED: "from-kernelspec" };
+
+      await launch(spec, { JOVE_SPEC_CONTESTED: "from-caller" });
+
+      expect(read()).toBe("from-kernelspec");
+    });
+
+    it("expands ${VAR} in kernelspec values, so a spec can extend rather than clobber", async () => {
+      const { spec, read } = report("JOVE_SPEC_EXTENDED");
+      spec.env = { JOVE_SPEC_EXTENDED: "prefix:${JOVE_SPEC_EXTENDED}:suffix" };
+
+      await launch(spec, { JOVE_SPEC_EXTENDED: "from-caller" });
+
+      expect(read()).toBe("prefix:from-caller:suffix");
+    });
+
+    it("expands the bare $VAR form too", async () => {
+      const { spec, read } = report("JOVE_SPEC_BARE");
+      spec.env = { JOVE_SPEC_BARE: "$JOVE_SPEC_SOURCE/lib" };
+
+      await launch(spec, { JOVE_SPEC_SOURCE: "/opt/env" });
+
+      expect(read()).toBe("/opt/env/lib");
+    });
+
+    it("leaves unknown names and escaped dollars as written", async () => {
+      const { spec, read } = report("JOVE_SPEC_LITERAL");
+      spec.env = { JOVE_SPEC_LITERAL: "$$5 ${JOVE_SPEC_NOT_SET} 100$" };
+
+      await launch(spec, {});
+
+      expect(read()).toBe("$5 ${JOVE_SPEC_NOT_SET} 100$");
+    });
+
+    if (process.platform === "win32") {
+      it("treats differently-cased names as the same variable", async () => {
+        const { spec, read } = report("JOVE_SPEC_CASED");
+        // Windows resolves env names case-insensitively, so this must replace
+        // the caller's entry rather than sit beside it.
+        spec.env = { jove_spec_cased: "from-kernelspec" };
+
+        await launch(spec, { JOVE_SPEC_CASED: "from-caller" });
+
+        expect(read()).toBe("from-kernelspec");
+      });
+    }
+  });
+
   describe("launchSpec", () => {
     it("allocates a connection file and starts the kernel against it", async () => {
       const report = path.join(root, "launched.txt");
