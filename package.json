@@ -8,18 +8,13 @@
   },
   "homepage": "https://github.com/lumine-code/jove-repl#readme",
   "keywords": [
-    "execute",
-    "run",
     "jupyter",
+    "kernel",
     "ipython",
-    "julia",
     "python",
-    "torch",
-    "ijulia",
-    "irkernel",
-    "itorch",
-    "plot",
-    "image"
+    "interactive",
+    "notebook",
+    "ipynb"
   ],
   "version": "1.0.0",
   "license": "MIT",
