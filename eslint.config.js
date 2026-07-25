@@ -33,6 +33,16 @@ module.exports = [
     },
     plugins: { jsx },
     rules: {
+      // fs.F_OK and friends are runtime deprecated (DEP0176) and slated for
+      // removal; the constants live on fs.constants.
+      "no-restricted-properties": [
+        "error",
+        ...["F_OK", "R_OK", "W_OK", "X_OK"].map((constant) => ({
+          object: "fs",
+          property: constant,
+          message: `Use fs.constants.${constant} instead: fs.${constant} is deprecated (DEP0176).`,
+        })),
+      ],
       "no-constant-condition": ["error", { checkLoops: false }],
       "no-empty": ["error", { allowEmptyCatch: true }],
       "no-unused-vars": [
