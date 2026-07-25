@@ -16,7 +16,7 @@ Run code interactively with Jupyter kernels. Supports Python, R, JavaScript, and
 
 ## Installation
 
-To install `jove-repl` search for *jove-repl* in the Install pane of the Lumine settings or run `lumine --install lumine-code/jove-repl`.
+To install `jove-repl` search for _jove-repl_ in the Install pane of the Lumine settings or run `lumine --install lumine-code/jove-repl`.
 
 ## Commands
 
