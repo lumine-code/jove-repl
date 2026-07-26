@@ -128,7 +128,7 @@
   "providedServices": {
     "autocomplete.provider": {
       "versions": {
-        "1.0.0": "provideAutocompleteResults"
+        "1.0.0": "provideAutocomplete"
       }
     },
     "jupyter.provider": {
@@ -138,7 +138,7 @@
     },
     "jupyter.breakpoints": {
       "versions": {
-        "1.0.0": "provideBreakpoints"
+        "1.0.0": "provideJupyterBreakpoints"
       }
     },
     "search-adapter": {
