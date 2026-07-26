@@ -406,14 +406,14 @@ The service object must expose `getActiveAdapter()` or `handlesItem(item)` plus 
 
 ## Kernel API
 
-The `jupyter.provider` service allows other packages to interact with Jupyter kernels: execute code, get completions, inspect objects, and monitor kernel state.
+The `jupyter.kernel` service allows other packages to interact with Jupyter kernels: execute code, get completions, inspect objects, and monitor kernel state.
 
 In your `package.json`:
 
 ```json
 {
   "consumedServices": {
-    "jupyter.provider": {
+    "jupyter.kernel": {
       "versions": {
         "^1.0.0": "consumeJupyter"
       }
@@ -521,12 +521,12 @@ async function runCode(jupyter) {
 
 ## Services
 
-- **jupyter.provider** (`1.0.0`): provided to let other packages execute code, request completions and introspection, and follow kernel state.
+- **jupyter.kernel** (`1.0.0`): provided to let other packages execute code, request completions and introspection, and follow kernel state.
 - **autocomplete.provider** (`1.0.0`): provided to feed kernel-backed completions to autocomplete consumers while a kernel is active for the editor.
 - **jupyter.breakpoints** (`1.0.0`): provided to expose breakpoint state to integrations that inspect or render breakpoints.
 - **search.adapter** (`1.0.0`): provided to let the search-panel package search the active Data Explorer grid.
 - **jupyter.adapter** (`^1.0.0`): consumed to run cells of external pane items, such as jupyter-view notebooks, through the normal run commands.
-- **autocomplete.watchEditor** (`^1.0.0`): consumed to keep autocomplete active in the watch and inspector editors.
+- **autocomplete.watch-editor** (`^1.0.0`): consumed to keep autocomplete active in the watch and inspector editors.
 - **status-bar** (`^1.0.0`): consumed to display the kernel of the active editor and its execution state.
 - **terminal** (`^1.0.0`): consumed to run the Jupyter console in an embedded terminal pane.
 - **terminal-spawn** (`^1.0.0`): consumed to run the Jupyter console in a system terminal.

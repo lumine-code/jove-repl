@@ -89,7 +89,7 @@
     ]
   },
   "consumedServices": {
-    "autocomplete.watchEditor": {
+    "autocomplete.watch-editor": {
       "versions": {
         "^1.0.0": "consumeAutocompleteWatchEditor"
       }
@@ -131,9 +131,9 @@
         "1.0.0": "provideAutocomplete"
       }
     },
-    "jupyter.provider": {
+    "jupyter.kernel": {
       "versions": {
-        "1.0.0": "provideJupyter"
+        "1.0.0": "provideJupyterKernel"
       }
     },
     "jupyter.breakpoints": {
