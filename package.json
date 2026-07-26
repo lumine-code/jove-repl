@@ -351,7 +351,7 @@
   },
   "dependencies": {
     "@jupyterlab/services": "^7.5.10",
-    "@lumine-code/select-list": "https://github.com/lumine-code/select-list.git#fbbc2d9660db6a2ff676c7a3baf7536f96ec34e6",
+    "@lumine-code/select-list": "https://github.com/lumine-code/select-list.git#a201dae6a0ea6954cb9a905be4a718af697d9f78",
     "@mathjax/src": "^4.1.3",
     "@nteract/any-vega": "^1.0.1",
     "@nteract/commutable": "^7.5.1",
