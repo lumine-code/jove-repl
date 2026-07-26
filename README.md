@@ -532,7 +532,6 @@ async function runCode(jupyter) {
 - **terminal-spawn** (`^1.0.0`): consumed to run the Jupyter console in a system terminal.
 - **image-editor** (`^1.0.0`): consumed to open image outputs in a full image editor.
 - **claude-chat** (`^1.0.0`): consumed to attach code and its output to a chat conversation.
-- **scroll-keeper** (`^1.0.0`): consumed to keep the viewport stable while inline results resize the editor.
 
 ## Contributing
 

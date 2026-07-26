@@ -123,11 +123,6 @@
       "versions": {
         "^1.0.0": "consumeTerminalSpawn"
       }
-    },
-    "scroll-keeper": {
-      "versions": {
-        "^1.0.0": "consumeScrollKeeper"
-      }
     }
   },
   "providedServices": {
