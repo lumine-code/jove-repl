@@ -521,16 +521,16 @@ async function runCode(jupyter) {
 
 ## Services
 
-- **jupyter.kernel** (`1.0.0`): provided to let other packages execute code, request completions and introspection, and follow kernel state.
-- **autocomplete.provider** (`1.0.0`): provided to feed kernel-backed completions to autocomplete consumers while a kernel is active for the editor.
-- **jupyter.breakpoints** (`1.0.0`): provided to expose breakpoint state to integrations that inspect or render breakpoints.
-- **search.adapter** (`1.0.0`): provided to let the search-panel package search the active Data Explorer grid.
-- **jupyter.adapter** (`^1.0.0`): consumed to run cells of external pane items, such as jupyter-view notebooks, through the normal run commands.
-- **autocomplete.watch-editor** (`^1.0.0`): consumed to keep autocomplete active in the watch and inspector editors.
-- **status-bar** (`^1.0.0`): consumed to display the kernel of the active editor and its execution state.
-- **terminal** (`^1.0.0`): consumed to run the Jupyter console in an embedded terminal pane.
-- **terminal-spawn** (`^1.0.0`): consumed to run the Jupyter console in a system terminal.
-- **image-editor** (`^1.0.0`): consumed to open image outputs in a full image editor.
+- **[jupyter.kernel](docs/jupyter.kernel.md)** (`1.0.0`): provided to let other packages execute code, request completions and introspection, and follow kernel state.
+- **[autocomplete.provider](https://lumine-code.github.io/docs.html#services/autocomplete.provider)** (`1.0.0`): provided to feed kernel-backed completions to autocomplete consumers while a kernel is active for the editor.
+- **[jupyter.breakpoints](docs/jupyter.breakpoints.md)** (`1.0.0`): provided to expose breakpoint state to integrations that inspect or render breakpoints.
+- **[search.adapter](https://lumine-code.github.io/docs.html#services/search.adapter)** (`1.0.0`): provided to let the search-panel package search the active Data Explorer grid.
+- **[jupyter.adapter](https://lumine-code.github.io/docs.html#services/jupyter.adapter)** (`^1.0.0`): consumed to run cells of external pane items, such as jupyter-view notebooks, through the normal run commands.
+- **[autocomplete.watch-editor](https://lumine-code.github.io/docs.html#services/autocomplete.watch-editor)** (`^1.0.0`): consumed to keep autocomplete active in the watch and inspector editors.
+- **[status-bar](https://lumine-code.github.io/docs.html#services/status-bar)** (`^1.0.0`): consumed to display the kernel of the active editor and its execution state.
+- **[terminal](https://lumine-code.github.io/docs.html#services/terminal)** (`^1.0.0`): consumed to run the Jupyter console in an embedded terminal pane.
+- **[terminal-spawn](https://lumine-code.github.io/docs.html#services/terminal-spawn)** (`^1.0.0`): consumed to run the Jupyter console in a system terminal.
+- **[image-editor](https://lumine-code.github.io/docs.html#services/image-editor)** (`^1.0.0`): consumed to open image outputs in a full image editor.
 - **claude-chat** (`^1.0.0`): consumed to attach code and its output to a chat conversation.
 
 ## Contributing
