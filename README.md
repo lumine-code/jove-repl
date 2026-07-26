@@ -84,7 +84,7 @@ Commands available in `atom-workspace`:
 
 ## Data explorer search
 
-Through the `search-adapter` service, the search-panel package can search the active Data Explorer pane with the normal buffer find workflow:
+Through the `search.adapter` service, the search-panel package can search the active Data Explorer pane with the normal buffer find workflow:
 
 - `search-panel:show`, `search-panel:find-next`, and `search-panel:find-previous` search the visible Data Explorer grid instead of the active text editor while the Data Explorer pane is active.
 - Matching cells are highlighted in the canvas grid. The current match uses a stronger highlight and is scrolled into view.
@@ -524,7 +524,7 @@ async function runCode(jupyter) {
 - **jupyter.provider** (`1.0.0`): provided to let other packages execute code, request completions and introspection, and follow kernel state.
 - **autocomplete.provider** (`1.0.0`): provided to feed kernel-backed completions to autocomplete consumers while a kernel is active for the editor.
 - **jupyter.breakpoints** (`1.0.0`): provided to expose breakpoint state to integrations that inspect or render breakpoints.
-- **search-adapter** (`1.0.0`): provided to let the search-panel package search the active Data Explorer grid.
+- **search.adapter** (`1.0.0`): provided to let the search-panel package search the active Data Explorer grid.
 - **jupyter.adapter** (`^1.0.0`): consumed to run cells of external pane items, such as jupyter-view notebooks, through the normal run commands.
 - **autocomplete.watchEditor** (`^1.0.0`): consumed to keep autocomplete active in the watch and inspector editors.
 - **status-bar** (`^1.0.0`): consumed to display the kernel of the active editor and its execution state.
