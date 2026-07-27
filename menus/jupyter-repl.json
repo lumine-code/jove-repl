@@ -169,7 +169,7 @@
   ],
 
   "context-menu": {
-    ".tree-view .file .name[data-name$=\\.ipynb]": [
+    ".tree-view .file[data-name$=\".ipynb\"]": [
       {
         "label": "Import Notebook",
         "command": "jupyter-repl:import-notebook"
