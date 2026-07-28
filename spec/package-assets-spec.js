@@ -43,9 +43,11 @@ describe("jupyter-repl package assets", () => {
     );
   });
 
-  it("takes the select list from the Lumine fork", () => {
+  it("takes the select list from the editor, not from a dependency", () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
-    expect(pkg.dependencies["@lumine-code/select-list"]).toBeDefined();
+    // The editor provides the list through atom.workspace.buildSelectList, so
+    // there is nothing to declare and nothing to keep pinned.
+    expect(pkg.dependencies["@lumine-code/select-list"]).toBeUndefined();
     expect(pkg.dependencies["@asiloisad/select-list"]).toBeUndefined();
 
     const sources = [];
@@ -67,6 +69,9 @@ describe("jupyter-repl package assets", () => {
         false,
         `${path.relative(root, file)} still points at the personal fork`,
       );
+      expect(
+        /require\(.@lumine-code\/select-list.\)|from ".@lumine-code\/select-list"/.test(source),
+      ).toBe(false, `${path.relative(root, file)} still imports the list instead of building it`);
     }
   });
 });
