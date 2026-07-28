@@ -20,6 +20,10 @@
   "engines": {
     "atom": ">=1.100.0 <2.0.0"
   },
+  "backgroundTips": [
+    "You can run the line or the selection under the cursor in a Jupyter kernel with {{ 'jupyter-repl:run' | keystroke }}",
+    "You can run the whole cell around the cursor with {{ 'jupyter-repl:run-cell' | keystroke }}"
+  ],
   "main": "./lib/main",
   "scripts": {
     "test": "lumine --test spec",
