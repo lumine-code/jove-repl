@@ -43,9 +43,11 @@ describe("jupyter-repl package assets", () => {
     );
   });
 
-  it("takes the select list from the Lumine fork", () => {
+  it("builds every modal on the core atom.modals kernel", () => {
+    // The package used to carry its own select-list dependency; every picker
+    // now hands `atom.modals` a ViewSpec instead.
     const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
-    expect(pkg.dependencies["@lumine-code/select-list"]).toBeDefined();
+    expect(pkg.dependencies["@lumine-code/select-list"]).toBeUndefined();
     expect(pkg.dependencies["@asiloisad/select-list"]).toBeUndefined();
 
     const sources = [];
@@ -66,6 +68,10 @@ describe("jupyter-repl package assets", () => {
       expect(source.includes("@asiloisad")).toBe(
         false,
         `${path.relative(root, file)} still points at the personal fork`,
+      );
+      expect(source.includes("select-list")).toBe(
+        false,
+        `${path.relative(root, file)} still requires the select-list library`,
       );
     }
   });

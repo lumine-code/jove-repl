@@ -73,7 +73,9 @@
     }
   }
 
-  :not(.select-list) > .markdown {
+  /* Result markdown only. A modal's own help panel (`.modals-help`) and the
+     autocomplete popover keep the chrome's typography. */
+  :not(.select-list):not(.modals-help) > .markdown {
     font-family: var(--font-family);
 
     code {
