@@ -1139,7 +1139,7 @@
   width: 100%;
   height: 1px;
   left: 0;
-  background: var(--syntax-wrap-guide-color);
+  background: var(--jupyter-repl-breakpoint-color, var(--base-border-color));
   opacity: 0.95;
 }
 
