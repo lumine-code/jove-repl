@@ -82,6 +82,11 @@ Commands available in `atom-workspace`:
 - `jupyter-repl:spawn-jupyter-console`: spawn Jupyter console attached to active kernel in a system terminal,
 - `jupyter-repl:copy-jupyter-console-command`: copy the Jupyter console command to clipboard.
 
+Commands available in `.jupyter-repl.kernel-picker`, all listed with their keybindings in the item-actions list (F12):
+
+- `jupyter-repl:insert-kernel-comment`: insert or update the kernel magic comment on the first line,
+- `jupyter-repl:update-kernels`: rescan kernel specs and reload the list.
+
 ## Data explorer search
 
 Through the `search.adapter` service, the search-panel package can search the active Data Explorer pane with the normal buffer find workflow:

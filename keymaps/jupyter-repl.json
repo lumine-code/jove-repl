@@ -20,7 +20,7 @@
   },
 
   "atom-workspace .jupyter-repl.kernel-picker atom-text-editor[mini]": {
-    "ctrl-enter": "select-list:kernel",
+    "ctrl-enter": "jupyter-repl:insert-kernel-comment",
     "f5": "jupyter-repl:update-kernels"
   },
 
