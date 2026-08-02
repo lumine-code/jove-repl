@@ -24,6 +24,10 @@
     "f5": "jupyter-repl:update-kernels"
   },
 
+  "atom-workspace .jupyter-repl.exec-panel atom-text-editor[mini]": {
+    "shift-enter": "jupyter-repl:recall-history-entry"
+  },
+
   "atom-workspace atom-text-editor.data-explorer-expression:not([mini])": {
     "enter": "core:confirm",
     "shift-enter": "editor:newline",

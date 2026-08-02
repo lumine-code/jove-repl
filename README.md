@@ -87,6 +87,17 @@ Commands available in `.jupyter-repl.kernel-picker`, all listed with their keybi
 - `jupyter-repl:insert-kernel-comment`: insert or update the kernel magic comment on the first line,
 - `jupyter-repl:update-kernels`: rescan kernel specs and reload the list.
 
+Commands available in `.jupyter-repl.exec-panel`, listed the same way:
+
+- `jupyter-repl:run-history-entry`: run the selected entry and close the panel,
+- `jupyter-repl:recall-history-entry`: put the selected entry back in the prompt to edit before running it.
+
+## Exec panel
+
+The exec panel is a prompt over the session's execution history. Type code and confirm to run it on the kernel of the active editor; every run is recorded below the prompt, newest first, with its outcome and the time it started. Nothing is deduplicated — running the same code twice leaves two entries, because a history records what happened rather than what is distinct.
+
+Typing filters the history. Confirming a selected entry re-runs it and closes the panel; recalling one puts it back in the prompt instead, so it can be edited before it runs.
+
 ## Data explorer search
 
 Through the `search.adapter` service, the search-panel package can search the active Data Explorer pane with the normal buffer find workflow:
