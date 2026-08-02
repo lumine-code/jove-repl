@@ -94,9 +94,9 @@ Commands available in `.jupyter-repl.exec-panel`, listed the same way:
 
 ## Exec panel
 
-The exec panel is a prompt over the session's execution history. Type code and confirm to run it on the kernel of the active editor; every run is recorded below the prompt, newest first, with its outcome and the time it started. Nothing is deduplicated — running the same code twice leaves two entries, because a history records what happened rather than what is distinct.
+The exec panel is a prompt over the session's execution history. Type code and confirm to run it on the kernel of the active editor; every run is recorded below the prompt, newest first, badged with how long ago it ran and how it ended. Nothing is deduplicated — running the same code twice leaves two entries, because a history records what happened rather than what is distinct.
 
-Typing filters the history. Confirming a selected entry re-runs it and closes the panel; recalling one puts it back in the prompt instead, so it can be edited before it runs.
+Typing filters the history. Confirming a selected entry re-runs it instead of the prompt, and recalling one puts it back in the prompt so it can be edited first. Anything that runs closes the panel, since the point of running it is to see the output; the panel and the typed code stay put when there is no kernel to run on.
 
 ## Data explorer search
 

@@ -1,6 +1,6 @@
 /** @babel */
 
-import ExecPanel from "../lib/exec-panel";
+import ExecPanel, { relativeTime } from "../lib/exec-panel";
 
 // The exec panel is a REPL prompt on top of a select list: the query editor
 // holds code to execute, and the list below is the execution history. The
@@ -70,7 +70,7 @@ describe("jupyter-repl exec panel", () => {
     expect(matched.join("")).toBe("num");
   });
 
-  it("badges each row with its outcome and time on the right", async () => {
+  it("badges each row with its age and outcome on the right, outcome outermost", async () => {
     execResult = { status: "error", error: { ename: "NameError", evalue: "x" } };
     panel.selectList.refs.queryEditor.setText("x");
     await panel.execute();
@@ -84,7 +84,24 @@ describe("jupyter-repl exec panel", () => {
     expect(status.classList.contains("badge-error")).toBe(true);
     expect(status.classList.contains("icon-x")).toBe(true);
     expect(status.title).toBe("NameError: x");
-    expect(time.textContent).toBe(panel.history[0].timestamp.toLocaleTimeString());
+    expect(time.textContent).toBe(relativeTime(panel.history[0].timestamp));
+    // The outcome holds the right edge, with the age inside it.
+    expect(Array.from(trailing.children)).toEqual([time, status]);
+  });
+
+  it("ages an entry in the largest unit that counts more than one of itself", () => {
+    const ago = (ms) => relativeTime(new Date(Date.now() - ms));
+    const expected = (value, unit) =>
+      new Intl.RelativeTimeFormat(undefined, { numeric: "auto", style: "narrow" }).format(
+        value,
+        unit,
+      );
+
+    expect(ago(0)).toBe(expected(0, "second"));
+    expect(ago(5 * 1000)).toBe(expected(-5, "second"));
+    expect(ago(2 * 60 * 1000)).toBe(expected(-2, "minute"));
+    expect(ago(3 * 60 * 60 * 1000)).toBe(expected(-3, "hour"));
+    expect(ago(4 * 24 * 60 * 60 * 1000)).toBe(expected(-4, "day"));
   });
 
   it("confirms an empty selection by executing instead of recalling", () => {
@@ -126,11 +143,13 @@ describe("jupyter-repl exec panel", () => {
   });
 
   it("re-runs a confirmed entry and closes the panel", async () => {
+    jasmine.attachToDOM(atom.views.getView(atom.workspace));
     panel.selectList.show();
     panel.addToHistory("import numpy");
     await panel.selectList.selectIndex(0);
 
-    await panel.runEntry(panel.selectList.getSelectedItem());
+    panel.selectList.confirmSelection();
+    await panel.selectList.update({});
 
     expect(executedCodes).toEqual(["import numpy"]);
     expect(panel.selectList.isVisible()).toBeFalsy();
@@ -162,15 +181,37 @@ describe("jupyter-repl exec panel", () => {
     expect(panel.selectList.getQuery()).toBe("num");
   });
 
-  it("executes the query, logs it, and restores the full history view", async () => {
+  it("executes the query, closes the panel, and restores the full history view", async () => {
+    jasmine.attachToDOM(atom.views.getView(atom.workspace));
+    panel.selectList.show();
     panel.selectList.refs.queryEditor.setText("1 + 1");
 
     await panel.execute();
 
     expect(executedCodes).toEqual(["1 + 1"]);
     expect(panel.history.map((entry) => [entry.code, entry.status])).toEqual([["1 + 1", "ok"]]);
+    // Running typed code closes the panel for the same reason re-running an
+    // entry does: the point of running it is to see its output. The prompt
+    // goes with it, so the next open lists the whole history.
+    expect(panel.selectList.isVisible()).toBeFalsy();
     expect(panel.selectList.getQuery()).toBe("");
     expect(panel.selectList.items).toEqual(panel.history);
+  });
+
+  it("keeps the panel and the typed code when there is no kernel to run on", async () => {
+    jasmine.attachToDOM(atom.views.getView(atom.workspace));
+    store.kernel = null;
+    panel.selectList.show();
+    panel.selectList.refs.queryEditor.setText("1 + 1");
+
+    await panel.execute();
+
+    expect(atom.notifications.getNotifications().map((n) => n.getMessage())).toEqual([
+      "No kernel running",
+    ]);
+    expect(panel.selectList.isVisible()).toBeTruthy();
+    expect(panel.selectList.getQuery()).toBe("1 + 1");
+    expect(panel.history).toEqual([]);
   });
 
   it("records a failed execution on its history entry", async () => {
