@@ -28,8 +28,9 @@ describe("teardown with a running kernel", () => {
   // `grammar` is what the package's editor-class autorun reads off a running
   // kernel; without it the store's own reaction throws before the assertion.
   function fakeKernel() {
-    const kernel = { destroyed: 0, grammar: { name: "Python" } };
+    const kernel = { destroyed: 0, shutdowns: 0, grammar: { name: "Python" } };
     kernel.destroy = () => kernel.destroyed++;
+    kernel.shutdown = () => kernel.shutdowns++;
     return kernel;
   }
 
@@ -40,6 +41,20 @@ describe("teardown with a running kernel", () => {
     atom.emitter.emit("will-destroy");
 
     expect(kernel.destroyed).toBe(1);
+  });
+
+  // `destroy()` disconnects: for a WSKernel it disposes the client session and
+  // leaves the kernel running on the server. `shutdown()` is the one that ends
+  // the remote session, and closing a window must never do that — the kernel
+  // outliving the editor is the whole point of running one remotely.
+  it("disconnects from kernels without shutting them down", () => {
+    const kernel = fakeKernel();
+    runInAction(() => store.runningKernels.push(kernel));
+
+    atom.emitter.emit("will-destroy");
+
+    expect(kernel.destroyed).toBe(1);
+    expect(kernel.shutdowns).toBe(0);
   });
 
   it("destroys every kernel even when one throws", () => {
