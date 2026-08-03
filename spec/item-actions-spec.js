@@ -13,7 +13,10 @@ describe("jupyter-repl kernel picker item actions", () => {
     const activation = atom.packages.activatePackage("jupyter-repl");
     atom.commands.dispatch(atom.views.getView(atom.workspace), "jupyter-repl:debug-toggle");
     await activation;
-    picker = new KernelPicker([{ name: "python3", display_name: "Python 3" }]);
+    picker = new KernelPicker([
+      { name: "python3", display_name: "Python 3" },
+      { name: "ir", display_name: "R" },
+    ]);
   });
 
   afterEach(async () => {
@@ -71,6 +74,24 @@ describe("jupyter-repl kernel picker item actions", () => {
     expect(spy).toHaveBeenCalled();
     expect(picker.selectList.isVisible()).toBeTruthy();
     expect(picker.selectList.itemActionsList.isVisible()).toBeFalsy();
+  });
+
+  it("runs an action against the kernel the user highlighted", async () => {
+    await atom.packages.activatePackage("language-python");
+    const editor = await atom.workspace.open("kernel-comment.py");
+    picker.selectList.show();
+    // The second kernel, so an action that silently fell back to the top of
+    // the list would name the wrong one.
+    await picker.selectList.selectIndex(1);
+
+    await picker.selectList.showItemActions();
+    const index = picker.selectList.itemActionsList.items.findIndex(
+      (item) => item.command === "jupyter-repl:insert-kernel-comment",
+    );
+    picker.selectList.itemActionsList.selectIndex(index);
+    picker.selectList.itemActionsList.confirmSelection();
+
+    expect(editor.lineTextForBufferRow(0)).toBe("#:: ir");
   });
 });
 
