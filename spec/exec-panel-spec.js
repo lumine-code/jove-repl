@@ -57,6 +57,36 @@ describe("jupyter-repl exec panel", () => {
     expect(panel.history[0]).not.toBe(panel.history[1]);
   });
 
+  it("returns to the prompt when a move steps off either end of the history", async () => {
+    jasmine.attachToDOM(atom.views.getView(atom.workspace));
+    panel.selectList.show();
+    panel.addToHistory("first");
+    panel.addToHistory("second");
+    const editor = panel.selectList.refs.queryEditor.element;
+    const selected = () => panel.selectList.getSelectedItem()?.code ?? null;
+
+    // Down walks in from the prompt, top to bottom...
+    atom.commands.dispatch(editor, "core:move-down");
+    expect(selected()).toBe("second");
+    atom.commands.dispatch(editor, "core:move-down");
+    expect(selected()).toBe("first");
+
+    // ...steps off the bottom back to the prompt, where Enter runs what is
+    // typed, and carries on into the top from there.
+    atom.commands.dispatch(editor, "core:move-down");
+    expect(selected()).toBeNull();
+    atom.commands.dispatch(editor, "core:move-down");
+    expect(selected()).toBe("second");
+
+    // Up is the same cycle in reverse.
+    atom.commands.dispatch(editor, "core:move-up");
+    expect(selected()).toBeNull();
+    atom.commands.dispatch(editor, "core:move-up");
+    expect(selected()).toBe("first");
+    atom.commands.dispatch(editor, "core:move-up");
+    expect(selected()).toBe("second");
+  });
+
   it("filters the history to entries matching the query and highlights the match", async () => {
     panel.addToHistory("print(value)");
     panel.addToHistory("import numpy");
