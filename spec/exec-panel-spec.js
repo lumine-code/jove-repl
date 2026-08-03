@@ -1,6 +1,10 @@
 /** @babel */
 
-import ExecPanel, { relativeTime } from "../lib/exec-panel";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import ExecPanel from "../lib/exec-panel";
+
+dayjs.extend(relativeTime);
 
 // The exec panel is a REPL prompt on top of a select list: the query editor
 // holds code to execute, and the list below is the execution history. The
@@ -84,24 +88,21 @@ describe("jupyter-repl exec panel", () => {
     expect(status.classList.contains("badge-error")).toBe(true);
     expect(status.classList.contains("icon-x")).toBe(true);
     expect(status.title).toBe("NameError: x");
-    expect(time.textContent).toBe(relativeTime(panel.history[0].timestamp));
+    expect(time.textContent).toBe(dayjs(panel.history[0].timestamp).fromNow());
     // The outcome holds the right edge, with the age inside it.
     expect(Array.from(trailing.children)).toEqual([time, status]);
   });
 
-  it("ages an entry in the largest unit that counts more than one of itself", () => {
-    const ago = (ms) => relativeTime(new Date(Date.now() - ms));
-    const expected = (value, unit) =>
-      new Intl.RelativeTimeFormat(undefined, { numeric: "auto", style: "narrow" }).format(
-        value,
-        unit,
-      );
+  it("dates an entry by how long ago it ran, not by the clock", async () => {
+    panel.addToHistory("import numpy");
+    // Built through dayjs so it reads the same clock the panel does — the spec
+    // runner's is not the wall clock.
+    panel.history[0].timestamp = dayjs().subtract(2, "minute").toDate();
+    await panel.selectList.update({ items: panel.history });
 
-    expect(ago(0)).toBe(expected(0, "second"));
-    expect(ago(5 * 1000)).toBe(expected(-5, "second"));
-    expect(ago(2 * 60 * 1000)).toBe(expected(-2, "minute"));
-    expect(ago(3 * 60 * 60 * 1000)).toBe(expected(-3, "hour"));
-    expect(ago(4 * 24 * 60 * 60 * 1000)).toBe(expected(-4, "day"));
+    const time = panel.selectList.refs.items.querySelector(".exec-time");
+
+    expect(time.textContent).toBe("2 minutes ago");
   });
 
   it("confirms an empty selection by executing instead of recalling", () => {
