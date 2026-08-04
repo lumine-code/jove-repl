@@ -86,9 +86,7 @@
       "jupyter-repl:hot-reload-package",
       "jupyter-repl:open-examples",
       "jupyter-repl:open-gateways",
-      "jupyter-repl:shutdown-all-kernels",
-      "jupyter-repl:toggle-inspector-focus",
-      "jupyter-repl:inspect-under-cursor"
+      "jupyter-repl:shutdown-all-kernels"
     ]
   },
   "consumedServices": {

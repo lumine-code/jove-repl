@@ -128,14 +128,6 @@
               "type": "separator"
             },
             {
-              "label": "Show Inspector",
-              "command": "jupyter-repl:toggle-inspector-focus"
-            },
-            {
-              "label": "Inspect Under Cursor",
-              "command": "jupyter-repl:inspect-under-cursor"
-            },
-            {
               "label": "Toggle Output Area",
               "command": "jupyter-repl:toggle-output-area"
             },

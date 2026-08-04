@@ -1,6 +1,5 @@
 {
   "atom-workspace": {
-    "alt-h i": "jupyter-repl:toggle-inspector-focus",
     "alt-h d": "jupyter-repl:open-data-explorer",
     "alt-h v": "jupyter-repl:toggle-variable-explorer",
     "alt-h o": "jupyter-repl:toggle-output-area",
@@ -37,13 +36,6 @@
     "tab": "jupyter-repl:data-explorer-focus-body",
     "shift-tab": "jupyter-repl:data-explorer-focus-expression"
   },
-  "atom-workspace atom-text-editor.inspector-expression:not([mini])": {
-    "enter": "core:confirm",
-    "shift-enter": "editor:newline",
-    "escape": "core:cancel",
-    "tab": "jupyter-repl:inspector-focus-body",
-    "shift-tab": "jupyter-repl:inspector-focus-body"
-  },
   "atom-workspace .data-explorer-body": {
     "tab": "jupyter-repl:data-explorer-focus-expression",
     "shift-tab": "jupyter-repl:data-explorer-focus-toolbar"
@@ -73,12 +65,6 @@
     "cmdorctrl-shift-end": "core:select-to-bottom",
     "shift-space": "jupyter-repl:data-grid-select-row",
     "ctrl-space": "jupyter-repl:data-grid-select-column"
-  },
-  "atom-workspace .jupyter-repl.inspector .inspector-body": {
-    "up": "jupyter-repl:inspector-scroll-up",
-    "down": "jupyter-repl:inspector-scroll-down",
-    "tab": "jupyter-repl:inspector-focus-expression",
-    "shift-tab": "jupyter-repl:inspector-focus-expression"
   },
   "atom-workspace atom-text-editor.watch-input:not([mini])": {
     "enter": "core:confirm",

@@ -4,7 +4,6 @@
 
 const KernelTransport = require("../lib/kernel-transport");
 const OutputStore = require("../lib/store/output");
-const { inspectorStore } = require("../lib/store/inspector-store");
 const { dataExplorerStore } = require("../lib/store/data-explorer-store");
 
 function kernelSpec(language = "python") {
@@ -109,23 +108,7 @@ describe("output store events", () => {
 
 describe("panel store events", () => {
   afterEach(() => {
-    inspectorStore.reset();
     dataExplorerStore.reset();
-  });
-
-  it("emits from the inspector store on error and reset", () => {
-    let calls = 0;
-    const subscription = inspectorStore.onDidUpdate(() => calls++);
-
-    inspectorStore.setError("boom");
-    expect(inspectorStore.error).toBe("boom");
-    expect(calls).toBe(1);
-
-    inspectorStore.reset();
-    expect(inspectorStore.error).toBe(null);
-    expect(calls).toBe(2);
-
-    subscription.dispose();
   });
 
   it("emits from the data explorer store on view configuration changes", () => {

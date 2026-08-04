@@ -33,6 +33,8 @@ type JupyterProvider = {
   getRunningKernels(): JupyterKernel[];
   getFilesForKernel(kernel: JupyterKernel): string[];
   getCellRange(): Range | null;
+  getFocusedEditor(): TextEditor | null;
+  getExpressionAtCursor(editor?: TextEditor): string;
   onDidChangeKernel(callback: (kernel: JupyterKernel | null) => void): Disposable;
   onDidAddKernel(callback: (kernel: JupyterKernel) => void): Disposable;
   onDidRemoveKernel(callback: (kernel: JupyterKernel) => void): Disposable;
@@ -56,6 +58,8 @@ Optional members:
 | ----------------------------- | ------------------------------------------------------------------------------- |
 | `getFilesForKernel(kernel)`   | The files a kernel serves. An unsaved editor appears as `Unsaved Editor <id>`.  |
 | `getCellRange()`              | The buffer range of the cell containing the cursor, or `null` outside any cell. |
+| `getFocusedEditor()`          | The editor a code-reading command should act on, including a notebook's cell.   |
+| `getExpressionAtCursor()`     | The expression under the cursor, as this package parses one. `""` when none.    |
 | `onDidAddKernel(callback)`    | Fires when a kernel starts.                                                     |
 | `onDidRemoveKernel(callback)` | Fires when a kernel goes away.                                                  |
 | `shutdownAllKernels()`        | Shuts down every kernel. For a consumer that owns the window, not for a panel.  |
@@ -133,6 +137,19 @@ None of the `onDid…` methods replay on subscribe. Read the current value first
 A kernel is handed out as a wrapper, and the wrapper for a given kernel is stable, so it can be compared by identity. Every method on it throws once its kernel has been destroyed; subscribe to `onDidDestroy` if you hold one across time.
 
 `getCellRange()` reads from the cell markers the REPL maintains, so it answers `null` when cell markers are switched off in the settings even though the file has cells.
+
+`getFocusedEditor()` prefers the focused editor over the active pane item, so it finds the cell editors a notebook renders — the workspace does not report those. `getExpressionAtCursor()` defaults to it, which is why a panel gets the same answer the REPL itself would give instead of parsing the buffer again.
+
+## Pane items with a kernel of their own
+
+A panel that shows the output of one particular kernel is not necessarily looking at the active editor's. Such a pane item may say so, and the provider will report it as the active kernel while the item is the active **center** item:
+
+| Member                               | Description                                                                                                  |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `getJupyterKernel()`                 | The kernel this item is showing, or `null`. Required to opt in.                                              |
+| `onDidChangeJupyterKernel(callback)` | Fires when that answer changes. Optional, but without it a change goes unnoticed until the active item does. |
+
+This is asked of the item rather than matched against a list of URIs, so a panel in another package participates without `jupyter-repl` knowing it exists. Return the kernel exactly as the service handed it over; an item in a dock is never the active center item, so a dock-only panel has no reason to implement this.
 
 ## Teardown
 

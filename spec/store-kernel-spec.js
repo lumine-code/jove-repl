@@ -83,6 +83,65 @@ describe("store kernel tracking", () => {
     subscription.dispose();
   });
 
+  it("reports the kernel an active pane item declares for itself", () => {
+    // The store used to name the Data Explorer and the inspector by URI. It
+    // asks the item instead now, so a panel that has moved into its own
+    // package still gets the status bar to follow what is on screen.
+    const kernel = fakeKernel("Panel kernel");
+    store.runningKernels = [kernel];
+
+    store.updateActivePaneItem({
+      getURI: () => "lumine://some-other-package/panel",
+      getJupyterKernel: () => kernel,
+    });
+
+    expect(store.kernel).toBe(kernel);
+  });
+
+  it("maps a declared plugin wrapper back to the kernel it wraps", () => {
+    // Another package only ever holds wrappers, and consumers inside this one
+    // expect the internal kernel, so the wrapper must not escape.
+    const kernel = fakeKernel();
+    const wrapper = {};
+    kernel.getPluginWrapper = () => wrapper;
+    store.runningKernels = [kernel];
+
+    store.updateActivePaneItem({ getJupyterKernel: () => wrapper });
+
+    expect(store.kernel).toBe(kernel);
+  });
+
+  it("answers null for a declared kernel it does not know", () => {
+    store.runningKernels = [fakeKernel()];
+    store.updateActivePaneItem({ getJupyterKernel: () => ({ displayName: "A stranger" }) });
+
+    expect(store.kernel).toBe(null);
+  });
+
+  it("follows an item that changes which kernel it shows", () => {
+    const { Emitter } = require("atom");
+    const first = fakeKernel("First");
+    const second = fakeKernel("Second");
+    store.runningKernels = [first, second];
+
+    const emitter = new Emitter();
+    let shown = first;
+    store.updateActivePaneItem({
+      getJupyterKernel: () => shown,
+      onDidChangeJupyterKernel: (callback) => emitter.on("did-change", callback),
+    });
+
+    const seen = [];
+    const subscription = store.onDidChangeCurrentKernel((kernel) => seen.push(kernel));
+
+    shown = second;
+    emitter.emit("did-change");
+
+    expect(store.kernel).toBe(second);
+    expect(seen).toEqual([second]);
+    subscription.dispose();
+  });
+
   it("moves a kernel from its unsaved placeholder onto the saved path", () => {
     // An editor with no path is keyed by its id; saving has to carry the
     // kernel over, or it is stranded under a key nothing looks up again.

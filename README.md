@@ -73,8 +73,6 @@ Commands available in `atom-workspace`:
 - `jupyter-repl:open-gateways`: open `gateways.json`,
 - `jupyter-repl:shutdown-all-kernels`: shutdown all running kernels,
 - `jupyter-repl:toggle-exec-panel`: toggle exec panel,
-- `jupyter-repl:toggle-inspector-focus`: show inspector pane,
-- `jupyter-repl:inspect-under-cursor`: inspect the expression under the cursor without moving focus from the editor,
 - `jupyter-repl:attach-to-claude`: attach code and output to claude-chat,
 - `jupyter-repl:debug-toggle`: toggle debug logging,
 - `jupyter-repl:open-jupyter-console`: open Jupyter console attached to active kernel in an embedded terminal pane,
@@ -541,7 +539,7 @@ async function runCode(jupyter) {
 - **[jupyter.breakpoints](docs/jupyter.breakpoints.md)** (`1.0.0`): provided to expose breakpoint state to integrations that inspect or render breakpoints.
 - **search.adapter** (`1.0.0`): provided to let the search-panel package search the active Data Explorer grid.
 - **jupyter.adapter** (`^1.0.0`): consumed to run cells of external pane items, such as jupyter-view notebooks, through the normal run commands.
-- **autocomplete.watch-editor** (`^1.0.0`): consumed to keep autocomplete active in the watch and inspector editors.
+- **autocomplete.watch-editor** (`^1.0.0`): consumed to keep autocomplete active in the watch and data explorer editors.
 - **status-bar** (`^1.0.0`): consumed to display the kernel of the active editor and its execution state.
 - **terminal** (`^1.0.0`): consumed to run the Jupyter console in an embedded terminal pane.
 - **terminal-spawn** (`^1.0.0`): consumed to run the Jupyter console in a system terminal.
