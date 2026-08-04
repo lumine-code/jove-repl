@@ -13,13 +13,16 @@ const PACKAGE_PATH = path.join(__dirname, "..");
 describe("teardown with a running kernel", () => {
   let store;
 
+  // Activation itself measures at 0 ms here, but jasmine's default budget for
+  // an async beforeEach is shared with whatever the rest of the suite left
+  // pending, and a full run can spend it before this even starts.
   beforeEach(async () => {
     store = require("../lib/store");
     // The package activates on its commands, so dispatch one to trigger it.
     const activation = atom.packages.activatePackage(PACKAGE_PATH);
     atom.commands.dispatch(atom.views.getView(atom.workspace), "jupyter-repl:debug-toggle");
     await activation;
-  });
+  }, 30000);
 
   afterEach(async () => {
     store.runningKernels = [];

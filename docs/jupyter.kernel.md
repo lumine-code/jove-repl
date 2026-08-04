@@ -1,6 +1,6 @@
 # jupyter.kernel
 
-Reads the running Jupyter kernel: which one is active, when that changes, and the range of the cell at the cursor.
+Reads the running Jupyter kernels: which one is active, which exist, when that changes, and what each can be asked.
 
 |             |                                                               |
 | ----------- | ------------------------------------------------------------- |
@@ -9,7 +9,7 @@ Reads the running Jupyter kernel: which one is active, when that changes, and th
 | Consumed by | `consumeJupyterKernel(kernel)`                                |
 | Owner       | [`jupyter-repl`](https://github.com/lumine-code/jupyter-repl) |
 
-**No package consumes this today.** It is the extension point for anything that wants to follow the REPL's kernel — a status indicator, a variable inspector, a package that runs its own code against the same session.
+This is the extension point for anything that follows the REPL's kernels — a status indicator, a variable inspector, a package that runs its own code against the same session.
 
 ## Registration
 
@@ -28,18 +28,75 @@ In your `package.json`:
 ## Contract
 
 ```ts
-type JupyterKernel = {
-  getActiveKernel(): Kernel | null;
-  onDidChangeKernel(callback: (kernel: Kernel | null) => void): Disposable;
+type JupyterProvider = {
+  getActiveKernel(): JupyterKernel | null;
+  getRunningKernels(): JupyterKernel[];
+  getFilesForKernel(kernel: JupyterKernel): string[];
   getCellRange(): Range | null;
+  onDidChangeKernel(callback: (kernel: JupyterKernel | null) => void): Disposable;
+  onDidAddKernel(callback: (kernel: JupyterKernel) => void): Disposable;
+  onDidRemoveKernel(callback: (kernel: JupyterKernel) => void): Disposable;
+  onDidChangeKernels(callback: () => void): Disposable;
+  shutdownAllKernels(): Disposable;
 };
 ```
 
+Required members:
+
+| Member                         | Description                                                                  |
+| ------------------------------ | ---------------------------------------------------------------------------- |
+| `getActiveKernel()`            | The kernel for the active editor, or `null` when none is running.            |
+| `getRunningKernels()`          | Every kernel in this window, in the order they started.                      |
+| `onDidChangeKernel(callback)`  | Fires when the active kernel changes, including to `null`.                   |
+| `onDidChangeKernels(callback)` | Fires when the set of kernels changes, or the files any of them is bound to. |
+
+Optional members:
+
 | Member                        | Description                                                                     |
 | ----------------------------- | ------------------------------------------------------------------------------- |
-| `getActiveKernel()`           | The kernel for the active editor, or `null` when none is running.               |
-| `onDidChangeKernel(callback)` | Fires when the active kernel changes, including to `null`.                      |
+| `getFilesForKernel(kernel)`   | The files a kernel serves. An unsaved editor appears as `Unsaved Editor <id>`.  |
 | `getCellRange()`              | The buffer range of the cell containing the cursor, or `null` outside any cell. |
+| `onDidAddKernel(callback)`    | Fires when a kernel starts.                                                     |
+| `onDidRemoveKernel(callback)` | Fires when a kernel goes away.                                                  |
+| `shutdownAllKernels()`        | Shuts down every kernel. For a consumer that owns the window, not for a panel.  |
+
+Each kernel is a `JupyterKernel`:
+
+```ts
+type JupyterKernel = {
+  // identity
+  readonly displayName: string;
+  readonly language: string;
+  readonly grammar: Grammar;
+  readonly kernelSpec: object;
+  getConnectionFile(): string;
+
+  // running code
+  execute(code: string): Promise<{ status: "ok" | "error"; outputs: object[]; error?: object }>;
+  executeWithCallback(code: string, onResults: (result: object) => void): void;
+  executeWatch(code: string, onResults: (result: object) => void): void;
+  complete(code: string): Promise<object>;
+  inspect(code: string, cursorPos: number): Promise<{ data: object; found: boolean }>;
+
+  // state
+  readonly executionState: string;
+  readonly executionCount: number;
+  readonly lastExecutionTime: string;
+  readonly executionStartTime: number | null;
+  onDidChangeExecutionState(callback: (state: string) => void): Disposable;
+  onDidChangeStatus(callback: () => void): Disposable;
+  onDidBecomeIdle(callback: () => void): Disposable;
+  onDidDestroy(callback: () => void): void;
+
+  // control
+  interrupt(): void;
+  restart(onRestarted?: () => void): void;
+  shutdown(): void;
+  addMiddleware(middleware: object): void;
+};
+```
+
+`executeWatch` is the one to reach for when a panel asks the kernel a question rather than running the user's code: it takes no execution number and does not move the status bar's counter or timer.
 
 ## Minimal example
 
@@ -47,18 +104,20 @@ type JupyterKernel = {
 const { CompositeDisposable, Disposable } = require("atom");
 
 module.exports = {
-  consumeJupyterKernel(kernel) {
-    this.kernel = kernel;
+  consumeJupyterKernel(provider) {
     const disposables = new CompositeDisposable();
-    this.render(kernel.getActiveKernel());
+    this.follow(provider.getActiveKernel());
     disposables.add(
-      kernel.onDidChangeKernel((active) => this.render(active)),
-      new Disposable(() => {
-        this.kernel = null;
-        this.render(null);
-      }),
+      provider.onDidChangeKernel((kernel) => this.follow(kernel)),
+      new Disposable(() => this.follow(null)),
     );
     return disposables;
+  },
+
+  follow(kernel) {
+    this.kernelSubscription?.dispose();
+    this.kernelSubscription = kernel?.onDidBecomeIdle(() => this.refresh(kernel));
+    this.refresh(kernel);
   },
 };
 ```
@@ -67,15 +126,17 @@ module.exports = {
 
 The provider is **created lazily on first request** — the kernel plugin API is not loaded until something asks for it — so consuming the service has a small one-off cost and no effect on startup.
 
-`getActiveKernel()` is scoped to the active editor, not to the window. Switching tabs can change the answer without any kernel starting or stopping.
+`getActiveKernel()` is scoped to the active editor, not to the window. Switching tabs can change the answer without any kernel starting or stopping, and it answers `null` rather than throwing when nothing is running.
 
-`onDidChangeKernel` does not replay on subscribe. Read `getActiveKernel()` for the initial state, as the example does.
+None of the `onDid…` methods replay on subscribe. Read the current value first, as the example does.
+
+A kernel is handed out as a wrapper, and the wrapper for a given kernel is stable, so it can be compared by identity. Every method on it throws once its kernel has been destroyed; subscribe to `onDidDestroy` if you hold one across time.
 
 `getCellRange()` reads from the cell markers the REPL maintains, so it answers `null` when cell markers are switched off in the settings even though the file has cells.
 
 ## Teardown
 
-Return a `Disposable` that unsubscribes and drops your reference. The kernel belongs to `jupyter-repl` — do not shut it down; the user may still be using it.
+Return a `Disposable` that unsubscribes and drops your reference. The kernels belong to `jupyter-repl` — do not shut one down because your own panel is closing; the user may still be using it.
 
 ## Versioning
 
