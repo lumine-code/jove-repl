@@ -32,11 +32,6 @@
     "format:check": "prettier --check ."
   },
   "consumedServices": {
-    "autocomplete.watch-editor": {
-      "versions": {
-        "^1.0.0": "consumeAutocompleteWatchEditor"
-      }
-    },
     "status-bar": {
       "versions": {
         "^1.0.0": "consumeStatusBar"
@@ -93,7 +88,7 @@
   "configSchema": {
     "autocomplete": {
       "title": "Enable autocomplete",
-      "description": "If enabled, use autocomplete options provided by the current kernel. This applies to both the main editor and watch pane editors.",
+      "description": "If enabled, use autocomplete options provided by the current kernel. This applies to the main editor and the expression editors other jupyter packages watch through this service.",
       "type": "boolean",
       "default": true
     },

@@ -9,7 +9,6 @@ Supports Python, R, JavaScript, and other languages with rich output including p
 - **Interactive execution**: run lines, selections, or automatically detected code blocks with inline results, multiple cursors, and smart Python/bracket/fold detection.
 - **Rich media output**: renders plots, images, video, HTML, LaTeX, and interactive Plotly and Vega charts inline.
 - **Kernel intelligence**: autocomplete, object introspection, and a shared namespace with one kernel per language across files.
-- **Watches**: auto-runs watch expressions in a dedicated panel and shows each value's history.
 - **Kernel management**: starts local kernels, connects to remote gateways, and interrupts, restarts or shuts them down.
 - **Notebook support**: imports and exports `.ipynb` notebooks and drives external notebook cells through the `jupyter.adapter` service.
 - **Jupyter console**: attaches a console to the active kernel in an embedded terminal, a system terminal, or via a copied command.
@@ -49,9 +48,6 @@ Commands available in `atom-text-editor:not([mini])`:
 - `jupyter-repl:rename-remote-session`: rename remote session,
 - `jupyter-repl:disconnect-remote-session`: disconnect remote session,
 - `jupyter-repl:update-kernels`: refresh available kernels list,
-- `jupyter-repl:add-watch`: add watch expression,
-- `jupyter-repl:remove-watch`: remove focused watch expression when focus is in a watch editor,
-- `jupyter-repl:toggle-watches`: toggle watches panel,
 - `jupyter-repl:go-to-next-cell`: jump to next cell,
 - `jupyter-repl:go-to-previous-cell`: jump to previous cell,
 - `jupyter-repl:select-cell`: select current cell,
@@ -526,7 +522,6 @@ async function runCode(jupyter) {
 - **autocomplete.provider** (`1.0.0`): provided to feed kernel-backed completions to autocomplete consumers while a kernel is active for the editor.
 - **[jupyter.breakpoints](docs/jupyter.breakpoints.md)** (`1.0.0`): provided to expose breakpoint state to integrations that inspect or render breakpoints.
 - **jupyter.adapter** (`^1.0.0`): consumed to run cells of external pane items, such as jupyter-view notebooks, through the normal run commands.
-- **autocomplete.watch-editor** (`^1.0.0`): consumed to keep autocomplete active in the watch editors.
 - **status-bar** (`^1.0.0`): consumed to display the kernel of the active editor and its execution state.
 - **terminal** (`^1.0.0`): consumed to run the Jupyter console in an embedded terminal pane.
 - **terminal-spawn** (`^1.0.0`): consumed to run the Jupyter console in a system terminal.

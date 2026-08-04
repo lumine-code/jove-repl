@@ -132,10 +132,6 @@
               "command": "jupyter-repl:toggle-output-area"
             },
             {
-              "label": "Toggle Watches",
-              "command": "jupyter-repl:toggle-watches"
-            },
-            {
               "type": "separator"
             },
             {
