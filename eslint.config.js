@@ -11,6 +11,9 @@ module.exports = [
   },
   js.configs.recommended,
   {
+    // `.jsx` is not one of eslint's default extensions, and the etch components
+    // live in those files.
+    files: ["**/*.js", "**/*.jsx"],
     languageOptions: {
       // Lumine transpiles this package's `/** @babel */` sources with legacy
       // decorators, which espree cannot parse; use the same parser eslint-side
@@ -56,6 +59,12 @@ module.exports = [
     // This config and its helper are dev tooling, loaded by eslint as CommonJS.
     files: ["eslint.config.js", "eslint-jsx.js", "prettier.config.js"],
     languageOptions: { sourceType: "commonjs" },
+  },
+  {
+    // Etch components: Lumine compiles `.jsx` with `etch.dom` as the factory,
+    // so a tag in one of these files is a use of `etch`, not of `React`.
+    files: ["**/*.jsx"],
+    rules: { "jsx/jsx-uses": ["error", { pragma: "etch" }] },
   },
   {
     // Specs run in the Lumine jasmine runner.
