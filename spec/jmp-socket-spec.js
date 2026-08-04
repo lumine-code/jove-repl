@@ -138,3 +138,64 @@ describe("jmp socket teardown", () => {
     expect(closed).toBe(1);
   });
 });
+
+describe("jmp observer lifecycle at close", () => {
+  // The observer is self-closing: closing the monitored socket makes libzmq
+  // emit MONITOR_STOPPED and the native handler closes the observer. Closing
+  // it by hand on the normal path corrupts libzmq on Windows — one kernel
+  // shut down that way and no later socket ever connected. Bisected to the
+  // commit that introduced the manual close; pinned here.
+  it("leaves the observer to self-close on a normal close", () => {
+    const socket = bareSocket();
+    let observerClosed = 0;
+    let socketClosed = 0;
+    socket._events = {
+      close() {
+        observerClosed++;
+      },
+    };
+    socket._socket = {
+      connect() {},
+      close() {
+        socketClosed++;
+      },
+    };
+
+    socket.close();
+
+    expect(socketClosed).toBe(1);
+    expect(observerClosed).toBe(0);
+  });
+
+  it("closes the observer immediately only for a window unload", () => {
+    const socket = bareSocket();
+    let observerClosed = 0;
+    let socketClosed = 0;
+    let releaseSend;
+    socket._events = {
+      close() {
+        observerClosed++;
+      },
+    };
+    socket._socket = {
+      connect() {},
+      close() {
+        socketClosed++;
+      },
+      send() {
+        return new Promise((resolve) => {
+          releaseSend = resolve;
+        });
+      },
+    };
+
+    // Even an in-flight send must not defer an unload close: the window is
+    // going away and nothing later will run.
+    socket.send("bye");
+    socket.close(true);
+
+    expect(observerClosed).toBe(1);
+    expect(socketClosed).toBe(1);
+    releaseSend();
+  });
+});
