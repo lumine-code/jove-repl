@@ -73,3 +73,68 @@ describe("jmp socket connection monitoring", () => {
     expect(socket._events).toBe(events);
   });
 });
+
+describe("jmp socket teardown", () => {
+  // Closing a zeromq socket while a send is in flight corrupts libzmq's
+  // native state on Windows: the wepoll shim asserts, or the io thread is
+  // poisoned so that no socket created afterwards ever connects — which is
+  // exactly a shutdown-then-start-another-kernel sequence.
+  it("defers the native close until an in-flight send settles", async () => {
+    const socket = bareSocket();
+    let closed = 0;
+    let releaseSend;
+    socket._socket = {
+      connect() {},
+      close() {
+        closed++;
+      },
+      send() {
+        return new Promise((resolve) => {
+          releaseSend = resolve;
+        });
+      },
+    };
+
+    const sending = socket.send("shutdown_request");
+    socket.close();
+
+    expect(closed).toBe(0);
+
+    releaseSend();
+    await sending.catch(() => {});
+    await Promise.resolve();
+
+    expect(closed).toBe(1);
+  });
+
+  it("closes immediately when nothing is in flight", () => {
+    const socket = bareSocket();
+    let closed = 0;
+    socket._socket = {
+      connect() {},
+      close() {
+        closed++;
+      },
+    };
+
+    socket.close();
+
+    expect(closed).toBe(1);
+  });
+
+  it("closes only once", () => {
+    const socket = bareSocket();
+    let closed = 0;
+    socket._socket = {
+      connect() {},
+      close() {
+        closed++;
+      },
+    };
+
+    socket.close();
+    socket.close();
+
+    expect(closed).toBe(1);
+  });
+});
