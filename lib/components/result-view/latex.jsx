@@ -183,7 +183,7 @@ class LaTeX {
     // MathJax error - show original LaTeX
     if (this.error) {
       return (
-        <div className="latex-display latex-error">
+        <div className="output-latex output-latex-error">
           <code style={{ color: "#cc0000" }}>{latex}</code>
         </div>
       );
@@ -192,7 +192,7 @@ class LaTeX {
     // Text-mode LaTeX (no math) - show as preformatted text
     if (this.textContent) {
       return (
-        <div className="latex-display latex-text-mode">
+        <div className="output-latex output-latex-text">
           <pre style={{ margin: 0, whiteSpace: "pre-wrap", fontFamily: "inherit" }}>
             {this.textContent}
           </pre>
@@ -203,12 +203,12 @@ class LaTeX {
     // Successfully rendered math
     if (this.svg) {
       const style = this.displayMode ? { textAlign: "center", margin: "0.5em 0" } : {};
-      return <div className="latex-display" style={style} innerHTML={this.svg} />;
+      return <div className="output-latex" style={style} innerHTML={this.svg} />;
     }
 
     // Loading state
     return (
-      <div className="latex-display">
+      <div className="output-latex output-latex-loading">
         <span style={{ color: "#888" }}>Rendering...</span>
       </div>
     );

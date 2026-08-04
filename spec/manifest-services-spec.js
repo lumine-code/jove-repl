@@ -26,12 +26,159 @@ describe("the services this package declares", () => {
     );
   });
 
-  // Deferring is right here, unlike in a package whose services are what
-  // another package opens it with: nothing this one provides means anything
-  // before a kernel exists, and a kernel only exists once one of these ran.
-  it("may defer activation, because a kernel is what makes its services useful", () => {
-    expect(Object.values(manifest.activationCommands).flat()).toContain(
-      "jupyter-repl:start-local-kernel",
+  it("provides the output renderer the family renders with", () => {
+    expect(manifest.providedServices["jupyter.output"].versions["1.0.0"]).toBe(
+      "provideJupyterOutput",
     );
+  });
+
+  // `activateServices` runs inside `activateNow`, which a package waiting on an
+  // activation command never reaches, so a lazy provider has published nothing.
+  // This package used to defer — defensible while everything it provided was
+  // only useful once a kernel ran — but `jupyter.output` is what jupyter-view
+  // renders a stored notebook with, kernels or not, so it must exist at
+  // startup. What stays lazy instead is everything heavy behind the surface.
+  it("activates eagerly, because rendering must not wait for a kernel", () => {
+    expect(manifest.activationCommands).toBeUndefined();
+    expect(manifest.activationHooks).toBeUndefined();
+  });
+});
+
+describe("what eager activation is allowed to load", () => {
+  // The bargain that makes eager activation acceptable: activating and
+  // providing the service parses only package-local code. The native kernel
+  // transport and the heavy renderers must stay behind lazy, function-body
+  // requires until something actually uses them.
+  //
+  // Checked statically, not through require.cache: other spec files load the
+  // kernel stack legitimately, so the cache says nothing about activation. A
+  // top-level require sits at column 0 in this codebase (prettier), and a
+  // function-body require is indented — that distinction is the whole test.
+  it("keeps the kernel transport and the heavy renderers off the startup path", () => {
+    const fs = require("fs");
+    const bannedExternals = new Set([
+      "zeromq",
+      "@nteract/any-vega",
+      "plotly.js-dist",
+      "@mathjax/src",
+    ]);
+    const bannedLocals = new Set(["jmp", "zmq-kernel", "ws-kernel", "ws-kernel-picker"]);
+    const libRoot = path.join(__dirname, "..", "lib");
+
+    const resolveLocal = (fromDir, specifier) => {
+      const base = path.resolve(fromDir, specifier);
+      for (const candidate of [
+        base,
+        `${base}.js`,
+        `${base}.jsx`,
+        path.join(base, "index.js"),
+        path.join(base, "index.jsx"),
+      ]) {
+        if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
+          return candidate;
+        }
+      }
+      return null;
+    };
+
+    const seen = new Set();
+    const queue = [path.join(libRoot, "main.js"), path.join(libRoot, "output-service.js")];
+    const offences = [];
+
+    while (queue.length > 0) {
+      const file = queue.pop();
+      if (seen.has(file)) continue;
+      seen.add(file);
+
+      for (const line of fs.readFileSync(file, "utf8").split("\n")) {
+        // Only a top-level require loads at activation.
+        if (/^\s/.test(line)) continue;
+        const match = line.match(/require\("([^"]+)"\)/);
+        if (!match) continue;
+        const specifier = match[1];
+
+        if (!specifier.startsWith(".")) {
+          if (bannedExternals.has(specifier)) {
+            offences.push(`${path.basename(file)} -> ${specifier}`);
+          }
+          continue;
+        }
+
+        const resolved = resolveLocal(path.dirname(file), specifier);
+        if (!resolved) continue;
+        if (bannedLocals.has(path.basename(resolved, ".js"))) {
+          offences.push(`${path.basename(file)} -> ${specifier}`);
+          continue;
+        }
+        queue.push(resolved);
+      }
+    }
+
+    // Guard the guard: an empty walk would pass vacuously.
+    expect(seen.size).toBeGreaterThan(20);
+    expect(offences).toEqual([]);
+  });
+});
+
+describe("the jupyter.output surface", () => {
+  const service = main.provideJupyterOutput();
+
+  it("exposes everything the contract documents", () => {
+    const documented = [
+      "renderDisplay",
+      "renderOutput",
+      "renderRichMedia",
+      "renderStatus",
+      "MEDIA_RENDERERS",
+      "SUPPORTED_MEDIA_TYPES",
+      "pickRenderers",
+      "isTextOutputOnly",
+      "ansiNodes",
+      "ansiToText",
+      "escapeCarriageReturn",
+      "truncateOutput",
+      "sanitizeHtml",
+      "OutputStore",
+      "reduceOutputs",
+      "normalizeOutput",
+      "msgSpecToNotebookFormat",
+      "getOutputPlainText",
+      "OUTPUT_TYPES",
+      "History",
+      "ScrollList",
+      "getImage",
+      "getAllText",
+      "hasCopyableContent",
+      "copyToClipboard",
+      "saveImage",
+      "openInEditor",
+    ];
+
+    for (const key of documented) {
+      expect(service[key] ?? `missing: ${key}`).not.toBe(`missing: ${key}`);
+    }
+  });
+
+  it("hands out vnodes that are elements, never bare fragments", () => {
+    // A fragment is a Symbol private to one etch copy; it does not survive the
+    // package boundary a service crosses. Every renderer must root its output
+    // in a real element.
+    const etch = require("@lumine-code/etch");
+    const dummies = {
+      "application/json": {},
+      "application/javascript": "1 + 1",
+      "text/html": "<b>x</b>",
+      "text/markdown": "# x",
+      "text/latex": "$x$",
+      "image/svg+xml": "<svg xmlns='http://www.w3.org/2000/svg'></svg>",
+      "text/plain": "x",
+    };
+
+    for (const mediaType of service.SUPPORTED_MEDIA_TYPES) {
+      const data = mediaType in dummies ? dummies[mediaType] : {};
+      const vnode = service.MEDIA_RENDERERS[mediaType](data, {});
+      expect(vnode ?? `no vnode for ${mediaType}`).not.toBe(`no vnode for ${mediaType}`);
+      expect(vnode.tag).not.toBe(etch.Fragment);
+    }
   });
 });

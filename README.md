@@ -522,6 +522,7 @@ async function runCode(jupyter) {
 ## Services
 
 - **[jupyter.kernel](docs/jupyter.kernel.md)** (`1.0.0`): provided to let other packages execute code, request completions and introspection, and follow kernel state.
+- **[jupyter.output](docs/jupyter.output.md)** (`1.0.0`): provided to let other packages render Jupyter output bundles with this package's renderers.
 - **autocomplete.provider** (`1.0.0`): provided to feed kernel-backed completions to autocomplete consumers while a kernel is active for the editor.
 - **[jupyter.breakpoints](docs/jupyter.breakpoints.md)** (`1.0.0`): provided to expose breakpoint state to integrations that inspect or render breakpoints.
 - **jupyter.adapter** (`^1.0.0`): consumed to run cells of external pane items, such as jupyter-view notebooks, through the normal run commands.

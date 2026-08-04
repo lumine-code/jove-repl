@@ -18,7 +18,7 @@ class ScrollList {
         tabIndex={-1}
         style={{ fontSize: outputFontSize() }}
         attributes={{
-          "jupyter-repl-wrapoutput": String(atom.config.get("jupyter-repl.wrapOutput") ?? true),
+          "data-wrap-output": String(atom.config.get("jupyter-repl.wrapOutput") ?? true),
         }}
       >
         {this.outputs.map((output, index) => (

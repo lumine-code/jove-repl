@@ -29,7 +29,7 @@ function HTML(data) {
   if (!data) return null;
   // Strip script tags for basic safety
   const sanitized = typeof data === "string" ? data.replace(/<script[\s\S]*?<\/script>/gi, "") : "";
-  return <div className="html-output" innerHTML={sanitized} />;
+  return <div className="output-html" innerHTML={sanitized} />;
 }
 
 /**

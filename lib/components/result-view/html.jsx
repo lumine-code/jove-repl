@@ -275,7 +275,7 @@ class HTML {
       typeof this.props.data === "string"
         ? this.props.data.replace(/<script[\s\S]*?<\/script>/gi, "")
         : "";
-    return <div className="html-output" innerHTML={sanitized} />;
+    return <div className="output-html" innerHTML={sanitized} />;
   }
 
   update(props) {

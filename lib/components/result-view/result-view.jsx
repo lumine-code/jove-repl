@@ -128,7 +128,7 @@ class ResultViewComponent {
         onClick={isPlain ? this.checkForSelection : null}
         style={isPlain ? inlineStyle : blockStyle}
         attributes={{
-          "jupyter-repl-wrapoutput": String(atom.config.get("jupyter-repl.wrapOutput") ?? true),
+          "data-wrap-output": String(atom.config.get("jupyter-repl.wrapOutput") ?? true),
         }}
       >
         <div

@@ -82,7 +82,7 @@ function renderStreamText(output) {
 
   return (
     <div>
-      <pre className={`stream-output stream-${name || "stdout"}`}>{ansiNodes(text)}</pre>
+      <pre className={`output-stream output-${name || "stdout"}`}>{ansiNodes(text)}</pre>
       {truncated ? <div className="output-truncated">... output truncated</div> : null}
     </div>
   );
@@ -99,7 +99,7 @@ function renderError(output) {
   const showHeader = !truncatedTraceback;
 
   return (
-    <div className="kernel-error">
+    <div className="output-error">
       {showHeader ? (
         <div className="error-header">
           <span className="error-name">{ename}</span>

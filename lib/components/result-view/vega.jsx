@@ -4,7 +4,6 @@
  * Copyright (c) 2016 - present, nteract contributors All rights reserved.
  */
 const etch = require("@lumine-code/etch");
-const { embed: embedVega } = require("@nteract/any-vega");
 
 /** All the information. All of it. On Vega (Lite) media types, at least. */
 const MEDIA_TYPES = {
@@ -86,6 +85,11 @@ async function embed(anchor, mediaType, spec, options = {}) {
     kind: version.kind,
     version: version.kind === "vega-lite" && version.version === "5" ? "4" : version.version,
   };
+  // Required here rather than at module scope: the package ships 15M of
+  // prebuilt vega bundles, and this module now loads at activation (the
+  // jupyter.output service is built eagerly). Nothing should parse that
+  // until a vega output actually renders.
+  const { embed: embedVega } = require("@nteract/any-vega");
   const embedThisVega = await embedVega(embedVersion);
   return embedThisVega(anchor, spec, { ...options, ...defaults });
 }

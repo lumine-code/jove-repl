@@ -35,7 +35,7 @@ describe("output rendering", () => {
       text: "hello [31mred[0m",
     });
 
-    expect(rendered).toContain('class="stream-output stream-stdout"');
+    expect(rendered).toContain('class="output-stream output-stdout"');
     expect(rendered).toContain("hello");
     // The escape becomes a coloured span, not literal escape characters.
     expect(rendered).toContain("<span");
@@ -50,7 +50,7 @@ describe("output rendering", () => {
       traceback: ["Traceback", "ValueError: bad"],
     });
 
-    expect(rendered).toContain("kernel-error");
+    expect(rendered).toContain("output-error");
     expect(rendered).toContain("ValueError: bad");
   });
 
@@ -69,8 +69,8 @@ describe("output rendering", () => {
   it("renders each rich media type", () => {
     const bundles = {
       "text/plain": ["42", "output-text"],
-      "text/html": ["<b>bold</b>", "html-output"],
-      "text/markdown": ["# Head", "markdown"],
+      "text/html": ["<b>bold</b>", "output-html"],
+      "text/markdown": ["# Head", "output-markdown"],
       "image/svg+xml": ["<svg xmlns='http://www.w3.org/2000/svg'></svg>", "output-svg"],
     };
 
@@ -103,7 +103,7 @@ describe("output rendering", () => {
       metadata: {},
     });
 
-    expect(rendered).toContain("html-output");
+    expect(rendered).toContain("output-html");
     expect(rendered).not.toContain("&lt;Figure&gt;");
   });
 

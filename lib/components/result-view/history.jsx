@@ -69,7 +69,7 @@ class History {
           tabIndex={-1}
           style={{ fontSize: outputFontSize() }}
           attributes={{
-            "jupyter-repl-wrapoutput": String(atom.config.get("jupyter-repl.wrapOutput") ?? true),
+            "data-wrap-output": String(atom.config.get("jupyter-repl.wrapOutput") ?? true),
           }}
         >
           {renderDisplay(output)}

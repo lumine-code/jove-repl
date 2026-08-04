@@ -13,7 +13,7 @@ function markdownRenderer(data) {
     transformNonFqdnLinks: false,
   });
 
-  return <div className="markdown" innerHTML={html} />;
+  return <div className="output-markdown" innerHTML={html} />;
 }
 
 module.exports = { markdownRenderer };

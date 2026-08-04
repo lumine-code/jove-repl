@@ -31,62 +31,6 @@
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
-  "activationHooks": [
-    "jupyter.adapter:item-used"
-  ],
-  "activationCommands": {
-    "atom-text-editor:not([mini])": [
-      "jupyter-repl:run",
-      "jupyter-repl:run-all",
-      "jupyter-repl:run-all-above",
-      "jupyter-repl:run-and-move-down",
-      "jupyter-repl:run-cell",
-      "jupyter-repl:run-cell-and-move-down",
-      "jupyter-repl:toggle-watches",
-      "jupyter-repl:toggle-output-area",
-      "jupyter-repl:start-local-kernel",
-      "jupyter-repl:connect-to-remote-kernel",
-      "jupyter-repl:connect-to-existing-kernel",
-      "jupyter-repl:add-watch",
-      "jupyter-repl:remove-watch",
-      "jupyter-repl:update-kernels",
-      "jupyter-repl:interrupt-kernel",
-      "jupyter-repl:restart-kernel",
-      "jupyter-repl:shutdown-kernel",
-      "jupyter-repl:export-notebook",
-      "jupyter-repl:fold-current-cell",
-      "jupyter-repl:fold-all-but-current-cell",
-      "jupyter-repl:clear-results",
-      "jupyter-repl:clear-and-restart",
-      "jupyter-repl:clear-and-center",
-      "jupyter-repl:recalculate-all",
-      "jupyter-repl:recalculate-all-above",
-      "jupyter-repl:run-all-inline",
-      "jupyter-repl:recalculate-all-inline",
-      "jupyter-repl:run-all-above-inline",
-      "jupyter-repl:run-all-below-inline",
-      "jupyter-repl:recalculate-all-above-inline",
-      "jupyter-repl:go-to-next-cell",
-      "jupyter-repl:go-to-previous-cell",
-      "jupyter-repl:select-cell",
-      "jupyter-repl:select-previous-cell",
-      "jupyter-repl:select-next-cell",
-      "jupyter-repl:move-cell-up",
-      "jupyter-repl:move-cell-down",
-      "jupyter-repl:open-jupyter-console",
-      "jupyter-repl:spawn-jupyter-console",
-      "jupyter-repl:copy-jupyter-console-command"
-    ],
-    "atom-workspace": [
-      "jupyter-repl:import-notebook",
-      "jupyter-repl:debug-toggle",
-      "jupyter-repl:toggle-exec-panel",
-      "jupyter-repl:hot-reload-package",
-      "jupyter-repl:open-examples",
-      "jupyter-repl:open-gateways",
-      "jupyter-repl:shutdown-all-kernels"
-    ]
-  },
   "consumedServices": {
     "autocomplete.watch-editor": {
       "versions": {
@@ -138,6 +82,11 @@
     "jupyter.breakpoints": {
       "versions": {
         "1.0.0": "provideJupyterBreakpoints"
+      }
+    },
+    "jupyter.output": {
+      "versions": {
+        "1.0.0": "provideJupyterOutput"
       }
     }
   },

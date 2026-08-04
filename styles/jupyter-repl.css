@@ -41,19 +41,10 @@
     display: block;
   }
 
-  /* LaTeX inline math should stay inline */
-  .latex-math-inline {
+  /* LaTeX text-mode bundles render as inline text between math runs. */
+  .output-latex-text {
     display: inline;
-
-    svg {
-      display: inline;
-      vertical-align: middle;
-    }
-  }
-
-  .latex-text {
-    display: inline;
-    padding: 0 0.3em; /* Space around text between math expressions */
+    padding: 0 0.3em;
   }
 
   table {
@@ -73,31 +64,13 @@
     }
   }
 
-  :not(.select-list) > .markdown {
+  :not(.select-list) > .output-markdown {
     font-family: var(--font-family);
 
     code {
       color: var(--jupyter-repl-inline-color);
       background-color: var(--jupyter-repl-inline-background);
       font-family: var(--editor-font-family);
-    }
-  }
-
-  .MathJax_SVG_Display {
-    margin: 0;
-  }
-
-  .MathJax_SVG {
-    .noError {
-      padding: 0;
-      border: none;
-      color: var(--jupyter-repl-error-color);
-    }
-
-    svg {
-      background-color: unset;
-      margin: 0 !important;
-      display: inline;
     }
   }
 
@@ -149,7 +122,7 @@
     }
   }
 
-  .nteract-display-area-stderr {
+  .output-stream.output-stderr {
     color: var(--jupyter-repl-error-color);
   }
 
@@ -182,7 +155,7 @@
     display: flex;
     border: solid 1px var(--base-border-color);
 
-    &[jupyter-repl-wrapoutput="true"] {
+    &[data-wrap-output="true"] {
       code,
       pre {
         white-space: pre-wrap;
@@ -196,12 +169,12 @@
     gap: var(--component-padding);
 
     /* LaTeX: center SVG outputs while keeping vertical stacking */
-    &:has(.latex-display) {
+    &:has(.output-latex) {
       display: flex;
       flex-direction: column;
     }
 
-    .latex-display {
+    .output-latex {
       line-height: 0;
       svg {
         display: block;
