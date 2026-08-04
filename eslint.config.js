@@ -1,7 +1,6 @@
 const js = require("@eslint/js");
 const globals = require("globals");
 const prettier = require("eslint-config-prettier");
-const babelParser = require("@babel/eslint-parser");
 const jsx = require("./eslint-jsx");
 
 module.exports = [
@@ -15,19 +14,11 @@ module.exports = [
     // live in those files.
     files: ["**/*.js", "**/*.jsx"],
     languageOptions: {
-      // Lumine transpiles this package's `/** @babel */` sources with legacy
-      // decorators, which espree cannot parse; use the same parser eslint-side
-      // so the mobx `@observer` components are linted like everything else.
-      parser: babelParser,
-      parserOptions: {
-        requireConfigFile: false,
-        babelOptions: {
-          // Syntax plugins only: eslint parses, it never transpiles.
-          parserOpts: { plugins: ["jsx", ["decorators", { version: "legacy" }]] },
-        },
-      },
+      // The default parser reads everything here now that the mobx decorators
+      // are gone; JSX is the only syntax extension left, and espree knows it.
+      parserOptions: { ecmaFeatures: { jsx: true } },
       ecmaVersion: "latest",
-      sourceType: "module",
+      sourceType: "commonjs",
       globals: {
         ...globals.browser,
         ...globals.node,

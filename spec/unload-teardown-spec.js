@@ -1,5 +1,4 @@
 const path = require("path");
-const { runInAction } = require("mobx");
 
 // Activate by path, not by name: resolving the name would need this checkout
 // linked into the packages directory, which is a property of whoever runs the
@@ -23,9 +22,7 @@ describe("teardown with a running kernel", () => {
   });
 
   afterEach(async () => {
-    runInAction(() => {
-      store.runningKernels = [];
-    });
+    store.runningKernels = [];
     await atom.packages.deactivatePackage("jupyter-repl");
   });
 
@@ -40,7 +37,7 @@ describe("teardown with a running kernel", () => {
 
   it("destroys running kernels when the window goes away", () => {
     const kernel = fakeKernel();
-    runInAction(() => store.runningKernels.push(kernel));
+    store.runningKernels.push(kernel);
 
     atom.emitter.emit("will-destroy");
 
@@ -53,7 +50,7 @@ describe("teardown with a running kernel", () => {
   // outliving the editor is the whole point of running one remotely.
   it("disconnects from kernels without shutting them down", () => {
     const kernel = fakeKernel();
-    runInAction(() => store.runningKernels.push(kernel));
+    store.runningKernels.push(kernel);
 
     atom.emitter.emit("will-destroy");
 
@@ -69,7 +66,7 @@ describe("teardown with a running kernel", () => {
       },
     };
     const survivor = fakeKernel();
-    runInAction(() => store.runningKernels.push(thrower, survivor));
+    store.runningKernels.push(thrower, survivor);
     spyOn(console, "error");
 
     atom.emitter.emit("will-destroy");

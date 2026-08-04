@@ -7,6 +7,9 @@
  * every component import in this package reads as unused. eslint-plugin-react
  * still caps its peer range at eslint 9, so the behaviour is reimplemented here
  * rather than pinning the whole toolchain back a major version.
+ *
+ * The pragma here is `etch`, passed in by the config: a tag compiles to a call
+ * on `etch.dom`, which is the only thing keeping that require used.
  */
 
 // `<Foo />` references `Foo`; `<a.b.c />` references `a`; `<div />` is an
@@ -25,9 +28,9 @@ const jsxUses = {
   },
   create(context) {
     const { sourceCode } = context;
-    // The `/** @jsx React.createElement */` pragma means any JSX in the file
-    // compiles down to a use of `React`.
-    const pragma = (context.options[0] && context.options[0].pragma) || "React";
+    // Any JSX in the file compiles down to a use of the factory's root
+    // identifier, which the config supplies.
+    const pragma = (context.options[0] && context.options[0].pragma) || "etch";
 
     function markPragma(node) {
       sourceCode.markVariableAsUsed(pragma, node);
