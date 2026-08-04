@@ -1,4 +1,10 @@
+const path = require("path");
 const { runInAction } = require("mobx");
+
+// Activate by path, not by name: resolving the name would need this checkout
+// linked into the packages directory, which is a property of whoever runs the
+// suite rather than of the suite.
+const PACKAGE_PATH = path.join(__dirname, "..");
 
 // A window reload never deactivates packages, so `deactivate()` is not enough
 // to release the kernels' zmq sockets. Left open, they make zeromq run
@@ -11,7 +17,7 @@ describe("teardown with a running kernel", () => {
   beforeEach(async () => {
     store = require("../lib/store");
     // The package activates on its commands, so dispatch one to trigger it.
-    const activation = atom.packages.activatePackage("jupyter-repl");
+    const activation = atom.packages.activatePackage(PACKAGE_PATH);
     atom.commands.dispatch(atom.views.getView(atom.workspace), "jupyter-repl:debug-toggle");
     await activation;
   });

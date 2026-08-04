@@ -1,5 +1,11 @@
+const path = require("path");
 const ExecPanel = require("../lib/exec-panel");
 const KernelPicker = require("../lib/kernel-picker");
+
+// Activate by path, not by name: resolving the name would need this checkout
+// linked into the packages directory, which is a property of whoever runs the
+// suite rather than of the suite.
+const PACKAGE_PATH = path.join(__dirname, "..");
 
 describe("jupyter-repl kernel picker item actions", () => {
   let picker;
@@ -8,7 +14,7 @@ describe("jupyter-repl kernel picker item actions", () => {
     jasmine.attachToDOM(atom.views.getView(atom.workspace));
     // The package activates on its commands, so dispatch one to trigger it;
     // activation also loads the package keymap the actions list reads.
-    const activation = atom.packages.activatePackage("jupyter-repl");
+    const activation = atom.packages.activatePackage(PACKAGE_PATH);
     atom.commands.dispatch(atom.views.getView(atom.workspace), "jupyter-repl:debug-toggle");
     await activation;
     picker = new KernelPicker([
@@ -98,7 +104,7 @@ describe("jupyter-repl exec panel item actions", () => {
 
   beforeEach(async () => {
     jasmine.attachToDOM(atom.views.getView(atom.workspace));
-    const activation = atom.packages.activatePackage("jupyter-repl");
+    const activation = atom.packages.activatePackage(PACKAGE_PATH);
     atom.commands.dispatch(atom.views.getView(atom.workspace), "jupyter-repl:debug-toggle");
     await activation;
     panel = new ExecPanel({ kernel: null });
