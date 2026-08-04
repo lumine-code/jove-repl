@@ -1,11 +1,7 @@
-/** @babel */
-/** @jsx React.createElement */
-
-import React from "react";
-import { observer } from "mobx-react";
-import { INDEX_COLUMN } from "../store/data-explorer-store";
-import DataExplorerGrid from "./data-explorer-grid";
-import { autocompleteConsumer as AutocompleteConsumer } from "../services/consumed/autocomplete";
+const etch = require("@lumine-code/etch");
+const { INDEX_COLUMN } = require("../store/data-explorer-store");
+const { renderDataExplorerGrid } = require("./data-explorer-grid");
+const { autocompleteConsumer: AutocompleteConsumer } = require("../services/consumed/autocomplete");
 
 // View modes, inspired by the nteract data-explorer's view toolbar. "grid" and
 // "summary" are tabular; the rest are Plotly charts.
@@ -35,7 +31,7 @@ const VIEW_SPEC = {
  * `background-tips`/`.centered`, this does not absolutely position itself, so it
  * never overlaps the header controls.
  */
-function Message({ children }) {
+function renderMessage(children) {
   return <div className="data-explorer-message">{children}</div>;
 }
 
@@ -59,7 +55,7 @@ function formatCell(value) {
 }
 
 // Small footer note shown when the kernel capped the number of fetched rows.
-const GridFooter = observer(({ des }) => {
+function renderGridFooter({ des }) {
   const payload = des.payload;
   if (!payload || !payload.truncated) {
     return null;
@@ -71,7 +67,7 @@ const GridFooter = observer(({ des }) => {
       </span>
     </div>
   );
-});
+}
 
 function toNum(v) {
   const n = typeof v === "number" ? v : Number(v);
@@ -310,8 +306,17 @@ function buildFigure(payload, view, axes) {
  * to occupy the full Data Explorer panel, so it sets width/height 100% and uses a
  * ResizeObserver to keep the plot sized to the pane.
  */
-class ResponsivePlot extends React.Component {
-  containerRef = React.createRef();
+class ResponsivePlot {
+  // Plotly throws on some degenerate figures. React had an error boundary above
+  // this component; without one, the failure is caught where it happens and
+  // reported in place of the chart.
+  error = null;
+
+  constructor(props) {
+    this.props = props;
+    etch.initialize(this);
+    this.didMount();
+  }
 
   // Plotly uses the right mouse button to orbit 3D plots, so the browser context
   // menu must be suppressed. A native capture-phase listener is used because
@@ -328,7 +333,7 @@ class ResponsivePlot extends React.Component {
   // Stretch (+, factor < 1) or compress (−, factor > 1) one axis by scaling its
   // range around its center.
   stretchAxis = (axisKey, factor) => {
-    const gd = this.containerRef.current;
+    const gd = this.refs.container;
     if (!gd || !gd._fullLayout || !this.Plotly) {
       return;
     }
@@ -365,7 +370,7 @@ class ResponsivePlot extends React.Component {
   // createImageData with zero width) if it renders into a 0-sized element, which
   // happens when the pane/plot is laid out but not yet visible.
   tryDraw() {
-    const gd = this.containerRef.current;
+    const gd = this.refs.container;
     if (!gd || !this.Plotly || gd.clientWidth === 0 || gd.clientHeight === 0) {
       return;
     }
@@ -380,7 +385,7 @@ class ResponsivePlot extends React.Component {
 
   draw(method) {
     const { data, layout } = this.props.figure;
-    this.Plotly[method](this.containerRef.current, data, layout, {
+    this.Plotly[method](this.refs.container, data, layout, {
       responsive: true,
       displaylogo: false,
       scrollZoom: true,
@@ -401,7 +406,7 @@ class ResponsivePlot extends React.Component {
     if (e.button !== 2 || this.props.is3D) {
       return;
     }
-    const fl = this.containerRef.current && this.containerRef.current._fullLayout;
+    const fl = this.refs.container && this.refs.container._fullLayout;
     if (!fl || !fl.xaxis || !fl.yaxis || !fl.xaxis.range || !fl.yaxis.range) {
       return;
     }
@@ -423,7 +428,7 @@ class ResponsivePlot extends React.Component {
 
   handleMouseMove = (e) => {
     const p = this._pan;
-    const gd = this.containerRef.current;
+    const gd = this.refs.container;
     if (!p || !gd || !this.Plotly) {
       return;
     }
@@ -446,7 +451,7 @@ class ResponsivePlot extends React.Component {
     if (e.key !== "Escape") {
       return;
     }
-    const gd = this.containerRef.current;
+    const gd = this.refs.container;
     if (gd && this.Plotly) {
       this.Plotly.restyle(gd, { selectedpoints: [null] });
     }
@@ -464,13 +469,13 @@ class ResponsivePlot extends React.Component {
     }
   };
 
-  componentDidMount() {
+  didMount() {
     this.Plotly = require("plotly.js-dist");
-    this.containerRef.current.addEventListener("contextmenu", this.preventContextMenu, true);
-    this.containerRef.current.addEventListener("mousedown", this.handleMouseDown, true);
+    this.refs.container.addEventListener("contextmenu", this.preventContextMenu, true);
+    this.refs.container.addEventListener("mousedown", this.handleMouseDown, true);
     document.addEventListener("keydown", this.handleKeyDown);
     this.resizeObserver = new ResizeObserver(() => {
-      const gd = this.containerRef.current;
+      const gd = this.refs.container;
       if (!gd) {
         return;
       }
@@ -481,71 +486,59 @@ class ResponsivePlot extends React.Component {
         this.Plotly.Plots.resize(gd);
       }
     });
-    this.resizeObserver.observe(this.containerRef.current);
+    this.resizeObserver.observe(this.refs.container);
     this.tryDraw();
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.figure !== this.props.figure) {
-      this.tryDraw();
+  update(props) {
+    const previous = this.props;
+    this.props = props;
+    if (previous.figure !== props.figure) {
+      this.error = null;
+      return etch.update(this).then(() => this.tryDraw());
     }
+    return etch.update(this);
   }
 
-  componentWillUnmount() {
+  destroy() {
+    this.teardown();
+    return etch.destroy(this);
+  }
+
+  teardown() {
     document.removeEventListener("keydown", this.handleKeyDown);
     window.removeEventListener("mousemove", this.handleMouseMove);
     window.removeEventListener("mouseup", this.handleMouseUp);
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
-    if (this.containerRef.current) {
-      this.containerRef.current.removeEventListener("contextmenu", this.preventContextMenu, true);
-      this.containerRef.current.removeEventListener("mousedown", this.handleMouseDown, true);
+    if (this.refs.container) {
+      this.refs.container.removeEventListener("contextmenu", this.preventContextMenu, true);
+      this.refs.container.removeEventListener("mousedown", this.handleMouseDown, true);
     }
-    if (this._drawn && this.Plotly && this.containerRef.current) {
-      this.Plotly.purge(this.containerRef.current);
-    }
-  }
-
-  render() {
-    return <div ref={this.containerRef} className="data-explorer-plotly" />;
-  }
-}
-
-// Catches render/draw failures from the plot (e.g. Plotly throwing on a
-// degenerate figure) so the whole panel doesn't crash. Resets when `resetKey`
-// changes, so picking different axes / view retries.
-class PlotErrorBoundary extends React.Component {
-  state = { error: null };
-
-  static getDerivedStateFromError(error) {
-    return { error };
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.state.error && prevProps.resetKey !== this.props.resetKey) {
-      this.setState({ error: null });
+    if (this._drawn && this.Plotly && this.refs.container) {
+      this.Plotly.purge(this.refs.container);
     }
   }
 
   render() {
-    if (this.state.error) {
-      return <Message>Could not render this plot. Try different axes or another view.</Message>;
+    if (this.error) {
+      return renderMessage("Could not render this plot. Try different axes or another view.");
     }
-    return this.props.children;
+    return <div ref="container" className="data-explorer-plotly" />;
   }
 }
 
 // Single-select axis dropdown. `optional` adds a "(none)" entry. When `axisKey`
 // + `onStretch` are given, the label also carries −/+ buttons that stretch /
 // compress that plot axis.
-function AxisSelect({ label, value, options, optional, onChange, axisKey, onStretch }) {
+function renderAxisSelect({ label, value, options, optional, onChange, axisKey, onStretch }) {
   return (
     <div className="data-explorer-control">
       <span className="data-explorer-control-label">{label}</span>
       <div className="data-explorer-axis-group">
         {onStretch ? (
-          <React.Fragment>
+          <>
             <button
               type="button"
               className="btn"
@@ -562,7 +555,7 @@ function AxisSelect({ label, value, options, optional, onChange, axisKey, onStre
             >
               +
             </button>
-          </React.Fragment>
+          </>
         ) : null}
         <select
           className="input-select"
@@ -581,7 +574,7 @@ function AxisSelect({ label, value, options, optional, onChange, axisKey, onStre
   );
 }
 
-const ChartControls = observer(({ des, view, onStretch }) => {
+function renderChartControls({ des, view, onStretch }) {
   const payload = des.payload;
   const spec = VIEW_SPEC[view] || {};
   const numeric = payload.numeric_columns || [];
@@ -593,50 +586,50 @@ const ChartControls = observer(({ des, view, onStretch }) => {
 
   return (
     <div className="data-explorer-plot-controls">
-      {spec.x ? (
-        <AxisSelect
-          label={spec.xLabel || "X"}
-          value={des.xColumn}
-          options={allOptions}
-          optional={spec.xOptional}
-          onChange={des.setXColumn}
-          axisKey="xaxis"
-          onStretch={onStretch}
-        />
-      ) : null}
+      {spec.x
+        ? renderAxisSelect({
+            label: spec.xLabel || "X",
+            value: des.xColumn,
+            options: allOptions,
+            optional: spec.xOptional,
+            onChange: des.setXColumn,
+            axisKey: "xaxis",
+            onStretch: onStretch,
+          })
+        : null}
 
-      {spec.y ? (
-        <AxisSelect
-          label={spec.yLabel || "Y"}
-          value={des.yColumn}
-          options={columnOptions}
-          onChange={des.setYColumn}
-          axisKey="yaxis"
-          onStretch={onStretch}
-        />
-      ) : null}
+      {spec.y
+        ? renderAxisSelect({
+            label: spec.yLabel || "Y",
+            value: des.yColumn,
+            options: columnOptions,
+            onChange: des.setYColumn,
+            axisKey: "yaxis",
+            onStretch: onStretch,
+          })
+        : null}
 
-      {spec.z ? (
-        <AxisSelect
-          label="Z"
-          value={des.zColumn}
-          options={columnOptions}
-          optional
-          onChange={des.setZColumn}
-          axisKey="zaxis"
-          onStretch={onStretch}
-        />
-      ) : null}
+      {spec.z
+        ? renderAxisSelect({
+            label: "Z",
+            value: des.zColumn,
+            options: columnOptions,
+            optional: true,
+            onChange: des.setZColumn,
+            axisKey: "zaxis",
+            onStretch: onStretch,
+          })
+        : null}
 
-      {spec.color && categorical.length > 0 ? (
-        <AxisSelect
-          label="Color"
-          value={des.colorColumn}
-          options={categoricalOptions}
-          optional
-          onChange={des.setColorColumn}
-        />
-      ) : null}
+      {spec.color && categorical.length > 0
+        ? renderAxisSelect({
+            label: "Color",
+            value: des.colorColumn,
+            options: categoricalOptions,
+            optional: true,
+            onChange: des.setColorColumn,
+          })
+        : null}
 
       {spec.metrics ? (
         <div className="data-explorer-control data-explorer-ycols">
@@ -658,20 +651,20 @@ const ChartControls = observer(({ des, view, onStretch }) => {
       ) : null}
     </div>
   );
-});
+}
 
 // The plot body only; axis controls live in the header (ChartControls).
-const ChartPlot = observer(({ des, view, plotRef, onPointClick }) => {
+function renderChartPlot({ des, view, plotRef, onPointClick }) {
   const payload = des.payload;
   if (!payload || !Array.isArray(payload.columns) || payload.columns.length === 0) {
-    return <Message>No columns available to plot</Message>;
+    return renderMessage("No columns available to plot");
   }
 
   const spec = VIEW_SPEC[view] || {};
   const numeric = payload.numeric_columns || [];
   // Parallel coordinates can only use the auto-detected numeric columns.
   if (view === "parallel" && numeric.length === 0) {
-    return <Message>No numeric columns available for this view</Message>;
+    return renderMessage("No numeric columns available for this view");
   }
 
   const axes = {
@@ -691,35 +684,31 @@ const ChartPlot = observer(({ des, view, plotRef, onPointClick }) => {
   const threeD = is3D(view, des.zColumn);
   const plotKey = `${view}-${threeD ? "3d" : "2d"}`;
 
-  const resetKey = `${plotKey}|${des.xColumn}|${des.yColumn}|${des.colorColumn}|${des.yColumns.join(",")}`;
-
   return (
     <div className="data-explorer-plot" tabIndex={0}>
       <div className="data-explorer-plot-area">
         {figure ? (
-          <PlotErrorBoundary resetKey={resetKey}>
-            <ResponsivePlot
-              ref={plotRef}
-              key={plotKey}
-              figure={figure}
-              is3D={threeD}
-              onPointClick={onPointClick}
-            />
-          </PlotErrorBoundary>
+          <ResponsivePlot
+            ref={plotRef}
+            key={plotKey}
+            figure={figure}
+            is3D={threeD}
+            onPointClick={onPointClick}
+          />
         ) : ready ? (
-          <Message>Not enough numeric data to plot the selected axes</Message>
+          renderMessage("Not enough numeric data to plot the selected axes")
         ) : (
-          <Message>Select the axes to plot</Message>
+          renderMessage("Select the axes to plot")
         )}
       </div>
     </div>
   );
-});
+}
 
-const SummaryView = observer(({ des }) => {
+function renderSummaryView({ des }) {
   const summary = des.payload && des.payload.summary;
   if (!summary || !Array.isArray(summary.rows)) {
-    return <Message>No summary statistics available for this data</Message>;
+    return renderMessage("No summary statistics available for this data");
   }
   return (
     <div className="data-explorer-table-wrapper native-key-bindings" tabIndex={0}>
@@ -745,12 +734,12 @@ const SummaryView = observer(({ des }) => {
       </table>
     </div>
   );
-});
+}
 
 // Drill-down trail. Each segment re-evaluates its stored expression; the last
 // segment is the current level (non-clickable). Only shown once the user has
 // drilled at least one level deep.
-const Breadcrumb = observer(({ des }) => {
+function renderBreadcrumb({ des }) {
   const path = des.path;
   if (!Array.isArray(path) || path.length <= 1) {
     return null;
@@ -758,7 +747,7 @@ const Breadcrumb = observer(({ des }) => {
   return (
     <div className="data-explorer-breadcrumb">
       {path.map((segment, i) => (
-        <React.Fragment key={i}>
+        <>
           {i > 0 ? <span className="data-explorer-breadcrumb-sep">›</span> : null}
           <button
             type="button"
@@ -769,25 +758,27 @@ const Breadcrumb = observer(({ des }) => {
           >
             {segment.label}
           </button>
-        </React.Fragment>
+        </>
       ))}
     </div>
   );
-});
+}
 
-const ViewToolbar = observer(({ des }) => (
-  <div className="btn-group data-explorer-view-toggle">
-    {VIEWS.map((v) => (
-      <button
-        key={v.id}
-        className={`btn icon ${v.icon} ${des.viewMode === v.id ? "selected" : ""}`}
-        onClick={() => des.setViewMode(v.id)}
-      >
-        {v.label}
-      </button>
-    ))}
-  </div>
-));
+function renderViewToolbar({ des }) {
+  return (
+    <div className="btn-group data-explorer-view-toggle">
+      {VIEWS.map((v) => (
+        <button
+          key={v.id}
+          className={`btn icon ${v.icon} ${des.viewMode === v.id ? "selected" : ""}`}
+          onClick={() => des.setViewMode(v.id)}
+        >
+          {v.label}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 function payloadMeta(payload) {
   const kind = payload.kind || "data";
@@ -815,7 +806,7 @@ function payloadMeta(payload) {
   return { kind, detail: details.join(" | ") };
 }
 
-const PayloadMeta = observer(({ des, view }) => {
+function renderPayloadMeta({ des, view }) {
   const payload = des.payload;
   if (!payload || view !== "grid") {
     return null;
@@ -827,7 +818,7 @@ const PayloadMeta = observer(({ des, view }) => {
       <span className="data-explorer-object-repr">{meta.detail}</span>
     </div>
   );
-});
+}
 
 /**
  * Multi-line expression editor, built the same way as the watch editor
@@ -835,10 +826,14 @@ const PayloadMeta = observer(({ des, view }) => {
  * would reset the grammar to plain text). Live edits update the stored
  * expression; Enter confirms / loads, Shift+Enter inserts a newline (keymaps).
  */
-class ExpressionEditor extends React.Component {
-  containerRef = React.createRef();
+class ExpressionEditor {
+  constructor(props) {
+    this.props = props;
+    etch.initialize(this);
+    this.didMount();
+  }
 
-  componentDidMount() {
+  didMount() {
     this.editor = atom.workspace.buildTextEditor({
       softWrapped: true,
       lineNumberGutterVisible: false,
@@ -851,7 +846,7 @@ class ExpressionEditor extends React.Component {
     if (this.props.value) {
       this.editor.setText(this.props.value);
     }
-    this.containerRef.current.appendChild(this.editor.element);
+    this.element.appendChild(this.editor.element);
     AutocompleteConsumer.watchPanelEditor(this.editor);
     this._changeDisposable = this.editor.onDidChange(() => {
       this.props.onChange(this.editor.getText());
@@ -865,16 +860,19 @@ class ExpressionEditor extends React.Component {
     });
   }
 
-  componentDidUpdate() {
-    if (this.editor && this.editor.getText() !== this.props.value) {
-      this.editor.setText(this.props.value || "");
+  update(props) {
+    this.props = props;
+    if (this.editor && this.editor.getText() !== props.value) {
+      this.editor.setText(props.value || "");
     }
+    return etch.update(this);
   }
 
-  componentWillUnmount() {
+  destroy() {
     this._changeDisposable?.dispose();
     this._commands?.dispose();
     this.editor?.destroy();
+    return etch.destroy(this);
   }
 
   focus() {
@@ -882,25 +880,26 @@ class ExpressionEditor extends React.Component {
   }
 
   render() {
-    return <div className="data-explorer-expression-editor" ref={this.containerRef} />;
+    return <div className="data-explorer-expression-editor" />;
   }
 }
 
-@observer
-class DataExplorer extends React.Component {
-  plotRef = React.createRef();
-  expressionRef = React.createRef();
-  toolbarRef = React.createRef();
-  bodyRef = React.createRef();
+class DataExplorer {
+  constructor(props) {
+    this.props = props;
+    etch.initialize(this);
+    this.didMount();
+    this.storeSubscription = this.props.des.onDidUpdate(() => this.update());
+  }
 
-  componentDidMount() {
+  didMount() {
     this._lastFocusToken = this.props.des.focusToken;
-    this._bodyCommands = atom.commands.add(this.bodyRef.current, {
+    this._bodyCommands = atom.commands.add(this.refs.body, {
       "jupyter-repl:data-explorer-focus-expression": () => this.focusExpression(),
       "jupyter-repl:data-explorer-focus-toolbar": () => this.focusToolbar(),
       "jupyter-repl:data-explorer-drill-up": () => this.props.des.drillUp(),
     });
-    this._toolbarCommands = atom.commands.add(this.toolbarRef.current, {
+    this._toolbarCommands = atom.commands.add(this.refs.toolbar, {
       "jupyter-repl:data-explorer-toolbar-left": (event) => this.focusToolbarItem(event, -1),
       "jupyter-repl:data-explorer-toolbar-right": (event) => this.focusToolbarItem(event, 1),
       "jupyter-repl:data-explorer-toolbar-confirm": (event) => this.confirmToolbarItem(event),
@@ -912,7 +911,11 @@ class DataExplorer extends React.Component {
   // After a drill (Enter) / drill-up (Backspace), the new level replaces the
   // grid; once it has rendered (loading done, payload present) move focus back
   // to it so keyboard navigation continues without an extra click.
-  componentDidUpdate() {
+  update() {
+    return etch.update(this).then(() => this.didUpdate());
+  }
+
+  didUpdate() {
     const des = this.props.des;
     if (des.focusToken !== this._lastFocusToken && !des.loading && des.payload) {
       this._lastFocusToken = des.focusToken;
@@ -920,17 +923,19 @@ class DataExplorer extends React.Component {
     }
   }
 
-  componentWillUnmount() {
+  destroy() {
+    this.storeSubscription?.dispose();
     this._bodyCommands?.dispose();
     this._toolbarCommands?.dispose();
+    return etch.destroy(this);
   }
 
   focusExpression = () => {
-    this.expressionRef.current?.focus();
+    this.refs.expression?.focus();
   };
 
   getToolbarItems() {
-    const toolbar = this.toolbarRef.current;
+    const toolbar = this.refs.toolbar;
     if (!toolbar) {
       return [];
     }
@@ -943,7 +948,7 @@ class DataExplorer extends React.Component {
   }
 
   focusToolbar = () => {
-    const toolbar = this.toolbarRef.current;
+    const toolbar = this.refs.toolbar;
     if (!toolbar) {
       return;
     }
@@ -959,7 +964,7 @@ class DataExplorer extends React.Component {
     event?.stopPropagation?.();
     const items = this.getToolbarItems();
     if (items.length === 0) {
-      this.toolbarRef.current?.focus({ preventScroll: true });
+      this.refs.toolbar?.focus({ preventScroll: true });
       return;
     }
 
@@ -977,7 +982,7 @@ class DataExplorer extends React.Component {
   confirmToolbarItem(event) {
     event?.stopPropagation?.();
     const active = document.activeElement;
-    if (!this.toolbarRef.current?.contains(active)) {
+    if (!this.refs.toolbar?.contains(active)) {
       this.focusToolbar();
       return;
     }
@@ -992,7 +997,7 @@ class DataExplorer extends React.Component {
   }
 
   focusBody = () => {
-    const body = this.bodyRef.current;
+    const body = this.refs.body;
     if (!body) {
       return;
     }
@@ -1007,8 +1012,8 @@ class DataExplorer extends React.Component {
   };
 
   handleStretch = (axisKey, factor) => {
-    if (this.plotRef.current) {
-      this.plotRef.current.stretchAxis(axisKey, factor);
+    if (this.refs.plot) {
+      this.refs.plot.stretchAxis(axisKey, factor);
     }
   };
 
@@ -1017,6 +1022,51 @@ class DataExplorer extends React.Component {
     des.setSelectedRow(rowIndex);
     des.setViewMode("grid");
   };
+
+  renderBody(des, view, isChart) {
+    if (des.loading) {
+      return renderMessage("Loading...");
+    }
+    if (des.error) {
+      return renderMessage(<span className="text-error">{des.error}</span>);
+    }
+    if (!des.payload) {
+      return renderMessage([
+        <div>No data loaded.</div>,
+        <div className="text-subtle">
+          Put the cursor on a variable (or select an expression) and run "Data Explorer", or use
+          Variables.
+        </div>,
+      ]);
+    }
+
+    // Keys on each slot: the second slot switches between the summary, a chart
+    // and nothing, and without a key the diff cannot tell a replacement from a
+    // move and leaves the body stale.
+    return (
+      <>
+        {/* Grid stays mounted and is just hidden when another view is
+            active, so switching back doesn't rebuild the whole table. */}
+        <div key="grid" className={`data-explorer-grid-view${view === "grid" ? "" : " is-hidden"}`}>
+          {renderDataExplorerGrid(des)}
+          {renderGridFooter({ des })}
+        </div>
+        <div key="alt" className="data-explorer-alt-view">
+          {view === "summary" ? renderSummaryView({ des }) : null}
+          {isChart
+            ? renderChartPlot({
+                des,
+                view,
+                plotRef: (component) => {
+                  this.plot = component;
+                },
+                onPointClick: this.handlePointClick,
+              })
+            : null}
+        </div>
+      </>
+    );
+  }
 
   render() {
     // Singleton store, fed explicitly via the data-explorer command / Variable
@@ -1032,7 +1082,7 @@ class DataExplorer extends React.Component {
         <div className="data-explorer-controls">
           <div className="data-explorer-expression">
             <ExpressionEditor
-              ref={this.expressionRef}
+              ref="expression"
               value={des.expression}
               onChange={des.setExpression}
               onConfirm={des.loadExpression}
@@ -1041,55 +1091,22 @@ class DataExplorer extends React.Component {
               onFocusBody={this.focusBody}
             />
           </div>
-          <div className="data-explorer-toolbar-row" ref={this.toolbarRef} tabIndex={0}>
-            <ViewToolbar des={des} />
-            <Breadcrumb des={des} />
-            <PayloadMeta des={des} view={view} />
-            {isChart && hasTable ? (
-              <ChartControls des={des} view={view} onStretch={this.handleStretch} />
-            ) : null}
+          <div className="data-explorer-toolbar-row" ref="toolbar" tabIndex={0}>
+            {renderViewToolbar({ des })}
+            {renderBreadcrumb({ des })}
+            {renderPayloadMeta({ des, view })}
+            {isChart && hasTable
+              ? renderChartControls({ des, view, onStretch: this.handleStretch })
+              : null}
           </div>
         </div>
 
-        <div className="data-explorer-body" ref={this.bodyRef} tabIndex={0}>
-          {des.loading ? (
-            <Message>Loading...</Message>
-          ) : des.error ? (
-            <Message>
-              <span className="text-error">{des.error}</span>
-            </Message>
-          ) : !des.payload ? (
-            <Message>
-              <div>No data loaded.</div>
-              <div className="text-subtle">
-                Put the cursor on a variable (or select an expression) and run "Data Explorer", or
-                use Variables.
-              </div>
-            </Message>
-          ) : (
-            <React.Fragment>
-              {/* Grid stays mounted and is just hidden when another view is
-                  active, so switching back doesn't rebuild the whole table. */}
-              <div className={`data-explorer-grid-view${view === "grid" ? "" : " is-hidden"}`}>
-                <DataExplorerGrid des={des} />
-                <GridFooter des={des} />
-              </div>
-              {view === "summary" ? <SummaryView des={des} /> : null}
-              {isChart ? (
-                <ChartPlot
-                  des={des}
-                  view={view}
-                  plotRef={this.plotRef}
-                  onPointClick={this.handlePointClick}
-                />
-              ) : null}
-            </React.Fragment>
-          )}
+        <div className="data-explorer-body" ref="body" tabIndex={0}>
+          {this.renderBody(des, view, isChart)}
         </div>
       </div>
     );
   }
 }
 
-DataExplorer.displayName = "DataExplorer";
-export default DataExplorer;
+module.exports = DataExplorer;

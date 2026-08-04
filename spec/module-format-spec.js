@@ -64,6 +64,33 @@ describe("module format", () => {
     expect(offenders).toEqual([]);
   });
 
+  it("uses only classes as JSX tags", () => {
+    // Etch calls a function tag with `new` and takes `.element` off the result,
+    // so a plain function used as a tag renders `undefined` and the patch dies
+    // with "appendChild: parameter 1 is not of type 'Node'" — far from the
+    // component at fault, and only on the branch that renders it. A stateless
+    // renderer has to be called, not spelled as a tag.
+    const offenders = [];
+    eachLibFile((full, rel) => {
+      if (!rel.endsWith(".jsx")) {
+        return;
+      }
+      const source = fs.readFileSync(full, "utf8");
+      const tags = new Set(
+        [...source.matchAll(/<([A-Z][A-Za-z0-9_]*)[\s/>]/g)].map((match) => match[1]),
+      );
+      for (const tag of tags) {
+        // Imported components are checked where they are defined.
+        const declaredHere = new RegExp(`^(class|function)\\s+${tag}\\b`, "m").test(source);
+        const isFunction = new RegExp(`^function\\s+${tag}\\b`, "m").test(source);
+        if (declaredHere && isFunction) {
+          offenders.push(`${rel}: <${tag}> is a function, not a class`);
+        }
+      }
+    });
+    expect(offenders).toEqual([]);
+  });
+
   it("has no CommonJS module reading a Babel default that is not there", () => {
     // `@lumine-code/babel-preset` runs with `addModuleExports: true` and
     // `addModuleExportsDefaultProperty: false`. A Babel module whose only

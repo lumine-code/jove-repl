@@ -1,8 +1,4 @@
-/** @babel */
-/** @jsx React.createElement */
-
-import React from "react";
-import { observer } from "mobx-react";
+const etch = require("@lumine-code/etch");
 
 // Horizontal cell padding (px), and the clamp on auto-measured column widths.
 const PAD_X = 8;
@@ -33,11 +29,7 @@ function formatCell(value) {
  * scrollable area and the canvas is `position: sticky` so it stays pinned over
  * the viewport; on scroll we just redraw the visible cells.
  */
-class CanvasGrid extends React.Component {
-  wrapRef = React.createRef();
-  sizerRef = React.createRef();
-  canvasRef = React.createRef();
-
+class CanvasGrid {
   // Selection rectangles in data coordinates (column indices exclude the index
   // column). The active rectangle is anchored at (r0,c0) and extended to (r1,c1).
   sel = null;
@@ -46,16 +38,22 @@ class CanvasGrid extends React.Component {
   focused = false;
   _rafPending = false;
 
-  componentDidMount() {
-    this.ctx = this.canvasRef.current.getContext("2d");
+  constructor(props) {
+    this.props = props;
+    etch.initialize(this);
+    this.didMount();
+  }
+
+  didMount() {
+    this.ctx = this.refs.canvas.getContext("2d");
     this.readTheme();
     this.computeLayout();
     this.resizeObserver = new ResizeObserver(() => this.handleResize());
-    this.resizeObserver.observe(this.wrapRef.current);
+    this.resizeObserver.observe(this.refs.wrap);
     this._themeDisposable = atom.themes.onDidChangeActiveThemes(() => {
       // Themes reload asynchronously; re-read colors/fonts on the next tick.
       setTimeout(() => {
-        if (!this.wrapRef.current) {
+        if (!this.refs.wrap) {
           return;
         }
         this.readTheme();
@@ -72,7 +70,7 @@ class CanvasGrid extends React.Component {
     const page = (direction, extend = false) =>
       command(() => this.moveActiveSelection(direction * this.pageRowCount(), 0, extend));
 
-    this._commands = atom.commands.add(this.wrapRef.current, {
+    this._commands = atom.commands.add(this.refs.wrap, {
       "core:move-up": navigate(-1, 0),
       "core:move-down": navigate(1, 0),
       "core:move-left": navigate(0, -1),
@@ -120,7 +118,13 @@ class CanvasGrid extends React.Component {
     }
   }
 
-  componentDidUpdate(prev) {
+  update(props) {
+    const prev = this.props;
+    this.props = props;
+    return etch.update(this).then(() => this.didUpdate(prev));
+  }
+
+  didUpdate(prev) {
     if (prev.payload !== this.props.payload) {
       this.sel = null;
       this.selections = [];
@@ -134,7 +138,12 @@ class CanvasGrid extends React.Component {
     this.scheduleDraw();
   }
 
-  componentWillUnmount() {
+  destroy() {
+    this.teardown();
+    return etch.destroy(this);
+  }
+
+  teardown() {
     this.resizeObserver?.disconnect();
     this._themeDisposable?.dispose();
     this._commands?.dispose();
@@ -145,7 +154,7 @@ class CanvasGrid extends React.Component {
   // Read fonts and palette from CSS (custom properties on the wrapper) so the
   // canvas matches the active Lumine theme.
   readTheme() {
-    const cs = getComputedStyle(this.wrapRef.current);
+    const cs = getComputedStyle(this.refs.wrap);
     this.fontSize = parseFloat(cs.fontSize) || 12;
     this.fontFamily = cs.fontFamily || "monospace";
     this.font = `${this.fontSize}px ${this.fontFamily}`;
@@ -208,15 +217,15 @@ class CanvasGrid extends React.Component {
     this.totalWidth = x;
     this.totalHeight = this.headerHeight + rows.length * this.rowHeight;
 
-    if (this.sizerRef.current) {
-      this.sizerRef.current.style.width = `${this.totalWidth}px`;
-      this.sizerRef.current.style.height = `${this.totalHeight}px`;
+    if (this.refs.sizer) {
+      this.refs.sizer.style.width = `${this.totalWidth}px`;
+      this.refs.sizer.style.height = `${this.totalHeight}px`;
     }
   }
 
   handleResize() {
-    const wrap = this.wrapRef.current;
-    const canvas = this.canvasRef.current;
+    const wrap = this.refs.wrap;
+    const canvas = this.refs.canvas;
     if (!wrap || !canvas) {
       return;
     }
@@ -275,7 +284,7 @@ class CanvasGrid extends React.Component {
 
   draw() {
     const ctx = this.ctx;
-    const wrap = this.wrapRef.current;
+    const wrap = this.refs.wrap;
     const p = this.props.payload;
     if (!ctx || !wrap || !p || !Array.isArray(p.rows) || !this.viewW || !this.viewH) {
       return;
@@ -517,7 +526,7 @@ class CanvasGrid extends React.Component {
   }
 
   pageRowCount() {
-    const bodyHeight = Math.max(0, (this.wrapRef.current?.clientHeight || 0) - this.headerHeight);
+    const bodyHeight = Math.max(0, (this.refs.wrap?.clientHeight || 0) - this.headerHeight);
     return Math.max(1, Math.floor(bodyHeight / this.rowHeight) - 1);
   }
 
@@ -686,7 +695,7 @@ class CanvasGrid extends React.Component {
   }
 
   scrollRowIntoView(r) {
-    const wrap = this.wrapRef.current;
+    const wrap = this.refs.wrap;
     if (!wrap) {
       return;
     }
@@ -701,7 +710,7 @@ class CanvasGrid extends React.Component {
   }
 
   scrollColumnIntoView(c) {
-    const wrap = this.wrapRef.current;
+    const wrap = this.refs.wrap;
     if (!wrap || !this.colX || !this.colWidths) {
       return;
     }
@@ -724,7 +733,7 @@ class CanvasGrid extends React.Component {
   // header / corner) and the data row/column it resolves to (clamped to valid
   // ranges). Returns null only when outside the viewport and `clamp` is false.
   hit(clientX, clientY, clamp) {
-    const wrap = this.wrapRef.current;
+    const wrap = this.refs.wrap;
     const p = this.props.payload;
     const rect = wrap.getBoundingClientRect();
     const px = clientX - rect.left;
@@ -856,7 +865,7 @@ class CanvasGrid extends React.Component {
   // Snapshot / restore the selection and scroll offsets, so navigating back to a
   // level lands where the user left it.
   captureState() {
-    const wrap = this.wrapRef.current;
+    const wrap = this.refs.wrap;
     return {
       sel: this.sel ? { ...this.sel } : null,
       selections: this.selections.map((s) => ({ ...s })),
@@ -873,7 +882,7 @@ class CanvasGrid extends React.Component {
     this.sel = state.sel ? { ...state.sel } : null;
     this.selections = (state.selections || []).map((s) => ({ ...s }));
     this.selMode = state.selMode;
-    const wrap = this.wrapRef.current;
+    const wrap = this.refs.wrap;
     if (wrap) {
       wrap.scrollTop = state.scrollTop || 0;
       wrap.scrollLeft = state.scrollLeft || 0;
@@ -889,7 +898,7 @@ class CanvasGrid extends React.Component {
     if (this.props.selectedRow != null) {
       this.props.onClearSelected?.();
     }
-    this.wrapRef.current.focus({ preventScroll: true });
+    this.refs.wrap.focus({ preventScroll: true });
     const hit = this.hit(e.clientX, e.clientY, false);
     if (!hit) {
       this.sel = null;
@@ -966,7 +975,7 @@ class CanvasGrid extends React.Component {
 
   scrollToSelected() {
     const sr = this.props.selectedRow;
-    const wrap = this.wrapRef.current;
+    const wrap = this.refs.wrap;
     if (sr == null || !wrap) {
       return;
     }
@@ -981,7 +990,7 @@ class CanvasGrid extends React.Component {
   render() {
     return (
       <div
-        ref={this.wrapRef}
+        ref="wrap"
         className="data-explorer-canvas-wrap"
         tabIndex={0}
         onScroll={this.handleScroll}
@@ -991,14 +1000,18 @@ class CanvasGrid extends React.Component {
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
       >
-        <div ref={this.sizerRef} className="data-explorer-canvas-sizer" />
-        <canvas ref={this.canvasRef} className="data-explorer-canvas" />
+        <div ref="sizer" className="data-explorer-canvas-sizer" />
+        <canvas ref="canvas" className="data-explorer-canvas" />
       </div>
     );
   }
 }
 
-const DataExplorerGrid = observer(({ des }) => {
+/**
+ * Render the explorer's payload: the grid for anything tabular, and the value's
+ * repr for anything else.
+ */
+function renderDataExplorerGrid(des) {
   const payload = des.payload;
   if (!payload) {
     return null;
@@ -1024,7 +1037,6 @@ const DataExplorerGrid = observer(({ des }) => {
       onClearSelected={() => des.setSelectedRow(null)}
     />
   );
-});
+}
 
-DataExplorerGrid.displayName = "DataExplorerGrid";
-export default DataExplorerGrid;
+module.exports = { CanvasGrid, renderDataExplorerGrid };
