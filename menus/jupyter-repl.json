@@ -136,10 +136,6 @@
               "command": "jupyter-repl:toggle-watches"
             },
             {
-              "label": "Toggle Variables",
-              "command": "jupyter-repl:toggle-variable-explorer"
-            },
-            {
               "type": "separator"
             },
             {

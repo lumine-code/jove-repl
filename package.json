@@ -81,7 +81,6 @@
       "jupyter-repl:import-notebook",
       "jupyter-repl:debug-toggle",
       "jupyter-repl:toggle-exec-panel",
-      "jupyter-repl:toggle-variable-explorer",
       "jupyter-repl:hot-reload-package",
       "jupyter-repl:open-examples",
       "jupyter-repl:open-gateways",
@@ -89,11 +88,6 @@
     ]
   },
   "consumedServices": {
-    "jupyter.explorer": {
-      "versions": {
-        "^1.0.0": "consumeDataExplorer"
-      }
-    },
     "autocomplete.watch-editor": {
       "versions": {
         "^1.0.0": "consumeAutocompleteWatchEditor"

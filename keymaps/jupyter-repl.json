@@ -1,6 +1,5 @@
 {
   "atom-workspace": {
-    "alt-h v": "jupyter-repl:toggle-variable-explorer",
     "alt-h o": "jupyter-repl:toggle-output-area",
     "alt-h w": "jupyter-repl:toggle-watches",
     "alt-h e": "jupyter-repl:toggle-exec-panel"
