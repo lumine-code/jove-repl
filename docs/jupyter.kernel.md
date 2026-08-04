@@ -95,7 +95,7 @@ type JupyterKernel = {
   // control
   interrupt(): void;
   restart(onRestarted?: () => void): void;
-  shutdown(): void;
+  shutdown(): void; // shuts down AND releases: the kernel leaves the running list
   addMiddleware(middleware: object): void;
 };
 ```

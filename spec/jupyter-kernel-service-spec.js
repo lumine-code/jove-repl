@@ -27,6 +27,33 @@ function fakeInternalKernel(name = "Python 3") {
   };
 }
 
+describe("real JupyterKernel wrapper teardown", () => {
+  const JupyterKernel = require("../lib/plugin-api/jupyter-kernel");
+
+  // The monitor's shutdown button goes through the wrapper. Shutdown that
+  // only sent the request left the dead kernel registered: still listed,
+  // and with files still mapped to it, so the next run executed into the
+  // corpse instead of starting a fresh kernel.
+  it("shutdown releases the kernel, not just the process", () => {
+    const internal = {
+      shutDown: false,
+      destroyed: false,
+      shutdown() {
+        this.shutDown = true;
+      },
+      destroy() {
+        this.destroyed = true;
+      },
+    };
+    const wrapper = new JupyterKernel(internal);
+
+    wrapper.shutdown();
+
+    expect(internal.shutDown).toBe(true);
+    expect(internal.destroyed).toBe(true);
+  });
+});
+
 describe("jupyter.kernel service", () => {
   let emitter;
   let provider;
