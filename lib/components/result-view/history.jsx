@@ -1,6 +1,7 @@
 const etch = require("@lumine-code/etch");
 const { CompositeDisposable } = require("atom");
 const { renderDisplay } = require("./display");
+const { outputFontSize } = require("./output-actions");
 
 /**
  * A watch's accumulated values, with a slider to scrub back through them.
@@ -66,7 +67,7 @@ class History {
         <div
           className="multiline-container native-key-bindings"
           tabIndex={-1}
-          style={{ fontSize: atom.config.get("jupyter-repl.outputAreaFontSize") || "inherit" }}
+          style={{ fontSize: outputFontSize() }}
           attributes={{
             "jupyter-repl-wrapoutput": String(atom.config.get("jupyter-repl.wrapOutput") ?? true),
           }}

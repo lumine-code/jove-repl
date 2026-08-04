@@ -1,5 +1,6 @@
 const etch = require("@lumine-code/etch");
 const { renderDisplay } = require("./display");
+const { outputFontSize } = require("./output-actions");
 
 /** Every output of a run, in order, scrolled to the newest. */
 class ScrollList {
@@ -15,7 +16,7 @@ class ScrollList {
       <div
         className="scroll-list multiline-container native-key-bindings"
         tabIndex={-1}
-        style={{ fontSize: atom.config.get("jupyter-repl.outputAreaFontSize") || "inherit" }}
+        style={{ fontSize: outputFontSize() }}
         attributes={{
           "jupyter-repl-wrapoutput": String(atom.config.get("jupyter-repl.wrapOutput") ?? true),
         }}
