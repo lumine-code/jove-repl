@@ -1,7 +1,5 @@
-/** @babel */
-
-import WSKernelPicker from "../lib/ws-kernel-picker";
-import Config from "../lib/config";
+const WSKernelPicker = require("../lib/ws-kernel-picker");
+const Config = require("../lib/config");
 
 // The picker chains modal steps on the workspace breadcrumb trail: gateway,
 // credentials when needed, then a session or a kernel spec. The network edge

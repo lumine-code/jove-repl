@@ -1,8 +1,6 @@
-/** @babel */
-
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import ExecPanel from "../lib/exec-panel";
+const dayjs = require("dayjs");
+const relativeTime = require("dayjs/plugin/relativeTime");
+const ExecPanel = require("../lib/exec-panel");
 
 dayjs.extend(relativeTime);
 

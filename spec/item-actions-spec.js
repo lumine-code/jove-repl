@@ -1,7 +1,5 @@
-/** @babel */
-
-import ExecPanel from "../lib/exec-panel";
-import KernelPicker from "../lib/kernel-picker";
+const ExecPanel = require("../lib/exec-panel");
+const KernelPicker = require("../lib/kernel-picker");
 
 describe("jupyter-repl kernel picker item actions", () => {
   let picker;

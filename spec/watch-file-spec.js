@@ -1,9 +1,7 @@
-/** @babel */
-
-import { watchFile } from "atom";
-import fs from "fs";
-import os from "os";
-import path from "path";
+const { watchFile } = require("atom");
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
 
 // The store's `addFileDisposer` used to build a synchronous `new File(path)`
 // (backed by the removed `pathwatcher`) and subscribe to `onDidDelete`. Lumine

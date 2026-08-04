@@ -1,6 +1,4 @@
-/** @babel */
-
-import { findCodeBlockAtRow } from "../lib/code-manager";
+const { findCodeBlockAtRow } = require("../lib/code-manager");
 
 // Multiline triple-quoted strings hide their brackets from the line-based
 // bracket checks (`doc.x('''` ends with the string opener, `''')` starts with

@@ -1,6 +1,4 @@
-/** @babel */
-
-import { grammarToLanguage, kernelSpecProvidesGrammar } from "../lib/utils";
+const { grammarToLanguage, kernelSpecProvidesGrammar } = require("../lib/utils");
 
 // Lumine ships a dedicated IPython tree-sitter grammar for .ipy files
 // (scope source.python.ipy). It is a dialect of python, so jupyter-repl must

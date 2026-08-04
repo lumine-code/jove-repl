@@ -1,6 +1,4 @@
-/** @babel */
-
-import { runInAction } from "mobx";
+const { runInAction } = require("mobx");
 
 // A window reload never deactivates packages, so `deactivate()` is not enough
 // to release the kernels' zmq sockets. Left open, they make zeromq run
@@ -11,7 +9,7 @@ describe("teardown with a running kernel", () => {
   let store;
 
   beforeEach(async () => {
-    store = require("../lib/store").default;
+    store = require("../lib/store");
     // The package activates on its commands, so dispatch one to trigger it.
     const activation = atom.packages.activatePackage("jupyter-repl");
     atom.commands.dispatch(atom.views.getView(atom.workspace), "jupyter-repl:debug-toggle");

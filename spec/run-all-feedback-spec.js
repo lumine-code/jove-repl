@@ -1,9 +1,7 @@
-/** @babel */
-
-import { Point, Range } from "atom";
-import { run, runAll } from "../lib/main";
-import * as result from "../lib/result";
-import store from "../lib/store";
+const { Point, Range } = require("atom");
+const { run, runAll } = require("../lib/main");
+const result = require("../lib/result");
+const store = require("../lib/store");
 
 describe("batch inline feedback", () => {
   let editor;

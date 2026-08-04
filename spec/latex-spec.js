@@ -1,6 +1,4 @@
-/** @babel */
-
-import { renderLatexToSvg } from "../lib/components/result-view/latex";
+const { renderLatexToSvg } = require("../lib/components/result-view/latex");
 
 // Exercises the async ESM MathJax load path end to end: `renderLatexToSvg`
 // dynamically imports the `mjs` build of `@mathjax/src` and renders through the

@@ -1,7 +1,5 @@
-/** @babel */
-
-import fs from "fs";
-import path from "path";
+const fs = require("fs");
+const path = require("path");
 
 // The settings schema lives in package.json's `configSchema` rather than being
 // exported as `config` from main.js, so the editor can show and default the

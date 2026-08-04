@@ -1,14 +1,12 @@
-/** @babel */
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
 
-import fs from "fs";
-import os from "os";
-import path from "path";
-
-import {
+const {
   launchSpec,
   launchSpecFromConnectionInfo,
   writeConnectionFile,
-} from "../lib/kernel-launcher";
+} = require("../lib/kernel-launcher");
 
 // Kernel launching used to come from nteract's `spawnteract`, abandoned in
 // 2020. These specs pin the parts of its contract this package relies on: the

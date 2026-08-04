@@ -1,7 +1,5 @@
-/** @babel */
-
-import fs from "fs";
-import path from "path";
+const fs = require("fs");
+const path = require("path");
 
 // Guards for the CSON -> JSON and Less -> CSS migrations. If someone
 // reintroduces a CSON keymap/menu or a Less stylesheet, these fail.

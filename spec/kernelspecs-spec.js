@@ -1,11 +1,9 @@
-/** @babel */
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
 
-import fs from "fs";
-import os from "os";
-import path from "path";
-
-import { findAll } from "../lib/kernelspecs";
-import { dataDirs, runtimeDir, resetSysPrefixCache } from "../lib/jupyter-paths";
+const { findAll } = require("../lib/kernelspecs");
+const { dataDirs, runtimeDir, resetSysPrefixCache } = require("../lib/jupyter-paths");
 
 // Kernel discovery used to come from nteract's `kernelspecs`/`jupyter-paths`,
 // which were abandoned in 2021 and probed directories with the runtime

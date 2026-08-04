@@ -1,9 +1,7 @@
-/** @babel */
-
-import fs from "fs";
-import os from "os";
-import path from "path";
-import Config from "../lib/config";
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
+const Config = require("../lib/config");
 
 // These specs cover the migration away from the `season`/CSON gateways file.
 // The old code required `season` from the editor resourcePath (now scoped to

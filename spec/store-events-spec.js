@@ -1,13 +1,11 @@
-/** @babel */
-
 // The panels are being moved off mobx observation onto these events, and later
 // into their own packages, where mobx observables cannot cross the boundary.
 // These specs pin the event contract itself, independent of mobx.
 
-import KernelTransport from "../lib/kernel-transport";
-import OutputStore from "../lib/store/output";
-import inspectorStore from "../lib/store/inspector-store";
-import dataExplorerStore from "../lib/store/data-explorer-store";
+const KernelTransport = require("../lib/kernel-transport");
+const OutputStore = require("../lib/store/output");
+const { inspectorStore } = require("../lib/store/inspector-store");
+const { dataExplorerStore } = require("../lib/store/data-explorer-store");
 
 function kernelSpec(language = "python") {
   return { language, display_name: `${language} kernel` };
