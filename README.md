@@ -10,11 +10,10 @@ Supports Python, R, JavaScript, and other languages with rich output including p
 - **Rich media output**: renders plots, images, video, HTML, LaTeX, and interactive Plotly and Vega charts inline.
 - **Kernel intelligence**: autocomplete, object introspection, and a shared namespace with one kernel per language across files.
 - **Watches and variables**: auto-runs watch expressions and browses kernel variables in dedicated panels.
-- **Data explorer**: inspects dataframes, arrays, and nested objects in a searchable grid with charts, drill-down, and breadcrumb navigation.
 - **Kernel management**: starts local kernels, connects to remote gateways, and interrupts, restarts or shuts them down.
 - **Notebook support**: imports and exports `.ipynb` notebooks and drives external notebook cells through the `jupyter.adapter` service.
 - **Jupyter console**: attaches a console to the active kernel in an embedded terminal, a system terminal, or via a copied command.
-- **Extensible services**: provides and consumes services for autocomplete, data-explorer search, breakpoints, and third-party integrations.
+- **Extensible services**: provides and consumes services for autocomplete, kernels, breakpoints, and third-party integrations.
 
 ## Installation
 
@@ -54,7 +53,6 @@ Commands available in `atom-text-editor:not([mini])`:
 - `jupyter-repl:remove-watch`: remove focused watch expression when focus is in a watch editor,
 - `jupyter-repl:toggle-watches`: toggle watches panel,
 - `jupyter-repl:toggle-variable-explorer`: toggle variables panel,
-- `jupyter-repl:open-data-explorer`: load the selected expression (or word under cursor) into the data explorer,
 - `jupyter-repl:go-to-next-cell`: jump to next cell,
 - `jupyter-repl:go-to-previous-cell`: jump to previous cell,
 - `jupyter-repl:select-cell`: select current cell,
@@ -94,16 +92,6 @@ Commands available in `.jupyter-repl.exec-panel`, listed the same way:
 The exec panel is a prompt over the session's execution history. Type code and confirm to run it on the kernel of the active editor; every run is recorded below the prompt, newest first, badged with how long ago it ran and how it ended. Nothing is deduplicated — running the same code twice leaves two entries, because a history records what happened rather than what is distinct.
 
 Typing filters the history. Confirming a selected entry re-runs it instead of the prompt, and recalling one puts it back in the prompt so it can be edited first. Anything that runs closes the panel, since the point of running it is to see the output; the panel and the typed code stay put when there is no kernel to run on.
-
-## Data explorer search
-
-Through the `search.adapter` service, the search-panel package can search the active Data Explorer pane with the normal buffer find workflow:
-
-- `search-panel:show`, `search-panel:find-next`, and `search-panel:find-previous` search the visible Data Explorer grid instead of the active text editor while the Data Explorer pane is active.
-- Matching cells are highlighted in the canvas grid. The current match uses a stronger highlight and is scrolled into view.
-- Search respects the shared find options, including regex, case sensitivity, and whole-word matching.
-- Data Explorer is read-only, so replace commands are disabled for this pane.
-- Drill-down, breadcrumb navigation, refresh, errors, and reset refresh the search result list so stale cell matches are cleared.
 
 ## Editor kernel class
 
@@ -537,9 +525,9 @@ async function runCode(jupyter) {
 - **[jupyter.kernel](docs/jupyter.kernel.md)** (`1.0.0`): provided to let other packages execute code, request completions and introspection, and follow kernel state.
 - **autocomplete.provider** (`1.0.0`): provided to feed kernel-backed completions to autocomplete consumers while a kernel is active for the editor.
 - **[jupyter.breakpoints](docs/jupyter.breakpoints.md)** (`1.0.0`): provided to expose breakpoint state to integrations that inspect or render breakpoints.
-- **search.adapter** (`1.0.0`): provided to let the search-panel package search the active Data Explorer grid.
 - **jupyter.adapter** (`^1.0.0`): consumed to run cells of external pane items, such as jupyter-view notebooks, through the normal run commands.
-- **autocomplete.watch-editor** (`^1.0.0`): consumed to keep autocomplete active in the watch and data explorer editors.
+- **autocomplete.watch-editor** (`^1.0.0`): consumed to keep autocomplete active in the watch editors.
+- **jupyter.explorer** (`^1.0.0`): consumed to hand a name from the Variables panel to the Data Explorer.
 - **status-bar** (`^1.0.0`): consumed to display the kernel of the active editor and its execution state.
 - **terminal** (`^1.0.0`): consumed to run the Jupyter console in an embedded terminal pane.
 - **terminal-spawn** (`^1.0.0`): consumed to run the Jupyter console in a system terminal.

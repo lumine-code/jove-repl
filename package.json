@@ -79,7 +79,6 @@
     ],
     "atom-workspace": [
       "jupyter-repl:import-notebook",
-      "jupyter-repl:open-data-explorer",
       "jupyter-repl:debug-toggle",
       "jupyter-repl:toggle-exec-panel",
       "jupyter-repl:toggle-variable-explorer",
@@ -90,6 +89,11 @@
     ]
   },
   "consumedServices": {
+    "jupyter.explorer": {
+      "versions": {
+        "^1.0.0": "consumeDataExplorer"
+      }
+    },
     "autocomplete.watch-editor": {
       "versions": {
         "^1.0.0": "consumeAutocompleteWatchEditor"
@@ -140,11 +144,6 @@
     "jupyter.breakpoints": {
       "versions": {
         "1.0.0": "provideJupyterBreakpoints"
-      }
-    },
-    "search.adapter": {
-      "versions": {
-        "1.0.0": "provideSearchAdapter"
       }
     }
   },

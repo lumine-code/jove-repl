@@ -140,10 +140,6 @@
               "command": "jupyter-repl:toggle-variable-explorer"
             },
             {
-              "label": "Data Explorer",
-              "command": "jupyter-repl:open-data-explorer"
-            },
-            {
               "type": "separator"
             },
             {

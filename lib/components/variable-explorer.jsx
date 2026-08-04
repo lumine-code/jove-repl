@@ -1,8 +1,6 @@
 const etch = require("@lumine-code/etch");
 const { CompositeDisposable } = require("atom");
 const { ansiNodes } = require("../ansi-utils");
-const { DATA_EXPLORER_URI, openInCenter } = require("../utils");
-const { dataExplorerStore } = require("../store/data-explorer-store");
 
 /**
  * Sanitize HTML by removing script tags for security.
@@ -156,9 +154,14 @@ class VariableExplorer {
     this.variableStore?.toggleAutoRefresh();
   };
 
+  // The Data Explorer is its own package; hand it the name through the service
+  // rather than reaching into a store this one no longer owns.
   handleExplore = (name) => {
-    dataExplorerStore.load(this.store.kernel, name);
-    openInCenter(DATA_EXPLORER_URI);
+    const kernel = this.store.kernel;
+    if (!kernel) {
+      return;
+    }
+    require("../main").getDataExplorerService()?.explore(kernel.getPluginWrapper(), name);
   };
 
   startEditing(variable) {

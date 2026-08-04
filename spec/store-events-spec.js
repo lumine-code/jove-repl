@@ -4,7 +4,6 @@
 
 const KernelTransport = require("../lib/kernel-transport");
 const OutputStore = require("../lib/store/output");
-const { dataExplorerStore } = require("../lib/store/data-explorer-store");
 
 function kernelSpec(language = "python") {
   return { language, display_name: `${language} kernel` };
@@ -103,25 +102,5 @@ describe("output store events", () => {
     store.appendOutput({ output_type: "stream", name: "stdout", text: "hi" });
 
     expect(calls).toBe(0);
-  });
-});
-
-describe("panel store events", () => {
-  afterEach(() => {
-    dataExplorerStore.reset();
-  });
-
-  it("emits from the data explorer store on view configuration changes", () => {
-    let calls = 0;
-    const subscription = dataExplorerStore.onDidUpdate(() => calls++);
-
-    dataExplorerStore.setViewMode("line");
-    dataExplorerStore.setSelectedRow(2);
-
-    expect(dataExplorerStore.viewMode).toBe("line");
-    expect(dataExplorerStore.selectedRow).toBe(2);
-    expect(calls).toBe(2);
-
-    subscription.dispose();
   });
 });
