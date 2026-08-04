@@ -84,7 +84,7 @@ describe("store kernel tracking", () => {
   });
 
   it("reports the kernel an active pane item declares for itself", () => {
-    // The store used to name the Data Explorer and the inspector by URI. It
+    // The store used to name jupyter-explorer and the inspector by URI. It
     // asks the item instead now, so a panel that has moved into its own
     // package still gets the status bar to follow what is on screen.
     const kernel = fakeKernel("Panel kernel");
