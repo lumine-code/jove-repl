@@ -8,11 +8,6 @@
   /* Derived colors. These used to be computed by Less color functions; they are
      now expressed with CSS custom properties so they track the active theme's
      syntax/ui variables at runtime. */
-  --jupyter-repl-accent-color: hsl(220, 100%, 60%);
-  /* A panel background a step lighter than the editor background. The old Less
-     `contrast(...)` selected a lightened syntax background (near-white on light
-     themes, slightly lifted on dark themes); lighten the background directly so
-     the output box stays light instead of being tinted toward the text color. */
   --jupyter-repl-inline-background: hsl(from var(--syntax-background-color) h s calc(l + 10));
   --jupyter-repl-inline-color: hsl(from var(--syntax-text-color) h s calc(l + 10));
   --jupyter-repl-error-color: color-mix(in srgb, var(--syntax-text-color), red);
