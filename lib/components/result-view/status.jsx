@@ -1,9 +1,6 @@
-/** @babel */
-/** @jsx React.createElement */
-
-import React from "react";
-import { observer } from "mobx-react";
-const Status = observer(({ status, style }) => {
+/** The little inline marker a result shows before it has any output. */
+const etch = require("@lumine-code/etch"); // JSX factory
+function renderStatus(status, style) {
   switch (status) {
     case "running":
       return (
@@ -25,5 +22,6 @@ const Status = observer(({ status, style }) => {
     default:
       return <div className="inline-container icon icon-x" style={style} />;
   }
-});
-export default Status;
+}
+
+module.exports = { renderStatus };

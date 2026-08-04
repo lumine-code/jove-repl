@@ -1,20 +1,11 @@
-/** @babel */
-/** @jsx React.createElement */
-
 /**
- * Custom HTML component that safely handles Altair/Vega HTML output
- * by extracting specs and rendering with native Vega renderer,
- * avoiding CSP inline script issues.
+ * HTML output that also handles Altair/Vega HTML: the spec is extracted and
+ * handed to the native Vega renderer, avoiding the inline script the content
+ * security policy would block.
  */
-import React from "react";
-import { VegaEmbed } from "./vega";
+const etch = require("@lumine-code/etch");
+const { VegaEmbed } = require("./vega");
 
-/**
- * Extract a balanced JSON object or array from a string starting at a given position
- * @param {string} str - The string to extract from
- * @param {number} startIndex - The starting position
- * @param {string} startChar - The opening character ('{' or '['), defaults to '{'
- */
 function extractBalancedJSON(str, startIndex, startChar = "{") {
   const endChar = startChar === "{" ? "}" : "]";
   if (str[startIndex] !== startChar) return null;
@@ -241,87 +232,67 @@ function isVegaHTML(html) {
  * by extracting specs and rendering with native Vega renderer.
  * For Plotly, users should use the native notebook renderer (not sphinx_gallery).
  */
-export class HTML extends React.PureComponent {
+
+/**
+ * Renders HTML output, but recognises the Vega/Altair case and re-renders it
+ * through the native Vega embedder instead: the HTML those libraries emit
+ * drives itself from an inline script, which the content security policy
+ * blocks. Everything else is injected with its script tags stripped.
+ */
+class HTML {
   constructor(props) {
-    super(props);
-    this.state = {
-      vegaSpec: null,
-      vegaMediaType: null,
-      isVega: false,
-    };
-    this.elRef = React.createRef();
-  }
-
-  componentDidMount() {
+    this.props = props;
+    this.vegaSpec = null;
+    this.vegaMediaType = null;
     this.processHTML(this.props.data);
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.data !== this.props.data) {
-      this.processHTML(this.props.data);
-    }
+    etch.initialize(this);
   }
 
   processHTML(html) {
-    if (!html) return;
-
-    // Check if this is Vega/Altair HTML
-    if (isVegaHTML(html)) {
-      const spec = extractVegaSpec(html);
-      if (spec) {
-        const mediaType = detectMediaType(spec);
-        if (mediaType) {
-          this.setState({
-            vegaSpec: spec,
-            vegaMediaType: mediaType,
-            isVega: true,
-          });
-          return;
-        }
-      }
+    this.vegaSpec = null;
+    this.vegaMediaType = null;
+    if (!html || !isVegaHTML(html)) {
+      return;
     }
-
-    // Not Vega content - render as safe HTML (without scripts)
-    this.setState({
-      isVega: false,
-      vegaSpec: null,
-      vegaMediaType: null,
-    });
-    this.renderSafeHTML(html);
-  }
-
-  renderSafeHTML(html) {
-    if (!this.elRef.current) return;
-
-    // Clear existing content
-    while (this.elRef.current.firstChild) {
-      this.elRef.current.removeChild(this.elRef.current.firstChild);
+    const spec = extractVegaSpec(html);
+    if (!spec) {
+      return;
     }
-
-    // Create a sanitized version without script tags
-    const sanitized = html.replace(/<script[\s\S]*?<\/script>/gi, "");
-
-    // Use innerHTML for safe content (no scripts)
-    this.elRef.current.innerHTML = sanitized;
+    const mediaType = detectMediaType(spec);
+    if (mediaType) {
+      this.vegaSpec = spec;
+      this.vegaMediaType = mediaType;
+    }
   }
 
   render() {
-    const { isVega, vegaSpec, vegaMediaType } = this.state;
-
-    if (isVega && vegaSpec && vegaMediaType) {
-      return <VegaEmbed mediaType={vegaMediaType} spec={vegaSpec} />;
+    if (this.vegaSpec && this.vegaMediaType) {
+      return <VegaEmbed mediaType={this.vegaMediaType} spec={this.vegaSpec} />;
     }
 
-    // Render container for non-Vega HTML (scripts stripped for CSP safety)
-    return <div ref={this.elRef} className="html-output" />;
+    // Scripts are stripped: this content is injected as-is.
+    const sanitized =
+      typeof this.props.data === "string"
+        ? this.props.data.replace(/<script[\s\S]*?<\/script>/gi, "")
+        : "";
+    return <div className="html-output" innerHTML={sanitized} />;
+  }
+
+  update(props) {
+    if (props.data === this.props.data) {
+      this.props = props;
+      return Promise.resolve();
+    }
+    this.props = props;
+    this.processHTML(props.data);
+    return etch.update(this);
+  }
+
+  destroy() {
+    return etch.destroy(this);
   }
 }
 
-HTML.defaultProps = {
-  data: "",
-  mediaType: "text/html",
-};
+const htmlRenderer = (data) => <HTML data={data} />;
 
-HTML.MIMETYPE = "text/html";
-
-export default HTML;
+module.exports = { HTML, htmlRenderer };

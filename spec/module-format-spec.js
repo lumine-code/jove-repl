@@ -44,6 +44,26 @@ describe("module format", () => {
     expect(offenders).toEqual([]);
   });
 
+  it("requires etch in every .jsx file that contains a tag", () => {
+    // The JSX factory is `etch.dom` (lumine/src/babel.config.js), so a tag
+    // compiles to a reference to `etch` that never appears in the source.
+    // eslint therefore cannot see it missing, and the file throws
+    // "etch is not defined" only when something finally renders it.
+    const offenders = [];
+    eachLibFile((full, rel) => {
+      if (!rel.endsWith(".jsx")) {
+        return;
+      }
+      const source = fs.readFileSync(full, "utf8");
+      const hasTag = /<[A-Za-z][\w.-]*[\s/>]|<>/.test(source);
+      const requiresEtch = /require\(\s*["']@lumine-code\/etch["']\s*\)/.test(source);
+      if (hasTag && !requiresEtch) {
+        offenders.push(rel);
+      }
+    });
+    expect(offenders).toEqual([]);
+  });
+
   it("has no CommonJS module reading a Babel default that is not there", () => {
     // `@lumine-code/babel-preset` runs with `addModuleExports: true` and
     // `addModuleExportsDefaultProperty: false`. A Babel module whose only

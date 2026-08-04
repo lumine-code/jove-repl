@@ -1,8 +1,5 @@
-/** @babel */
-/** @jsx React.createElement */
-
-import React from "react";
-import Anser from "anser";
+const etch = require("@lumine-code/etch"); // JSX factory
+const Anser = require("anser");
 
 /**
  * Truncate text to prevent crashes from large outputs.
@@ -11,7 +8,7 @@ import Anser from "anser";
  * @param {number} maxLength - Maximum length (default: from config, 0 = no limit)
  * @returns {{ text: string, truncated: boolean }} - Truncated text and flag
  */
-export function truncateOutput(text, maxLength = atom.config.get("jupyter-repl.outputMaxLength")) {
+function truncateOutput(text, maxLength = atom.config.get("jupyter-repl.outputMaxLength")) {
   if (!text || typeof text !== "string") {
     return { text: text || "", truncated: false };
   }
@@ -51,22 +48,22 @@ function adjustColorForContrast(rgbValues) {
 }
 
 /**
- * React component that renders text with ANSI escape sequences.
- * Uses Anser.ansiToJson for parsing, then builds JSX with color conflict detection.
- * When foreground and background colors match, adjusts foreground for readability.
+ * Render text containing ANSI escape sequences as etch virtual nodes.
  *
- * @param {Object} props - Component props
- * @param {string} props.text - Text containing ANSI escape sequences
- * @returns {React.ReactNode} - React elements for colored text
+ * A plain function rather than a component: etch calls a function tag with
+ * `new`, so only classes can be tags, and there is no state to keep here.
+ *
+ * @param {string} text - Text containing ANSI escape sequences
+ * @returns {Array} - Virtual nodes for the coloured runs
  */
-export function AnsiText({ text }) {
+function ansiNodes(text) {
   if (!text || typeof text !== "string") {
-    return null;
+    return [];
   }
 
   const parsed = Anser.ansiToJson(text, { remove_empty: true });
 
-  return parsed.map((part, index) => {
+  return parsed.map((part) => {
     const { content, fg, bg, decoration } = part;
     if (!content) return null;
 
@@ -86,11 +83,7 @@ export function AnsiText({ text }) {
     else if (decoration === "underline") style.textDecoration = "underline";
 
     if (Object.keys(style).length > 0) {
-      return (
-        <span key={index} style={style}>
-          {content}
-        </span>
-      );
+      return <span style={style}>{content}</span>;
     }
     return content;
   });
@@ -103,7 +96,7 @@ export function AnsiText({ text }) {
  * @param {string} text - Text with possible carriage returns
  * @returns {string} - Processed text with carriage returns applied
  */
-export function escapeCarriageReturn(text) {
+function escapeCarriageReturn(text) {
   if (!text || typeof text !== "string") {
     return text;
   }
@@ -134,3 +127,5 @@ export function escapeCarriageReturn(text) {
 
   return result.join("\n");
 }
+
+module.exports = { truncateOutput, ansiNodes, escapeCarriageReturn };

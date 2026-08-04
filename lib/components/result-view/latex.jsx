@@ -1,17 +1,13 @@
-/** @babel */
-/** @jsx React.createElement */
-
 /**
- * LaTeX component using MathJax 4 for rendering.
+ * LaTeX rendering with MathJax 4.
  *
- * MathJax is loaded lazily and asynchronously from the ESM (`mjs`) build of
- * `@mathjax/src` via dynamic `import()`, so the large component modules load off
- * the render path the first time LaTeX output appears (the component shows a
- * "Rendering…" placeholder meanwhile) instead of blocking the UI with a
- * synchronous require. The headless `liteAdaptor` + SVG output produce an SVG
- * string we inject directly.
+ * MathJax is loaded lazily and asynchronously from the ESM (mjs) build of
+ * @mathjax/src via dynamic import(), so the large component modules load off
+ * the render path the first time LaTeX output appears (a placeholder shows
+ * meanwhile) instead of blocking the UI with a synchronous require. The
+ * headless liteAdaptor + SVG output produce an SVG string we inject directly.
  */
-import React from "react";
+const etch = require("@lumine-code/etch");
 
 // Memoized initialization promise; resolves to { adaptor, htmlDoc }. Reset to
 // null on failure so a later render can retry.
@@ -130,7 +126,7 @@ function renderToSvg(api, latex, displayMode) {
  * math. Exposed for tests so the async ESM load + render path can be exercised
  * headlessly (the liteAdaptor needs no browser DOM).
  */
-export async function renderLatexToSvg(latex) {
+async function renderLatexToSvg(latex) {
   const result = stripDelimiters(latex || "");
   if (result.isTextMode) {
     return { textContent: result.original };
@@ -142,66 +138,50 @@ export async function renderLatexToSvg(latex) {
   };
 }
 
-export class LaTeX extends React.Component {
-  static defaultProps = {
-    data: "",
-    mediaType: "text/latex",
-  };
-
+/**
+ * Renders LaTeX to SVG, showing a placeholder until MathJax has loaded and the
+ * conversion has finished.
+ */
+class LaTeX {
   constructor(props) {
-    super(props);
-    this.state = {
-      svg: null,
-      error: null,
-    };
-    this._mounted = false;
+    this.props = props;
+    this.svg = null;
+    this.textContent = null;
+    this.displayMode = false;
+    this.error = null;
+    this.destroyed = false;
     // Increments per render request so a slow async render can detect that a
-    // newer request (or an unmount) has superseded it and skip its setState.
-    this._renderToken = 0;
-  }
+    // newer request (or a destroy) has superseded it and skip its update.
+    this.renderToken = 0;
 
-  componentDidMount() {
-    this._mounted = true;
+    etch.initialize(this);
     this.renderLatex();
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.data !== this.props.data) {
-      this.renderLatex();
-    }
-  }
-
-  componentWillUnmount() {
-    this._mounted = false;
-  }
-
   async renderLatex() {
-    const token = ++this._renderToken;
+    const token = ++this.renderToken;
     try {
       const out = await renderLatexToSvg(this.props.data || "");
-      if (!this._mounted || token !== this._renderToken) return;
-      this.setState({
-        svg: out.svg || null,
-        displayMode: out.displayMode,
-        textContent: out.textContent || null,
-        error: null,
-      });
+      if (this.destroyed || token !== this.renderToken) return;
+      this.svg = out.svg || null;
+      this.displayMode = Boolean(out.displayMode);
+      this.textContent = out.textContent || null;
+      this.error = null;
     } catch (err) {
       console.error("MathJax rendering error:", err);
-      if (!this._mounted || token !== this._renderToken) return;
-      this.setState({
-        svg: null,
-        textContent: null,
-        error: err.message || "MathJax failed to initialize",
-      });
+      if (this.destroyed || token !== this.renderToken) return;
+      this.svg = null;
+      this.textContent = null;
+      this.error = err.message || "MathJax failed to initialize";
     }
+    return etch.update(this);
   }
 
   render() {
     const latex = this.props.data || "";
 
     // MathJax error - show original LaTeX
-    if (this.state.error) {
+    if (this.error) {
       return (
         <div className="latex-display latex-error">
           <code style={{ color: "#cc0000" }}>{latex}</code>
@@ -210,27 +190,20 @@ export class LaTeX extends React.Component {
     }
 
     // Text-mode LaTeX (no math) - show as preformatted text
-    if (this.state.textContent) {
+    if (this.textContent) {
       return (
         <div className="latex-display latex-text-mode">
           <pre style={{ margin: 0, whiteSpace: "pre-wrap", fontFamily: "inherit" }}>
-            {this.state.textContent}
+            {this.textContent}
           </pre>
         </div>
       );
     }
 
     // Successfully rendered math
-    if (this.state.svg) {
-      const style = this.state.displayMode ? { textAlign: "center", margin: "0.5em 0" } : {};
-
-      return (
-        <div
-          className="latex-display"
-          style={style}
-          dangerouslySetInnerHTML={{ __html: this.state.svg }}
-        />
-      );
+    if (this.svg) {
+      const style = this.displayMode ? { textAlign: "center", margin: "0.5em 0" } : {};
+      return <div className="latex-display" style={style} innerHTML={this.svg} />;
     }
 
     // Loading state
@@ -240,6 +213,22 @@ export class LaTeX extends React.Component {
       </div>
     );
   }
+
+  update(props) {
+    if (props.data === this.props.data) {
+      this.props = props;
+      return Promise.resolve();
+    }
+    this.props = props;
+    return this.renderLatex();
+  }
+
+  destroy() {
+    this.destroyed = true;
+    return etch.destroy(this);
+  }
 }
 
-export default LaTeX;
+const latexRenderer = (data) => <LaTeX data={data} />;
+
+module.exports = { LaTeX, latexRenderer, renderLatexToSvg };
