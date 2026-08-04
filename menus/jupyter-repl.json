@@ -51,14 +51,12 @@
               "command": "jupyter-repl:copy-jupyter-console-command"
             },
             {
-              "label": "Toggle Kernel Monitor",
-              "command": "jupyter-repl:toggle-kernel-monitor-focus"
-            },
-            {
               "label": "Update Kernels",
               "command": "jupyter-repl:update-kernels"
             },
-            { "type": "separator" },
+            {
+              "type": "separator"
+            },
             {
               "label": "Run",
               "command": "jupyter-repl:run"
@@ -111,7 +109,9 @@
               "label": "Run All Below Inline",
               "command": "jupyter-repl:run-all-below-inline"
             },
-            { "type": "separator" },
+            {
+              "type": "separator"
+            },
             {
               "label": "Clear Results",
               "command": "jupyter-repl:clear-results"
@@ -124,7 +124,9 @@
               "label": "Clear and Center",
               "command": "jupyter-repl:clear-and-center"
             },
-            { "type": "separator" },
+            {
+              "type": "separator"
+            },
             {
               "label": "Show Inspector",
               "command": "jupyter-repl:toggle-inspector-focus"
@@ -149,7 +151,9 @@
               "label": "Data Explorer",
               "command": "jupyter-repl:open-data-explorer"
             },
-            { "type": "separator" },
+            {
+              "type": "separator"
+            },
             {
               "label": "Import Notebook",
               "command": "jupyter-repl:import-notebook"
@@ -167,7 +171,6 @@
       ]
     }
   ],
-
   "context-menu": {
     ".tree-view .file[data-name$=\".ipynb\"]": [
       {

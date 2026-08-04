@@ -11,7 +11,7 @@ Supports Python, R, JavaScript, and other languages with rich output including p
 - **Kernel intelligence**: autocomplete, object introspection, and a shared namespace with one kernel per language across files.
 - **Watches and variables**: auto-runs watch expressions and browses kernel variables in dedicated panels.
 - **Data explorer**: inspects dataframes, arrays, and nested objects in a searchable grid with charts, drill-down, and breadcrumb navigation.
-- **Kernel management**: starts local kernels, connects to remote gateways, and monitors or controls kernels from the kernel monitor.
+- **Kernel management**: starts local kernels, connects to remote gateways, and interrupts, restarts or shuts them down.
 - **Notebook support**: imports and exports `.ipynb` notebooks and drives external notebook cells through the `jupyter.adapter` service.
 - **Jupyter console**: attaches a console to the active kernel in an embedded terminal, a system terminal, or via a copied command.
 - **Extensible services**: provides and consumes services for autocomplete, data-explorer search, breakpoints, and third-party integrations.
@@ -72,7 +72,6 @@ Commands available in `atom-workspace`:
 - `jupyter-repl:open-examples`: open example files,
 - `jupyter-repl:open-gateways`: open `gateways.json`,
 - `jupyter-repl:shutdown-all-kernels`: shutdown all running kernels,
-- `jupyter-repl:toggle-kernel-monitor-focus`: toggle focus to the kernel monitor panel, whose highlighted row follows the kernel of the active editor and which can open, interrupt, restart, or shut down the selected kernel,
 - `jupyter-repl:toggle-exec-panel`: toggle exec panel,
 - `jupyter-repl:toggle-inspector-focus`: show inspector pane,
 - `jupyter-repl:inspect-under-cursor`: inspect the expression under the cursor without moving focus from the editor,

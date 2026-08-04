@@ -2,13 +2,11 @@
   "atom-workspace": {
     "alt-h i": "jupyter-repl:toggle-inspector-focus",
     "alt-h d": "jupyter-repl:open-data-explorer",
-    "alt-h k": "jupyter-repl:toggle-kernel-monitor-focus",
     "alt-h v": "jupyter-repl:toggle-variable-explorer",
     "alt-h o": "jupyter-repl:toggle-output-area",
     "alt-h w": "jupyter-repl:toggle-watches",
     "alt-h e": "jupyter-repl:toggle-exec-panel"
   },
-
   "atom-workspace atom-text-editor:not([mini]):not(atom-dock atom-text-editor)": {
     "cmdorctrl-enter": "jupyter-repl:run",
     "shift-enter": "jupyter-repl:run-and-move-down",
@@ -18,16 +16,13 @@
     "ctrl-shift-backspace": "jupyter-repl:clear-results",
     "cmdorctrl-alt-backspace": "jupyter-repl:clear-results"
   },
-
   "atom-workspace .jupyter-repl.kernel-picker atom-text-editor[mini]": {
     "ctrl-enter": "jupyter-repl:insert-kernel-comment",
     "f5": "jupyter-repl:update-kernels"
   },
-
   "atom-workspace .jupyter-repl.exec-panel atom-text-editor[mini]": {
     "shift-enter": "jupyter-repl:recall-history-entry"
   },
-
   "atom-workspace atom-text-editor.data-explorer-expression:not([mini])": {
     "enter": "core:confirm",
     "shift-enter": "editor:newline",
@@ -35,7 +30,6 @@
     "tab": "jupyter-repl:data-explorer-focus-toolbar",
     "shift-tab": "jupyter-repl:data-explorer-focus-body"
   },
-
   "atom-workspace .data-explorer-toolbar-row": {
     "left": "jupyter-repl:data-explorer-toolbar-left",
     "right": "jupyter-repl:data-explorer-toolbar-right",
@@ -43,7 +37,6 @@
     "tab": "jupyter-repl:data-explorer-focus-body",
     "shift-tab": "jupyter-repl:data-explorer-focus-expression"
   },
-
   "atom-workspace atom-text-editor.inspector-expression:not([mini])": {
     "enter": "core:confirm",
     "shift-enter": "editor:newline",
@@ -51,12 +44,10 @@
     "tab": "jupyter-repl:inspector-focus-body",
     "shift-tab": "jupyter-repl:inspector-focus-body"
   },
-
   "atom-workspace .data-explorer-body": {
     "tab": "jupyter-repl:data-explorer-focus-expression",
     "shift-tab": "jupyter-repl:data-explorer-focus-toolbar"
   },
-
   "atom-workspace .data-explorer-canvas-wrap": {
     "enter": "core:confirm",
     "backspace": "jupyter-repl:data-explorer-drill-up",
@@ -83,25 +74,14 @@
     "shift-space": "jupyter-repl:data-grid-select-row",
     "ctrl-space": "jupyter-repl:data-grid-select-column"
   },
-
   "atom-workspace .jupyter-repl.inspector .inspector-body": {
     "up": "jupyter-repl:inspector-scroll-up",
     "down": "jupyter-repl:inspector-scroll-down",
     "tab": "jupyter-repl:inspector-focus-expression",
     "shift-tab": "jupyter-repl:inspector-focus-expression"
   },
-
   "atom-workspace atom-text-editor.watch-input:not([mini])": {
     "enter": "core:confirm",
     "shift-enter": "editor:newline"
-  },
-
-  "atom-workspace .kernel-monitor-wrapper": {
-    "up": "jupyter-repl:kernel-monitor-up",
-    "down": "jupyter-repl:kernel-monitor-down",
-    "enter": "jupyter-repl:kernel-monitor-open",
-    "i": "jupyter-repl:kernel-monitor-interrupt",
-    "r": "jupyter-repl:kernel-monitor-restart",
-    "s": "jupyter-repl:kernel-monitor-shutdown"
   }
 }

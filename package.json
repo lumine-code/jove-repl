@@ -81,7 +81,6 @@
       "jupyter-repl:import-notebook",
       "jupyter-repl:open-data-explorer",
       "jupyter-repl:debug-toggle",
-      "jupyter-repl:toggle-kernel-monitor-focus",
       "jupyter-repl:toggle-exec-panel",
       "jupyter-repl:toggle-variable-explorer",
       "jupyter-repl:hot-reload-package",
