@@ -67,6 +67,40 @@ describe("store kernel tracking", () => {
     subscription.dispose();
   });
 
+  it("announces the other file's kernel on a tab switch, in event order", async () => {
+    // A tab switch fires did-change-active-pane-item first and
+    // did-change-active-text-editor second; the store hears them in that
+    // order. The first sees the sticky old editor and must stay quiet; the
+    // second carries the new file and must announce its kernel.
+    const kernelA = fakeKernel("A");
+    const kernelB = fakeKernel("B");
+    const editorB = await atom.workspace.open();
+    store.kernelMapping.set(store.filePath, new Map([[store.grammar.name, kernelA]]));
+    store._emitKernelsChanged();
+    expect(store.kernel).toBe(kernelA);
+
+    const seen = [];
+    const subscription = store.onDidChangeCurrentKernel((kernel) => seen.push(kernel));
+
+    store.updateActivePaneItem(editorB);
+    store.updateEditor(editorB);
+    const keyB = store.filePath;
+    store.kernelMapping.set(keyB, new Map([[store.grammar.name, kernelB]]));
+    store._emitKernelsChanged();
+
+    expect(store.kernel).toBe(kernelB);
+    expect(seen[seen.length - 1]).toBe(kernelB);
+
+    // And back: the same two-step sequence re-announces the first kernel.
+    store.updateActivePaneItem(editor);
+    store.updateEditor(editor);
+    expect(store.kernel).toBe(kernelA);
+    expect(seen[seen.length - 1]).toBe(kernelA);
+
+    subscription.dispose();
+    editorB.destroy();
+  });
+
   it("announces the change when the active pane item moves away", () => {
     const kernel = fakeKernel();
     store.kernelMapping.set(store.filePath, new Map([[store.grammar.name, kernel]]));
