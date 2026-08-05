@@ -1,7 +1,6 @@
 {
   "atom-workspace": {
-    "alt-h o": "jupyter-repl:toggle-output-area",
-    "alt-h e": "jupyter-repl:toggle-exec-panel"
+    "alt-h o": "jupyter-repl:toggle-output-area"
   },
   "atom-workspace atom-text-editor:not([mini]):not(atom-dock atom-text-editor)": {
     "cmdorctrl-enter": "jupyter-repl:run",
@@ -15,8 +14,5 @@
   "atom-workspace .jupyter-repl.kernel-picker atom-text-editor[mini]": {
     "ctrl-enter": "jupyter-repl:insert-kernel-comment",
     "f5": "jupyter-repl:update-kernels"
-  },
-  "atom-workspace .jupyter-repl.exec-panel atom-text-editor[mini]": {
-    "shift-enter": "jupyter-repl:recall-history-entry"
   }
 }

@@ -15,8 +15,8 @@
               "command": "jupyter-repl:connect-to-remote-kernel"
             },
             {
-              "label": "Open Gateways Config",
-              "command": "jupyter-repl:open-gateways"
+              "label": "Edit Gateways Config",
+              "command": "jupyter-repl:edit-gateways"
             },
             {
               "label": "Connect to Existing Kernel",
@@ -39,16 +39,16 @@
               "command": "jupyter-repl:shutdown-all-kernels"
             },
             {
-              "label": "Open Jupyter Console",
-              "command": "jupyter-repl:open-jupyter-console"
+              "label": "Open Console in Terminal",
+              "command": "jupyter-repl:open-terminal"
             },
             {
-              "label": "Spawn Jupyter Console",
-              "command": "jupyter-repl:spawn-jupyter-console"
+              "label": "Spawn Console in System Terminal",
+              "command": "jupyter-repl:spawn-terminal"
             },
             {
-              "label": "Copy Jupyter Console Command",
-              "command": "jupyter-repl:copy-jupyter-console-command"
+              "label": "Copy Console Command",
+              "command": "jupyter-repl:copy-console-command"
             },
             {
               "label": "Update Kernels",

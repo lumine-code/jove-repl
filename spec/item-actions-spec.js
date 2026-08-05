@@ -1,5 +1,4 @@
 const path = require("path");
-const ExecPanel = require("../lib/exec-panel");
 const KernelPicker = require("../lib/kernel-picker");
 
 // Activate by path, not by name: resolving the name would need this checkout
@@ -96,76 +95,5 @@ describe("jupyter-repl kernel picker item actions", () => {
     picker.selectList.itemActionsList.confirmSelection();
 
     expect(editor.lineTextForBufferRow(0)).toBe("#:: ir");
-  });
-});
-
-describe("jupyter-repl exec panel item actions", () => {
-  let panel;
-
-  beforeEach(async () => {
-    jasmine.attachToDOM(atom.views.getView(atom.workspace));
-    const activation = atom.packages.activatePackage(PACKAGE_PATH);
-    atom.commands.dispatch(atom.views.getView(atom.workspace), "jupyter-repl:debug-toggle");
-    await activation;
-    panel = new ExecPanel({ kernel: null });
-  });
-
-  afterEach(async () => {
-    panel.destroy();
-    await atom.packages.deactivatePackage("jupyter-repl");
-  });
-
-  it("offers both entry commands as actions, bound to the keys the panel documents", () => {
-    const actions = panel.selectList.itemActions();
-    const byCommand = new Map(actions.map((action) => [action.command, action]));
-
-    const run = byCommand.get("jupyter-repl:run-history-entry");
-    expect(run.name).toBe("Run History Entry");
-    expect(run.description).toBe("Run the selected entry and close the panel");
-    // Enter reaches it as chrome, through core:confirm, so the keymap binds
-    // nothing of its own — the row is listed without a key, like every other
-    // list's confirm action.
-    expect(run.keystrokes).toEqual([]);
-
-    const recall = byCommand.get("jupyter-repl:recall-history-entry");
-    expect(recall.name).toBe("Recall History Entry");
-    expect(recall.description).toBe(
-      "Put the selected entry back in the prompt to edit before running it",
-    );
-    expect(recall.keystrokes).toEqual(["shift-enter"]);
-
-    // Chrome and another picker's keymap stay out.
-    expect(byCommand.has("core:confirm")).toBe(false);
-    expect(byCommand.has("jupyter-repl:insert-kernel-comment")).toBe(false);
-  });
-
-  it("leaves Enter bound to the chrome, so it still confirms inside the actions list", () => {
-    // The actions list wears the panel's own classes, so a package binding on
-    // Enter would follow it in and run a history entry instead of the action
-    // under the cursor. The panel binds nothing on Enter for that reason.
-    const bindings = atom.keymaps.findKeyBindings({
-      keystrokes: "enter",
-      target: panel.selectList.refs.queryEditor.element,
-    });
-
-    expect(bindings[0].command).toBe("core:confirm");
-  });
-
-  it("runs the action against the panel's selection", async () => {
-    panel.addToHistory("import numpy");
-    await panel.selectList.selectIndex(0);
-    panel.selectList.show();
-
-    await panel.selectList.showItemActions();
-    expect(atom.workspace.getModalTrail()).toEqual(["Exec History", "Actions"]);
-
-    const index = panel.selectList.itemActionsList.items.findIndex(
-      (item) => item.command === "jupyter-repl:recall-history-entry",
-    );
-    panel.selectList.itemActionsList.selectIndex(index);
-    panel.selectList.itemActionsList.confirmSelection();
-
-    expect(panel.selectList.getQuery()).toBe("import numpy");
-    expect(panel.selectList.isVisible()).toBeTruthy();
   });
 });

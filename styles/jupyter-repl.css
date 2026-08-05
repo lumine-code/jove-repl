@@ -400,31 +400,6 @@
   word-break: normal;
 }
 
-/* -------------- Exec panel history ----------------- */
-
-.jupyter-repl.exec-panel .exec-history-item {
-  /* Rows hold code, so they read in the editor font rather than the UI one. */
-  .primary-text {
-    font-family: var(--editor-font-family);
-  }
-
-  /* An outcome marker is a glyph and nothing else, so it trips the framework's
-     "hide an unused badge" rule; opt back in and drop the label gap the icon
-     box reserves for text that is not there. */
-  .exec-status.badge:empty {
-    display: inline-block;
-  }
-
-  .exec-status.badge::before {
-    margin-right: 0;
-  }
-
-  /* Clock times stack in a column, so they align on their digits. */
-  .exec-time.badge {
-    font-variant-numeric: tabular-nums;
-  }
-}
-
 .line.jupyter-repl-breakpoint::before {
   content: "";
   position: absolute;
