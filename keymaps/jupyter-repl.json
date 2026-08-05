@@ -1,6 +1,6 @@
 {
   "atom-workspace": {
-    "alt-h o": "jupyter-repl:toggle-output-area"
+    "alt-j o": "jupyter-repl:toggle-output-area"
   },
   "atom-workspace atom-text-editor:not([mini]):not(atom-dock atom-text-editor)": {
     "cmdorctrl-enter": "jupyter-repl:run",
