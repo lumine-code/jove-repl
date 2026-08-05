@@ -25,6 +25,15 @@
     "You can run the whole cell around the cursor with {{ 'jupyter-repl:run-cell' | keystroke }}"
   ],
   "main": "./lib/main",
+  "files": [
+    "assets",
+    "docs",
+    "keymaps",
+    "lib",
+    "menus",
+    "spec",
+    "styles"
+  ],
   "scripts": {
     "test": "lumine --test spec",
     "lint": "eslint . --max-warnings 0",
