@@ -46,13 +46,13 @@ type JupyterProvider = {
 
 Required members:
 
-| Member                         | Description                                                                  |
-| ------------------------------ | ---------------------------------------------------------------------------- |
-| `getActiveKernel()`            | The kernel for the active editor, or `null` when none is running.            |
-| `getRunningKernels()`          | Every kernel in this window, in the order they started.                      |
-| `onDidChangeKernel(callback)`  | Fires when the active kernel changes, including to `null`.                   |
+| Member                          | Description                                                                  |
+| ------------------------------- | ---------------------------------------------------------------------------- |
+| `getActiveKernel()`             | The kernel for the active editor, or `null` when none is running.            |
+| `getRunningKernels()`           | Every kernel in this window, in the order they started.                      |
+| `onDidChangeKernel(callback)`   | Fires when the active kernel changes, including to `null`.                   |
 | `observeActiveKernel(callback)` | Calls back with the current active kernel immediately, then on every change. |
-| `onDidChangeKernels(callback)` | Fires when the set of kernels changes, or the files any of them is bound to. |
+| `onDidChangeKernels(callback)`  | Fires when the set of kernels changes, or the files any of them is bound to. |
 
 Optional members:
 
