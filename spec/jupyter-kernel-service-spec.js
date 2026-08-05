@@ -104,6 +104,24 @@ describe("jupyter.kernel service", () => {
     expect(seen.length).toBe(2);
   });
 
+  it("observes the active kernel: current value first, changes after", () => {
+    const internal = fakeInternalKernel();
+    Object.defineProperty(store, "kernel", { get: () => internal, configurable: true });
+
+    const seen = [];
+    const subscription = provider.observeActiveKernel((kernel) => seen.push(kernel));
+
+    // The current value replays immediately — a consumer that renders state
+    // must not depend on subscribing before the first change.
+    expect(seen).toEqual([internal.getPluginWrapper()]);
+
+    emitter.emit("did-change-kernel", null);
+    expect(seen).toEqual([internal.getPluginWrapper(), null]);
+
+    subscription.dispose();
+    delete store.kernel;
+  });
+
   it("lists the running kernels as wrappers", () => {
     const one = fakeInternalKernel("Python 3");
     const two = fakeInternalKernel("R");
