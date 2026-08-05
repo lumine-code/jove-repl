@@ -1,3 +1,4 @@
+/** @jsx etch.dom */
 const etch = require("@lumine-code/etch");
 const { CompositeDisposable, Disposable } = require("atom");
 const { NO_EXECTIME_STRING, formatElapsedTime } = require("../../../utils");

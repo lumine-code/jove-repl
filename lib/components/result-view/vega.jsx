@@ -1,3 +1,4 @@
+/** @jsx etch.dom */
 /**
  * Adapted from
  * https://github.com/nteract/nteract/blob/master/packages/transform-vega/src/index.tsx

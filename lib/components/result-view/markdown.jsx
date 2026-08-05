@@ -1,3 +1,4 @@
+/** @jsx etch.dom */
 /**
  * Markdown rendered by the editor's own markdown-it based renderer.
  */

@@ -1,3 +1,4 @@
+/** @jsx etch.dom */
 /**
  * HTML output that also handles Altair/Vega HTML: the spec is extracted and
  * handed to the native Vega renderer, avoiding the inline script the content

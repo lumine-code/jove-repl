@@ -1,3 +1,4 @@
+/** @jsx etch.dom */
 /** The little inline marker a result shows before it has any output. */
 const etch = require("@lumine-code/etch"); // JSX factory
 function renderStatus(status, style) {

@@ -1,3 +1,4 @@
+/** @jsx etch.dom */
 /**
  * LaTeX rendering with MathJax 4.
  *

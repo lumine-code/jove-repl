@@ -1,3 +1,4 @@
+/** @jsx etch.dom */
 /** What a panel shows when there is nothing to display in it yet. */
 const etch = require("@lumine-code/etch"); // JSX factory
 function renderEmptyMessage() {

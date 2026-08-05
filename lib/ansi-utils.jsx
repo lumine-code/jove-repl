@@ -1,3 +1,4 @@
+/** @jsx etch.dom */
 const etch = require("@lumine-code/etch"); // JSX factory
 const Anser = require("anser");
 
