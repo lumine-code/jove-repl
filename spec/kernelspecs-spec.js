@@ -43,7 +43,9 @@ describe("kernel discovery", () => {
       }
     }
     resetSysPrefixCache();
-    fs.rmSync(root, { recursive: true, force: true });
+    // Retries because Windows keeps a directory non-empty until the last handle on a child
+    // closes, and `force` swallows only ENOENT.
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   });
 
   describe("dataDirs", () => {
