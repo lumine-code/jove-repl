@@ -174,8 +174,14 @@
   "context-menu": {
     ".tree-view .file[data-name$=\".ipynb\"]": [
       {
+        "type": "separator"
+      },
+      {
         "label": "Import Notebook",
         "command": "jupyter-repl:import-notebook"
+      },
+      {
+        "type": "separator"
       }
     ]
   }
