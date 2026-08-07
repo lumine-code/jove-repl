@@ -14,10 +14,20 @@ describe("jupyter-repl package assets", () => {
   });
 
   it("ships keymap and menu JSON that parse", () => {
+    // The editor loads keymaps through season, which tolerates comments, so
+    // JSON.parse alone is the wrong reader.
     const keymap = JSON.parse(
-      fs.readFileSync(path.join(root, "keymaps/jupyter-repl.json"), "utf8"),
+      fs
+        .readFileSync(path.join(root, "keymaps/jupyter-repl.json"), "utf8")
+        .replace(/^\s*\/\/.*$/gm, ""),
     );
     expect(keymap["atom-workspace"]).toBeDefined();
+    // alt-enter belongs to intentions, whose only command it is; a more
+    // specific block here took it silently in every non-dock editor.
+    const editorBlock =
+      keymap["atom-workspace atom-text-editor:not([mini]):not(atom-dock atom-text-editor)"];
+    expect(editorBlock["alt-enter"]).toBeUndefined();
+    expect(editorBlock["alt-shift-enter"]).toBe("jupyter-repl:run-cell");
 
     const menu = JSON.parse(fs.readFileSync(path.join(root, "menus/jupyter-repl.json"), "utf8"));
     expect(Array.isArray(menu.menu)).toBe(true);

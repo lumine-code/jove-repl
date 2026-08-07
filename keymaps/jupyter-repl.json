@@ -5,8 +5,12 @@
   "atom-workspace atom-text-editor:not([mini]):not(atom-dock atom-text-editor)": {
     "cmdorctrl-enter": "jupyter-repl:run",
     "shift-enter": "jupyter-repl:run-and-move-down",
-    "alt-enter": "jupyter-repl:run-cell",
-    "shift-alt-enter": "jupyter-repl:run-cell-and-move-down",
+    // Not alt-enter: that is the cross-editor quick-fix keystroke, and
+    // intentions binds it at atom-text-editor:not([mini]) as its only command
+    // and its only key. This block is more specific, so it silently took it in
+    // every editor that is not in a dock, leaving intentions palette-only.
+    "alt-shift-enter": "jupyter-repl:run-cell",
+    "cmdorctrl-alt-shift-enter": "jupyter-repl:run-cell-and-move-down",
     "cmdorctrl-shift-enter": "jupyter-repl:run-all",
     "ctrl-shift-backspace": "jupyter-repl:clear-results",
     "cmdorctrl-alt-backspace": "jupyter-repl:clear-results"
