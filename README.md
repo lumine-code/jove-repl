@@ -20,7 +20,7 @@ To install `jupyter-repl` search for _jupyter-repl_ in the Install pane of the L
 
 ## Commands
 
-Commands available in `atom-text-editor:not([mini])`:
+Commands available in `atom-workspace`:
 
 - `jupyter-repl:run`: run code at cursor,
 - `jupyter-repl:run-and-move-down`: run and move to next block,
@@ -57,10 +57,7 @@ Commands available in `atom-text-editor:not([mini])`:
 - `jupyter-repl:move-cell-down`: move cell down,
 - `jupyter-repl:fold-current-cell`: fold current cell,
 - `jupyter-repl:fold-all-but-current-cell`: fold all cells except current,
-- `jupyter-repl:export-notebook`: export editor content to `.ipynb`.
-
-Commands available in `atom-workspace`:
-
+- `jupyter-repl:export-notebook`: export editor content to `.ipynb`,
 - `jupyter-repl:import-notebook`: import a `.ipynb` notebook,
 - `jupyter-repl:open-examples`: open example files,
 - `jupyter-repl:edit-gateways`: open `gateways.json`,
@@ -74,7 +71,7 @@ Commands available in `atom-workspace`:
 Commands available in `.jupyter-repl.kernel-picker`, all listed with their keybindings in the item-actions list (F12):
 
 - `jupyter-repl:insert-kernel-comment`: insert or update the kernel magic comment on the first line,
-- `jupyter-repl:update-kernels`: rescan kernel specs and reload the list.
+- `jupyter-repl:refresh-kernel-list`: rescan kernel specs and reload the list.
 
 ## Documentation
 

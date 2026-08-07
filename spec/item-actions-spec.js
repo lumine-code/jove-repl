@@ -38,7 +38,7 @@ describe("jupyter-repl kernel picker item actions", () => {
     );
     expect(insertComment.keystrokes).toEqual(["ctrl-enter"]);
 
-    const updateKernels = byCommand.get("jupyter-repl:update-kernels");
+    const updateKernels = byCommand.get("jupyter-repl:refresh-kernel-list");
     expect(updateKernels.description).toBe("Rescan the kernel specs on disk and reload the list");
     expect(updateKernels.keystrokes).toEqual(["f5"]);
 
@@ -69,7 +69,7 @@ describe("jupyter-repl kernel picker item actions", () => {
 
     const spy = spyOn(picker, "updateKernels");
     const index = picker.selectList.itemActionsList.items.findIndex(
-      (item) => item.command === "jupyter-repl:update-kernels",
+      (item) => item.command === "jupyter-repl:refresh-kernel-list",
     );
     picker.selectList.itemActionsList.selectIndex(index);
     picker.selectList.itemActionsList.confirmSelection();

@@ -4,110 +4,130 @@
       "label": "Packages",
       "submenu": [
         {
-          "label": "Jupyter",
+          "label": "Jupyter REPL",
           "submenu": [
             {
-              "label": "Start Local Kernel",
-              "command": "jupyter-repl:start-local-kernel"
+              "label": "Kernel",
+              "submenu": [
+                {
+                  "label": "Start Local Kernel",
+                  "command": "jupyter-repl:start-local-kernel"
+                },
+                {
+                  "label": "Connect to Remote Kernel",
+                  "command": "jupyter-repl:connect-to-remote-kernel"
+                },
+                {
+                  "label": "Connect to Existing Kernel",
+                  "command": "jupyter-repl:connect-to-existing-kernel"
+                },
+                {
+                  "label": "Edit Gateways Config",
+                  "command": "jupyter-repl:edit-gateways"
+                },
+                {
+                  "label": "Update Kernels",
+                  "command": "jupyter-repl:update-kernels"
+                },
+                {
+                  "label": "Interrupt Kernel",
+                  "command": "jupyter-repl:interrupt-kernel"
+                },
+                {
+                  "label": "Restart Kernel",
+                  "command": "jupyter-repl:restart-kernel"
+                },
+                {
+                  "label": "Shutdown Kernel",
+                  "command": "jupyter-repl:shutdown-kernel"
+                },
+                {
+                  "label": "Shutdown All Kernels",
+                  "command": "jupyter-repl:shutdown-all-kernels"
+                }
+              ]
             },
             {
-              "label": "Connect to Remote Kernel",
-              "command": "jupyter-repl:connect-to-remote-kernel"
-            },
-            {
-              "label": "Edit Gateways Config",
-              "command": "jupyter-repl:edit-gateways"
-            },
-            {
-              "label": "Connect to Existing Kernel",
-              "command": "jupyter-repl:connect-to-existing-kernel"
-            },
-            {
-              "label": "Interrupt Kernel",
-              "command": "jupyter-repl:interrupt-kernel"
-            },
-            {
-              "label": "Restart Kernel",
-              "command": "jupyter-repl:restart-kernel"
-            },
-            {
-              "label": "Shutdown Kernel",
-              "command": "jupyter-repl:shutdown-kernel"
-            },
-            {
-              "label": "Shutdown All Kernels",
-              "command": "jupyter-repl:shutdown-all-kernels"
-            },
-            {
-              "label": "Open Console in Terminal",
-              "command": "jupyter-repl:open-terminal"
-            },
-            {
-              "label": "Spawn Console in System Terminal",
-              "command": "jupyter-repl:spawn-terminal"
-            },
-            {
-              "label": "Copy Console Command",
-              "command": "jupyter-repl:copy-console-command"
-            },
-            {
-              "label": "Update Kernels",
-              "command": "jupyter-repl:update-kernels"
+              "label": "Console",
+              "submenu": [
+                {
+                  "label": "Open Console in Terminal",
+                  "command": "jupyter-repl:open-terminal"
+                },
+                {
+                  "label": "Spawn Console in System Terminal",
+                  "command": "jupyter-repl:spawn-terminal"
+                },
+                {
+                  "label": "Copy Console Command",
+                  "command": "jupyter-repl:copy-console-command"
+                }
+              ]
             },
             {
               "type": "separator"
             },
             {
               "label": "Run",
-              "command": "jupyter-repl:run"
+              "submenu": [
+                {
+                  "label": "Run",
+                  "command": "jupyter-repl:run"
+                },
+                {
+                  "label": "Run and Move Down",
+                  "command": "jupyter-repl:run-and-move-down"
+                },
+                {
+                  "label": "Run Cell",
+                  "command": "jupyter-repl:run-cell"
+                },
+                {
+                  "label": "Run Cell and Move Down",
+                  "command": "jupyter-repl:run-cell-and-move-down"
+                },
+                {
+                  "label": "Run All",
+                  "command": "jupyter-repl:run-all"
+                },
+                {
+                  "label": "Run All Above",
+                  "command": "jupyter-repl:run-all-above"
+                },
+                {
+                  "label": "Recalculate All",
+                  "command": "jupyter-repl:recalculate-all"
+                },
+                {
+                  "label": "Recalculate All Above",
+                  "command": "jupyter-repl:recalculate-all-above"
+                }
+              ]
             },
             {
-              "label": "Run and Move Down",
-              "command": "jupyter-repl:run-and-move-down"
-            },
-            {
-              "label": "Run Cell",
-              "command": "jupyter-repl:run-cell"
-            },
-            {
-              "label": "Run Cell and Move Down",
-              "command": "jupyter-repl:run-cell-and-move-down"
-            },
-            {
-              "label": "Run All",
-              "command": "jupyter-repl:run-all"
-            },
-            {
-              "label": "Run All Above",
-              "command": "jupyter-repl:run-all-above"
-            },
-            {
-              "label": "Recalculate All",
-              "command": "jupyter-repl:recalculate-all"
-            },
-            {
-              "label": "Recalculate All Above",
-              "command": "jupyter-repl:recalculate-all-above"
-            },
-            {
-              "label": "Recalculate All Inline",
-              "command": "jupyter-repl:recalculate-all-inline"
-            },
-            {
-              "label": "Recalculate All Above Inline",
-              "command": "jupyter-repl:recalculate-all-above-inline"
-            },
-            {
-              "label": "Run All Inline",
-              "command": "jupyter-repl:run-all-inline"
-            },
-            {
-              "label": "Run All Above Inline",
-              "command": "jupyter-repl:run-all-above-inline"
-            },
-            {
-              "label": "Run All Below Inline",
-              "command": "jupyter-repl:run-all-below-inline"
+              "label": "Run Inline",
+              "submenu": [
+                {
+                  "label": "Run All Inline",
+                  "command": "jupyter-repl:run-all-inline"
+                },
+                {
+                  "label": "Run All Above Inline",
+                  "command": "jupyter-repl:run-all-above-inline"
+                },
+                {
+                  "label": "Run All Below Inline",
+                  "command": "jupyter-repl:run-all-below-inline"
+                },
+                {
+                  "label": "Recalculate All Inline",
+                  "command": "jupyter-repl:recalculate-all-inline"
+                },
+                {
+                  "label": "Recalculate All Above Inline",
+                  "command": "jupyter-repl:recalculate-all-above-inline"
+                }
+              ]
             },
             {
               "type": "separator"
